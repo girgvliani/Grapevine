@@ -2,46 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function WireTangle() {
-  return (
-    <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
-      <path
-        d="M90 70 C70 40 40 50 50 75 C60 100 100 95 110 70 C120 45 95 25 75 40 C55 55 55 90 75 100 C95 110 125 95 130 75 C135 55 115 35 95 45"
-        stroke="#AFA9FF"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d="M60 55 C80 30 120 40 115 70 C110 100 75 105 60 85 C45 65 60 40 80 35 C100 30 125 50 120 75"
-        stroke="#AFA9FF"
-        strokeWidth="3"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.7"
-      />
-      <path
-        d="M100 45 C130 55 135 85 115 95 C95 105 65 95 60 75 C55 55 75 40 95 50 C115 60 120 85 105 95"
-        stroke="#AFA9FF"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.5"
-      />
-      {/* Loose wire tail */}
-      <path
-        d="M115 75 C130 72 150 68 170 70"
-        stroke="#AFA9FF"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
 export default function Quote() {
   const ref = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -51,7 +14,9 @@ export default function Quote() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true);
-          io.disconnect();
+          videoRef.current?.play();
+        } else {
+          videoRef.current?.pause();
         }
       },
       { threshold: 0.15 }
@@ -65,32 +30,40 @@ export default function Quote() {
       ref={ref}
       style={{
         background: "var(--cream)",
-        padding: "60px 40px 80px",
+        padding: "3.75rem clamp(1.5rem, 5vw, 2.5rem) 5rem",
       }}
     >
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "60px",
+          gap: "clamp(2rem, 5vw, 3.75rem)",
         }}
       >
-        {/* Left — orange card */}
+        {/* Left — video */}
         <div
           style={{
             flex: "0 0 46%",
-            background: "var(--orange)",
-            borderRadius: "28px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "60px 40px",
+            borderRadius: "1.75rem",
+            overflow: "hidden",
             opacity: visible ? 1 : 0,
-            transform: visible ? "none" : "translateX(-24px)",
+            transform: visible ? "none" : "translateX(-1.5rem)",
             transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
-          <WireTangle />
+          <video
+            ref={videoRef}
+            src="/assets/videos/Comp1.mp4"
+            muted
+            loop
+            playsInline
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
         </div>
 
         {/* Right — quote */}
@@ -98,17 +71,17 @@ export default function Quote() {
           style={{
             flex: 1,
             opacity: visible ? 1 : 0,
-            transform: visible ? "none" : "translateX(24px)",
+            transform: visible ? "none" : "translateX(1.5rem)",
             transition: "opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s",
           }}
         >
           <p
             style={{
-              fontSize: "clamp(13px, 1.4vw, 16px)",
+              fontSize: "clamp(0.8125rem, 1.4vw, 1rem)",
               lineHeight: 1.85,
               color: "var(--orange)",
               fontFamily: "var(--font-primary)",
-              marginBottom: "20px",
+              marginBottom: "1.25rem",
             }}
           >
             &ldquo;Engineers and designers simultaneously know too much and too
@@ -117,7 +90,7 @@ export default function Quote() {
           </p>
           <cite
             style={{
-              fontSize: "11px",
+              fontSize: "0.6875rem",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               color: "var(--orange)",

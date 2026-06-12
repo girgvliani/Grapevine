@@ -19,7 +19,7 @@ export default function Nav() {
         left: 0,
         right: 0,
         zIndex: 100,
-        padding: "20px 40px",
+        padding: "1.25rem clamp(1.5rem, 5vw, 2.5rem)",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -31,7 +31,7 @@ export default function Nav() {
       {/* Logo */}
       <div
         style={{
-          fontSize: "14px",
+          fontSize: "0.875rem",
           letterSpacing: "0.08em",
           color: "var(--white)",
           fontWeight: 700,
@@ -49,7 +49,7 @@ export default function Nav() {
       <ul
         style={{
           display: "flex",
-          gap: "36px",
+          gap: "2.25rem",
           listStyle: "none",
         }}
       >
@@ -63,7 +63,7 @@ export default function Nav() {
               style={{
                 color: "var(--white)",
                 textDecoration: "none",
-                fontSize: "12px",
+                fontSize: "0.75rem",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
                 opacity: 0.75,
@@ -88,9 +88,9 @@ export default function Nav() {
         style={{
           background: "var(--purple-dark)",
           color: "var(--white)",
-          padding: "10px 22px",
+          padding: "0.625rem 1.375rem",
           borderRadius: "100px",
-          fontSize: "12px",
+          fontSize: "0.75rem",
           letterSpacing: "0.08em",
           textTransform: "uppercase",
           fontFamily: "var(--font-primary)",

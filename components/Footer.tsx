@@ -17,10 +17,10 @@ export default function Footer() {
       <div
         style={{
           position: "absolute",
-          right: "80px",
-          bottom: "30px",
-          width: "220px",
-          height: "220px",
+          right: "5rem",
+          bottom: "1.875rem",
+          width: "13.75rem",
+          height: "13.75rem",
           opacity: 0.1,
           pointerEvents: "none",
         }}
@@ -34,16 +34,16 @@ export default function Footer() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          padding: "52px 48px 40px",
+          padding: "3.25rem clamp(1.5rem, 5vw, 3rem) 2.5rem",
           position: "relative",
           zIndex: 1,
         }}
       >
         {/* Left — logo + tagline */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           <div
             style={{
-              fontSize: "14px",
+              fontSize: "0.875rem",
               fontWeight: 900,
               textTransform: "uppercase",
               lineHeight: 1.1,
@@ -59,14 +59,14 @@ export default function Footer() {
 
           <h3
             style={{
-              fontSize: "clamp(18px, 2.5vw, 28px)",
+              fontSize: "clamp(1.125rem, 2.5vw, 1.75rem)",
               fontWeight: 900,
               textTransform: "uppercase",
               letterSpacing: "-0.01em",
               color: "var(--dark)",
               fontFamily: "var(--font-heading)",
               lineHeight: 1.1,
-              maxWidth: "260px",
+              maxWidth: "16.25rem",
             }}
           >
             For Brands That
@@ -79,17 +79,17 @@ export default function Footer() {
         <div>
           <div
             style={{
-              fontSize: "11px",
+              fontSize: "0.6875rem",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               color: "rgba(26,5,18,0.45)",
               fontFamily: "var(--font-primary)",
-              marginBottom: "16px",
+              marginBottom: "1rem",
             }}
           >
             Quick Links
           </div>
-          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "10px" }}>
+          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
             {[
               { label: "Services", href: "#services" },
               { label: "Portfolio", href: "#work" },
@@ -99,7 +99,7 @@ export default function Footer() {
                 <a
                   href={href}
                   style={{
-                    fontSize: "13px",
+                    fontSize: "0.8125rem",
                     color: "var(--dark)",
                     fontFamily: "var(--font-primary)",
                     textDecoration: "none",
@@ -117,14 +117,14 @@ export default function Footer() {
         </div>
 
         {/* Right — CTA button + socials */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "16px" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1rem" }}>
           <button
             style={{
               background: "var(--dark)",
               color: "var(--cream)",
-              padding: "12px 22px",
+              padding: "0.75rem 1.375rem",
               borderRadius: "100px",
-              fontSize: "12px",
+              fontSize: "0.75rem",
               fontWeight: 700,
               letterSpacing: "0.06em",
               fontFamily: "var(--font-primary)",
@@ -141,7 +141,7 @@ export default function Footer() {
           </button>
 
           {/* Social icons */}
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div style={{ display: "flex", gap: "0.5rem" }}>
             {[
               { label: "f", href: "#" },
               { label: "ig", href: "#" },
@@ -151,15 +151,15 @@ export default function Footer() {
                 key={label}
                 href={href}
                 style={{
-                  width: "36px",
-                  height: "36px",
+                  width: "2.25rem",
+                  height: "2.25rem",
                   background: "var(--dark)",
-                  borderRadius: "8px",
+                  borderRadius: "0.5rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   color: "var(--cream)",
-                  fontSize: "11px",
+                  fontSize: "0.6875rem",
                   fontWeight: 700,
                   fontFamily: "var(--font-primary)",
                   textDecoration: "none",
@@ -180,9 +180,9 @@ export default function Footer() {
       <div
         style={{
           borderTop: "1px solid rgba(26,5,18,0.1)",
-          padding: "16px 48px",
+          padding: "1rem clamp(1.5rem, 5vw, 3rem)",
           textAlign: "center",
-          fontSize: "11px",
+          fontSize: "0.6875rem",
           color: "rgba(26,5,18,0.4)",
           fontFamily: "var(--font-primary)",
           letterSpacing: "0.08em",

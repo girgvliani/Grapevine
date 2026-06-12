@@ -56,25 +56,25 @@ function StepItem({
       ref={ref}
       style={{
         display: "flex",
-        gap: "24px",
-        paddingBottom: "32px",
-        marginBottom: "32px",
+        gap: "1.5rem",
+        paddingBottom: "2rem",
+        marginBottom: "2rem",
         borderBottom: "1px solid rgba(26,5,18,0.12)",
         opacity: visible ? 1 : 0,
-        transform: visible ? "none" : "translateY(20px)",
+        transform: visible ? "none" : "translateY(1.25rem)",
         transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
       }}
     >
       {/* Number */}
       <div
         style={{
-          fontSize: "42px",
+          fontSize: "clamp(1.75rem, 4vw, 2.625rem)",
           fontWeight: 700,
           color: "var(--orange)",
           fontFamily: "var(--font-primary)",
-          minWidth: "70px",
+          minWidth: "4rem",
           lineHeight: 1,
-          paddingTop: "2px",
+          paddingTop: "0.125rem",
         }}
       >
         {step.num}
@@ -84,38 +84,38 @@ function StepItem({
       <div style={{ flex: 1 }}>
         <div
           style={{
-            fontSize: "clamp(26px, 3vw, 38px)",
+            fontSize: "clamp(1.625rem, 3vw, 2.375rem)",
             fontWeight: 900,
             color: "#1A0512",
             fontFamily: "var(--font-heading)",
             textTransform: "uppercase",
             letterSpacing: "-0.01em",
             lineHeight: 1,
-            marginBottom: "6px",
+            marginBottom: "0.375rem",
           }}
         >
           {step.title}
         </div>
         <div
           style={{
-            fontSize: "11px",
+            fontSize: "0.6875rem",
             color: "var(--orange)",
             letterSpacing: "0.15em",
             textTransform: "uppercase",
             fontFamily: "var(--font-primary)",
-            marginBottom: "10px",
+            marginBottom: "0.625rem",
           }}
         >
           {step.sub}
         </div>
         <div
           style={{
-            fontSize: "12px",
+            fontSize: "0.75rem",
             lineHeight: 1.75,
             color: "#1A0512",
             opacity: 0.65,
             fontFamily: "var(--font-primary)",
-            maxWidth: "340px",
+            maxWidth: "21.25rem",
           }}
         >
           {step.desc}
@@ -151,13 +151,13 @@ export default function Process() {
       ref={sectionRef}
       style={{
         background: "var(--cream)",
-        padding: "80px 40px 60px",
+        padding: "5rem clamp(1.5rem, 5vw, 2.5rem) 3.75rem",
       }}
     >
       <div
         style={{
           display: "flex",
-          gap: "60px",
+          gap: "clamp(2rem, 5vw, 3.75rem)",
           alignItems: "flex-start",
         }}
       >
@@ -195,13 +195,13 @@ export default function Process() {
             style={{
               fontFamily: "var(--font-heading)",
               fontWeight: 900,
-              fontSize: "78px",
+              fontSize: "clamp(2.5rem, 6vw, 4.875rem)",
               lineHeight: 1.1,
               textTransform: "uppercase",
               letterSpacing: "-0.02em",
-              paddingBottom: "16px",
+              paddingBottom: "1rem",
               opacity: visible ? 1 : 0,
-              transform: visible ? "none" : "translateY(16px)",
+              transform: visible ? "none" : "translateY(1rem)",
               transition: "opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s",
             }}
           >
@@ -212,7 +212,7 @@ export default function Process() {
         </div>
 
         {/* Right — steps */}
-        <div style={{ flex: 1, paddingTop: "8px", paddingLeft: "100px" }}>
+        <div style={{ flex: 1, paddingTop: "0.5rem", paddingLeft: "clamp(1rem, 6vw, 6.25rem)" }}>
           {STEPS.map((step, i) => (
             <StepItem key={step.num} step={step} delay={0.2 + i * 0.15} />
           ))}
@@ -221,24 +221,24 @@ export default function Process() {
           <div
             style={{
               display: "flex",
-              gap: "8px",
-              marginTop: "8px",
+              gap: "0.5rem",
+              marginTop: "0.5rem",
               opacity: visible ? 1 : 0,
               transition: "opacity 0.6s ease 0.7s",
             }}
           >
             <div
               style={{
-                width: "10px",
-                height: "10px",
+                width: "0.625rem",
+                height: "0.625rem",
                 borderRadius: "50%",
                 background: "var(--orange)",
               }}
             />
             <div
               style={{
-                width: "10px",
-                height: "10px",
+                width: "0.625rem",
+                height: "0.625rem",
                 borderRadius: "50%",
                 border: "1.5px solid var(--orange)",
                 background: "transparent",
@@ -247,8 +247,6 @@ export default function Process() {
           </div>
         </div>
       </div>
-
-      
     </section>
   );
 }
