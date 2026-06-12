@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
@@ -8,6 +8,14 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-space",
+});
+
+// Closest web approximation to TT Autonomous Mono Trl
+// To use the actual font: place TTAutonomousMonoTrl-*.woff2 in /public/fonts/
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={spaceGrotesk.variable}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
       <body>
         <div id="progress" />
         <Cursor />

@@ -1,12 +1,31 @@
 @import "tailwindcss";
 
+/* TT Autonomous Mono Trl — place font files in /public/fonts/ to activate */
+@font-face {
+  font-family: 'TT Autonomous Mono Trl';
+  src: url('/fonts/TTAutonomousMonoTrl-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'TT Autonomous Mono Trl';
+  src: url('/fonts/TTAutonomousMonoTrl-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --cream: #FFEFAB;
+  --cream: #FFFAEC;
   --orange: #EF583A;
   --purple-light: #AFA9FF;
   --purple-dark: #902793;
   --dark: #1A0512;
-  --white: #FFFEF5;
+  --white: #FFFFFF;
+
+  --font-primary: 'TT Autonomous Mono Trl', var(--font-mono), 'Courier New', monospace;
+  --font-heading: var(--font-space), 'Arial Black', Arial, sans-serif;
 }
 
 *, *::before, *::after {
@@ -22,7 +41,7 @@ html {
 body {
   background: var(--dark);
   color: var(--white);
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-primary);
   overflow-x: hidden;
   cursor: none;
 }
@@ -91,7 +110,7 @@ a, button {
 }
 
 .marquee-track {
-  animation: marquee 18s linear infinite;
+  animation: marquee 22s linear infinite;
 }
 
 /* Float animation */
@@ -113,4 +132,9 @@ a, button {
 
 .scroll-line {
   animation: scaleXPulse 1.5s 1.5s infinite;
+}
+
+/* Hide scrollbar on service card row */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

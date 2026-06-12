@@ -1,191 +1,265 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
+import birdImg from "./assets/Component 9.png";
+
+function FloatingField({
+  label,
+  type = "text",
+  placeholder,
+  multiline = false,
+}: {
+  label: string;
+  type?: string;
+  placeholder: string;
+  multiline?: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+
+  const borderColor = focused ? "var(--purple-dark)" : "rgba(26,5,18,0.25)";
+  const labelColor = focused ? "var(--purple-dark)" : "rgba(26,5,18,0.5)";
+
+  const sharedStyle: React.CSSProperties = {
+    width: "100%",
+    background: "transparent",
+    border: "none",
+    outline: "none",
+    fontSize: "14px",
+    fontFamily: "var(--font-primary)",
+    color: "var(--dark)",
+    padding: "10px 14px",
+    resize: "none",
+  };
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        border: `1px solid ${borderColor}`,
+        borderRadius: "8px",
+        transition: "border-color 0.2s",
+      }}
+    >
+      {/* Floating label */}
+      <span
+        style={{
+          position: "absolute",
+          top: "-10px",
+          left: "12px",
+          fontSize: "11px",
+          fontFamily: "var(--font-primary)",
+          color: labelColor,
+          background: "var(--cream)",
+          padding: "0 4px",
+          letterSpacing: "0.05em",
+          transition: "color 0.2s",
+        }}
+      >
+        {label}
+      </span>
+
+      {multiline ? (
+        <textarea
+          placeholder={placeholder}
+          rows={5}
+          style={{ ...sharedStyle, display: "block" }}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
+      ) : (
+        <input
+          type={type}
+          placeholder={placeholder}
+          style={sharedStyle}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function Cta() {
-  const btnRef = useRef<HTMLButtonElement>(null);
-  const [btnVisible, setBtnVisible] = useState(false);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const el = btnRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setBtnVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
     <section
       id="cta"
       style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        padding: "100px 40px",
-        background: "var(--orange)",
-        color: "var(--dark)",
-        position: "relative",
-        overflow: "hidden",
+        background: "var(--cream)",
+        padding: "80px 60px 100px",
       }}
     >
-      {/* Background watermark */}
       <div
         style={{
-          position: "absolute",
-          fontSize: "30vw",
-          fontWeight: 900,
-          textTransform: "uppercase",
-          fontFamily: "'Arial Black', sans-serif",
-          opacity: 0.06,
-          lineHeight: 1,
-          pointerEvents: "none",
-          whiteSpace: "nowrap",
-          bottom: "-5vw",
-          right: "-5vw",
-          letterSpacing: "-0.05em",
-          color: "var(--dark)",
+          display: "flex",
+          gap: "60px",
+          alignItems: "flex-start",
         }}
       >
-        GROW
-      </div>
-
-      {/* Decorative tangle */}
-      <svg
-        className="animate-float"
-        style={{
-          position: "absolute",
-          bottom: "40px",
-          right: "40px",
-          opacity: 0.3,
-        }}
-        width="160"
-        height="160"
-        viewBox="0 0 160 160"
-        fill="none"
-      >
-        <path
-          d="M30,80 C30,50 55,30 80,50 C105,70 80,100 100,80 C120,60 140,80 120,100 C100,120 80,100 90,120 C100,140 70,150 60,130"
-          stroke="#1A0512"
-          strokeWidth="4"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            opacity: 0.6,
-            marginBottom: "24px",
-          }}
-        >
-          — Ready to untangle?
-        </div>
-
-        <h2
-          style={{
-            fontSize: "clamp(40px, 8vw, 110px)",
-            fontWeight: 900,
-            textTransform: "uppercase",
-            lineHeight: 0.9,
-            fontFamily: "'Arial Black', sans-serif",
-            letterSpacing: "-0.04em",
-            marginBottom: "48px",
-          }}
-        >
-          Let's Talk
-          <br />
-          <span style={{ color: "var(--dark)", opacity: 0.25 }}>Mess.</span>
-        </h2>
-
-        <button
-          ref={btnRef}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "16px",
-            padding: "20px 40px",
-            background: hovered ? "var(--purple-dark)" : "var(--dark)",
-            color: "var(--white)",
-            fontSize: "13px",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            borderRadius: "100px",
-            border: "none",
-            fontFamily: "inherit",
-            fontWeight: 700,
-            opacity: btnVisible ? 1 : 0,
-            transform: btnVisible
-              ? hovered
-                ? "scale(1.05)"
-                : "none"
-              : "translateY(30px)",
-            transition: "opacity 0.7s, transform 0.3s, background 0.3s",
-          }}
-          onClick={() => {
-            window.location.href = "mailto:hello@grapevine.ge";
-          }}
-        >
-          Start Growing
-          <div
+        {/* Left — form */}
+        <div style={{ flex: 1 }}>
+          {/* Heading */}
+          <h2
             style={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              background: "var(--orange)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "12px",
-              transform: hovered ? "rotate(45deg)" : "none",
-              transition: "transform 0.3s",
+              fontSize: "clamp(32px, 5vw, 60px)",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              letterSpacing: "-0.02em",
+              color: "var(--dark)",
+              fontFamily: "var(--font-heading)",
+              lineHeight: 1,
+              marginBottom: "40px",
             }}
           >
-            →
-          </div>
-        </button>
+            Let&apos;s Talk Mess.
+          </h2>
 
-        <div style={{ marginTop: "60px", opacity: 0.6, fontSize: "12px" }}>
-          <p>
-            Or reach us directly at{" "}
-            <a
-              href="mailto:hello@grapevine.ge"
+          {/* Form */}
+          <form
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <FloatingField label="Email" type="email" placeholder="Enter Email" />
+            <FloatingField label="Subject" placeholder="Subject" />
+            <FloatingField label="Message" placeholder="Write your message..." multiline />
+
+            {/* Send button */}
+            <button
+              type="submit"
               style={{
-                color: "var(--dark)",
-                textDecoration: "none",
-                borderBottom: "1px solid currentColor",
+                width: "100%",
+                padding: "16px",
+                background: "var(--purple-dark)",
+                color: "#fff",
+                border: "none",
+                borderRadius: "100px",
+                fontSize: "14px",
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                fontFamily: "var(--font-primary)",
+                transition: "background 0.2s, transform 0.2s",
+                cursor: "none",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.background = "#a030aa";
+                (e.currentTarget as HTMLButtonElement).style.transform = "scale(1.01)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.background = "var(--purple-dark)";
+                (e.currentTarget as HTMLButtonElement).style.transform = "none";
               }}
             >
-              hello@grapevine.ge
-            </a>
-          </p>
-          <p style={{ marginTop: "8px" }}>
-            I.Chavchavadze St. 13 · Tbilisi, Georgia ·{" "}
-            <a
-              href="tel:+9955991701888"
+              Send
+            </button>
+
+            {/* Or divider */}
+            <div
               style={{
-                color: "var(--dark)",
-                textDecoration: "none",
-                borderBottom: "1px solid currentColor",
+                textAlign: "center",
+                fontSize: "12px",
+                color: "rgba(26,5,18,0.4)",
+                fontFamily: "var(--font-primary)",
+                letterSpacing: "0.1em",
               }}
             >
-              +995 599 170 188
-            </a>
-          </p>
+              or
+            </div>
+
+            {/* Contact info row */}
+            <div
+              style={{
+                display: "flex",
+                gap: "32px",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Email */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ marginTop: "2px", flexShrink: 0 }}>
+                  <rect x="1" y="3" width="16" height="12" rx="2" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
+                  <path d="M1 5L9 10L17 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "2px" }}>Email</div>
+                  <a href="mailto:placeholder@gmail.com" style={{ fontSize: "12px", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
+                    placeholder@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ marginTop: "2px", flexShrink: 0 }}>
+                  <path d="M3 2h4l1.5 4-2 1.5a10 10 0 004 4L12 9.5l4 1.5v4a1 1 0 01-1 1C6 16 2 10 2 3a1 1 0 011-1z" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "2px" }}>Phone Number</div>
+                  <a href="tel:+995557544555" style={{ fontSize: "12px", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
+                    +995 557 544 555
+                  </a>
+                </div>
+              </div>
+
+              {/* Social */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ marginTop: "2px", flexShrink: 0 }}>
+                  <circle cx="9" cy="7" r="3" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
+                  <path d="M2 16c0-3 3-5 7-5s7 2 7 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.5" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "6px" }}>Social Media</div>
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    {["f", "in", "ig"].map((s) => (
+                      <div
+                        key={s}
+                        style={{
+                          width: "26px",
+                          height: "26px",
+                          border: "1px solid rgba(26,5,18,0.25)",
+                          borderRadius: "6px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "10px",
+                          fontWeight: 700,
+                          color: "rgba(26,5,18,0.6)",
+                          fontFamily: "var(--font-primary)",
+                          cursor: "none",
+                        }}
+                      >
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Right — orange card with bird */}
+        <div
+          style={{
+            flex: "0 0 38%",
+            background: "var(--orange)",
+            borderRadius: "24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "40px",
+            aspectRatio: "1 / 1",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ position: "relative", width: "80%", aspectRatio: "1 / 1" }}>
+            <Image
+              src={birdImg}
+              alt="Grapevine bird"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
         </div>
       </div>
     </section>

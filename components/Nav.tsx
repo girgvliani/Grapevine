@@ -1,6 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export default function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <nav
       style={{
@@ -13,35 +23,39 @@ export default function Nav() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        mixBlendMode: "difference",
+        transition: "background 0.3s ease",
+        background: scrolled ? "rgba(26, 5, 18, 0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
       }}
     >
+      {/* Logo */}
       <div
         style={{
-          fontSize: "13px",
-          letterSpacing: "0.1em",
+          fontSize: "14px",
+          letterSpacing: "0.08em",
           color: "var(--white)",
           fontWeight: 700,
           textTransform: "uppercase",
-          lineHeight: 1.2,
+          lineHeight: 1.1,
+          fontFamily: "var(--font-primary)",
         }}
       >
-        GR<span style={{ color: "var(--orange)" }}>∙</span>PE
+        GRAPE
         <br />
         VINE
       </div>
 
+      {/* Links */}
       <ul
         style={{
           display: "flex",
-          gap: "32px",
+          gap: "36px",
           listStyle: "none",
         }}
       >
         {[
           { href: "#services", label: "Services" },
-          { href: "#work", label: "Work" },
-          { href: "#cta", label: "Contact" },
+          { href: "#work", label: "Portfolio" },
         ].map(({ href, label }) => (
           <li key={href}>
             <a
@@ -49,17 +63,18 @@ export default function Nav() {
               style={{
                 color: "var(--white)",
                 textDecoration: "none",
-                fontSize: "11px",
-                letterSpacing: "0.15em",
+                fontSize: "12px",
+                letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                opacity: 0.7,
+                opacity: 0.75,
                 transition: "opacity 0.2s",
+                fontFamily: "var(--font-primary)",
               }}
               onMouseEnter={(e) =>
                 ((e.target as HTMLAnchorElement).style.opacity = "1")
               }
               onMouseLeave={(e) =>
-                ((e.target as HTMLAnchorElement).style.opacity = "0.7")
+                ((e.target as HTMLAnchorElement).style.opacity = "0.75")
               }
             >
               {label}
@@ -68,35 +83,36 @@ export default function Nav() {
         ))}
       </ul>
 
+      {/* CTA */}
       <button
         style={{
-          background: "var(--orange)",
-          color: "var(--dark)",
-          padding: "8px 20px",
+          background: "var(--purple-dark)",
+          color: "var(--white)",
+          padding: "10px 22px",
           borderRadius: "100px",
-          fontSize: "11px",
-          letterSpacing: "0.1em",
+          fontSize: "12px",
+          letterSpacing: "0.08em",
           textTransform: "uppercase",
-          fontFamily: "inherit",
+          fontFamily: "var(--font-primary)",
           border: "none",
           fontWeight: 700,
           transition: "transform 0.2s, background 0.2s",
         }}
         onMouseEnter={(e) => {
           const btn = e.currentTarget;
-          btn.style.background = "var(--cream)";
-          btn.style.transform = "scale(1.05)";
+          btn.style.background = "#a030aa";
+          btn.style.transform = "scale(1.04)";
         }}
         onMouseLeave={(e) => {
           const btn = e.currentTarget;
-          btn.style.background = "var(--orange)";
+          btn.style.background = "var(--purple-dark)";
           btn.style.transform = "scale(1)";
         }}
         onClick={() =>
           document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })
         }
       >
-        Grow with Us
+        Grow With Us
       </button>
     </nav>
   );
