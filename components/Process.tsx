@@ -247,6 +247,8 @@ export default function Process() {
           </div>
         </div>
       </div>
+
+      
     </section>
   );
 }
