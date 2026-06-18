@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
+import logoBlack from "./assets/logoblack.png";
 
 export default function Footer() {
   return (
@@ -13,19 +14,19 @@ export default function Footer() {
         borderTop: "1px solid rgba(26,5,18,0.1)",
       }}
     >
-      {/* Faded bird — right side background */}
+      {/* Faded bird — right side, below the social icons */}
       <div
         style={{
           position: "absolute",
-          right: "5rem",
-          bottom: "1.875rem",
+          right: "12rem",
+          top: "3.5rem",
           width: "13.75rem",
           height: "13.75rem",
           opacity: 0.1,
           pointerEvents: "none",
         }}
       >
-        <Image src={birdImg} alt="" fill style={{ objectFit: "contain", objectPosition: "right bottom" }} />
+        <Image src={birdImg} alt="" fill style={{ objectFit: "contain", objectPosition: "right top" }} />
       </div>
 
       {/* Main content */}
@@ -41,21 +42,7 @@ export default function Footer() {
       >
         {/* Left — logo + tagline */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          <div
-            style={{
-              fontSize: "0.875rem",
-              fontWeight: 900,
-              textTransform: "uppercase",
-              lineHeight: 1.1,
-              letterSpacing: "0.05em",
-              color: "var(--dark)",
-              fontFamily: "var(--font-primary)",
-            }}
-          >
-            GRAPE
-            <br />
-            VINE
-          </div>
+          <Image src={logoBlack} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} />
 
           <h3
             style={{

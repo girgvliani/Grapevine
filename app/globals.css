@@ -25,7 +25,7 @@
   --white: #FFFFFF;
 
   --font-primary: 'TT Autonomous Mono Trl', var(--font-mono), 'Courier New', monospace;
-  --font-heading: var(--font-space), 'Arial Black', Arial, sans-serif;
+  --font-heading: 'Mersad', var(--font-space), 'Arial Black', Arial, sans-serif;
 }
 
 *, *::before, *::after {

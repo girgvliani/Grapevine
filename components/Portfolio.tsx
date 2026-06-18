@@ -1,137 +1,45 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image, { StaticImageData } from "next/image";
 
-const PROJECTS = [
-  {
-    id: 1,
-    title: "Fino 13 Years Campaign",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#E8541A",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", gap: "10px", flexWrap: "wrap", padding: "24px" }}>
-        {["🟠", "🔵", "🟡", "🔴"].map((c, i) => (
-          <div key={i} style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(255,255,255,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>{c}</div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 2,
-    title: "Fino 13 Years Campaign",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#2B6CB0",
-    visual: (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <div style={{ color: "#fff", fontSize: "32px", fontWeight: 900, letterSpacing: "-0.02em", fontFamily: "Arial Black, sans-serif" }}>FINO</div>
-        <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "10px", letterSpacing: "0.2em", marginTop: "6px", textTransform: "uppercase" }}>Audit & Accounting</div>
-      </div>
-    ),
-  },
-  {
-    id: 3,
-    title: "Fino 13 Years Campaign",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#111111",
-    visual: (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <div style={{ color: "#fff", fontSize: "28px", fontWeight: 900, letterSpacing: "0.08em", fontFamily: "Arial Black, sans-serif", textAlign: "center", lineHeight: 1 }}>
-          N|W<br />
-          <span style={{ fontSize: "12px", letterSpacing: "0.3em", fontWeight: 400 }}>NEW WORD</span>
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 4,
-    title: "Brand Identity",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#902793",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-          <circle cx="40" cy="40" r="30" stroke="rgba(255,255,255,0.4)" strokeWidth="2" fill="none" />
-          <circle cx="40" cy="40" r="18" stroke="rgba(255,255,255,0.6)" strokeWidth="2" fill="none" />
-          <circle cx="40" cy="40" r="6" fill="white" />
-        </svg>
-      </div>
-    ),
-  },
-  {
-    id: 5,
-    title: "Digital Campaign",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#1A5C3A",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
-          <path d="M10 50 L25 20 L40 35 L55 10 L70 30" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          <circle cx="70" cy="30" r="4" fill="white" />
-        </svg>
-      </div>
-    ),
-  },
-  {
-    id: 6,
-    title: "Social Media Strategy",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#C0392B",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px", gap: "14px" }}>
-        {[40, 60, 45, 70, 35].map((h, i) => (
-          <div key={i} style={{ width: "16px", height: `${h}px`, background: "rgba(255,255,255,0.5)", borderRadius: "4px" }} />
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 7,
-    title: "SEO Optimisation",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#2C3E50",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <svg width="90" height="90" viewBox="0 0 90 90" fill="none">
-          <circle cx="38" cy="38" r="22" stroke="rgba(255,255,255,0.6)" strokeWidth="4" fill="none" />
-          <line x1="54" y1="54" x2="76" y2="76" stroke="rgba(255,255,255,0.6)" strokeWidth="4" strokeLinecap="round" />
-          <circle cx="30" cy="38" r="3" fill="rgba(255,255,255,0.8)" />
-          <circle cx="43" cy="38" r="3" fill="rgba(255,255,255,0.8)" />
-        </svg>
-      </div>
-    ),
-  },
-  {
-    id: 8,
-    title: "Web Development",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#E67E22",
-    visual: (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px", gap: "8px" }}>
-        {["</>", "{ }", "[ ]"].map((sym, i) => (
-          <div key={i} style={{ color: "rgba(255,255,255,0.7)", fontSize: "22px", fontFamily: "monospace", fontWeight: 700 }}>{sym}</div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: 9,
-    title: "Visual Identity",
-    desc: "The prerequisites for growth; the opening of new opportunities and events.",
-    bg: "#AFA9FF",
-    visual: (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "24px" }}>
-        <svg width="100" height="80" viewBox="0 0 100 80" fill="none">
-          <rect x="10" y="10" width="35" height="35" rx="4" fill="rgba(26,5,18,0.3)" />
-          <rect x="55" y="10" width="35" height="35" rx="4" fill="rgba(26,5,18,0.2)" />
-          <rect x="10" y="50" width="35" height="22" rx="4" fill="rgba(26,5,18,0.2)" />
-          <rect x="55" y="50" width="35" height="22" rx="4" fill="rgba(26,5,18,0.3)" />
-        </svg>
-      </div>
-    ),
-  },
+import img01 from "./assets/portfolio/Frame 13.png";
+import img02 from "./assets/portfolio/Frame 13 (1).png";
+import img03 from "./assets/portfolio/Frame 13 (2).png";
+import img04 from "./assets/portfolio/Frame 13 (3).png";
+import img05 from "./assets/portfolio/Frame 13 (4).png";
+import img06 from "./assets/portfolio/Frame 13 (5).png";
+import img07 from "./assets/portfolio/Frame 13 (6).png";
+import img08 from "./assets/portfolio/Frame 13 (7).png";
+import img09 from "./assets/portfolio/Frame 13 (8).png";
+import img10 from "./assets/portfolio/Frame 13 (9).png";
+import img11 from "./assets/portfolio/Frame 13 (10).png";
+import img12 from "./assets/portfolio/Frame 13 (11).png";
+
+type Project = {
+  id: number;
+  title: string;
+  desc: string;
+  bg: string;
+  image: StaticImageData;
+};
+
+const PROJECTS: Project[] = [
+  { id: 1,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#E8541A", image: img01 },
+  { id: 2,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#2B6CB0", image: img02 },
+  { id: 3,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#111111", image: img03 },
+  { id: 4,  title: "Brand Identity",           desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#902793", image: img04 },
+  { id: 5,  title: "Digital Campaign",         desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#1A5C3A", image: img05 },
+  { id: 6,  title: "Social Media Strategy",    desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#C0392B", image: img06 },
+  { id: 7,  title: "SEO Optimisation",         desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#2C3E50", image: img07 },
+  { id: 8,  title: "Web Development",          desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#E67E22", image: img08 },
+  { id: 9,  title: "Visual Identity",          desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#AFA9FF", image: img09 },
+  { id: 10, title: "Brand Campaign",           desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#16A085", image: img10 },
+  { id: 11, title: "Creative Direction",       desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#8E44AD", image: img11 },
+  { id: 12, title: "Marketing Strategy",       desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#D35400", image: img12 },
 ];
 
-function ProjectCard({ project, delay }: { project: typeof PROJECTS[0]; delay: number }) {
+function ProjectCard({ project, delay }: { project: Project; delay: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -151,9 +59,9 @@ function ProjectCard({ project, delay }: { project: typeof PROJECTS[0]; delay: n
       ref={ref}
       style={{
         flexShrink: 0,
-        width: "280px",
-        height: "360px",
-        borderRadius: "16px",
+        width: "25.5625rem",
+        height: "26.3125rem",
+        borderRadius: "2.1rem",
         overflow: "hidden",
         position: "relative",
         background: project.bg,
@@ -172,8 +80,8 @@ function ProjectCard({ project, delay }: { project: typeof PROJECTS[0]; delay: n
       }}
     >
       {/* Visual area */}
-      <div style={{ height: "68%", position: "relative" }}>
-        {project.visual}
+      <div style={{ height: "16.9375rem", position: "relative" }}>
+        <Image src={project.image} alt={project.title} fill style={{ objectFit: "cover" }} />
       </div>
 
       {/* Text overlay */}
@@ -183,7 +91,7 @@ function ProjectCard({ project, delay }: { project: typeof PROJECTS[0]; delay: n
           bottom: 0,
           left: 0,
           right: 0,
-          padding: "20px",
+          padding: "1.25rem",
           background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
         }}
       >
@@ -217,30 +125,52 @@ function ProjectCard({ project, delay }: { project: typeof PROJECTS[0]; delay: n
 export default function Portfolio() {
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [outerHeight, setOuterHeight] = useState("350vh");
 
-  // Scroll-driven horizontal pan
   useEffect(() => {
     const outer = outerRef.current;
     const track = trackRef.current;
     if (!outer || !track) return;
 
+    const getMaxShift = () => {
+      const containerStyle = getComputedStyle(track.parentElement!);
+      const paddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
+      const paddingRight = parseFloat(containerStyle.paddingRight) || 0;
+      return Math.max(0, track.scrollWidth - window.innerWidth + paddingLeft + paddingRight);
+    };
+
+    const computeHeight = () => {
+      const maxShift = getMaxShift();
+      setOuterHeight(`${maxShift + window.innerHeight + 200}px`);
+    };
+
     const update = () => {
       const rect = outer.getBoundingClientRect();
-      const progress = Math.max(
-        0,
-        Math.min(1, -rect.top / (rect.height - window.innerHeight))
-      );
-      const maxShift = track.scrollWidth - window.innerWidth + 80;
+      const scrollRange = rect.height - window.innerHeight;
+      if (scrollRange <= 0) return;
+      const maxShift = getMaxShift();
+      const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
       track.style.transform = `translateX(-${progress * maxShift}px)`;
     };
 
+    // Defer to next frame so track.scrollWidth is fully laid out
+    const raf = requestAnimationFrame(() => {
+      computeHeight();
+      update();
+    });
+
+    window.addEventListener("resize", computeHeight);
     window.addEventListener("scroll", update, { passive: true });
-    update();
-    return () => window.removeEventListener("scroll", update);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", computeHeight);
+      window.removeEventListener("scroll", update);
+    };
   }, []);
 
   return (
-    <div ref={outerRef} style={{ height: "350vh", position: "relative" }}>
+    <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
       <section
         id="work"
         style={{
@@ -248,17 +178,17 @@ export default function Portfolio() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: "100vh",
+          height: "48.625rem",
         }}
       >
         {/* Heading */}
-        <div style={{ padding: "60px 40px 40px" }}>
+        <div style={{ padding: "3.75rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
           <h2
             style={{
-              fontSize: "clamp(40px, 7vw, 80px)",
+              fontSize: "clamp(2rem, 4.44vw, 4rem)",
               fontWeight: 900,
               textTransform: "uppercase",
-              letterSpacing: "-0.02em",
+              letterSpacing: "0",
               color: "var(--orange)",
               fontFamily: "var(--font-heading)",
             }}
@@ -270,7 +200,7 @@ export default function Portfolio() {
         {/* Cards track */}
         <div
           style={{
-            padding: "0 40px",
+            padding: "0 clamp(3rem, 7.6vw, 6.875rem)",
             overflow: "visible",
           }}
         >
@@ -278,7 +208,7 @@ export default function Portfolio() {
             ref={trackRef}
             style={{
               display: "flex",
-              gap: "16px",
+              gap: "1rem",
               willChange: "transform",
               transition: "transform 0.05s linear",
             }}

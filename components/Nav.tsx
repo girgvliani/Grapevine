@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import logo from "./assets/logo.png";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -29,21 +31,7 @@ export default function Nav() {
       }}
     >
       {/* Logo */}
-      <div
-        style={{
-          fontSize: "0.875rem",
-          letterSpacing: "0.08em",
-          color: "var(--white)",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          lineHeight: 1.1,
-          fontFamily: "var(--font-primary)",
-        }}
-      >
-        GRAPE
-        <br />
-        VINE
-      </div>
+      <Image src={logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
 
       {/* Links */}
       <ul

@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import vectorImg from "./assets/Vector.png";
+import logoOrange from "./assets/logo_orange.png";
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -29,47 +33,44 @@ export default function About() {
       style={{
         background: "#10030a",
         color: "var(--white)",
-        padding: "clamp(4rem, 8vh, 6.25rem) clamp(1.5rem, 5vw, 2.5rem) clamp(5rem, 10vh, 7.5rem)",
+        padding: "clamp(5rem, 11.8vh, 10.625rem) clamp(3rem, 7.6vw, 6.875rem) clamp(6rem, 14.5vh, 13.0625rem)",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Decorative purple arc — top right */}
-      <svg
+      {/* Decorative vector — top right */}
+      <div
         style={{
           position: "absolute",
-          top: "-5rem",
-          right: "-7.5rem",
+          top: "-10.8125rem",
+          left: "26.97vw",
+          width: "79.22vw",
           pointerEvents: "none",
-          opacity: 0.25,
+          transform: "rotate(9.19deg)",
+          transformOrigin: "center center",
         }}
-        width="500"
-        height="500"
-        viewBox="0 0 500 500"
-        fill="none"
       >
-        <circle cx="350" cy="150" r="220" stroke="#902793" strokeWidth="2" fill="none" />
-        <circle cx="350" cy="150" r="170" stroke="#AFA9FF" strokeWidth="1.5" fill="none" />
-      </svg>
+        <Image src={vectorImg} alt="" style={{ width: "100%", height: "auto" }} />
+      </div>
 
       {/* Eyebrow */}
       <div
         style={{
-          fontSize: "0.6875rem",
-          letterSpacing: "0.25em",
+          fontSize: "1rem",
           textTransform: "uppercase",
-          color: "var(--white)",
-          opacity: visible ? 0.55 : 0,
+          color: "rgba(239, 88, 58, 0.5)",
+          opacity: visible ? 1 : 0,
           transform: visible ? "none" : "translateX(-1rem)",
           transition: "all 0.6s ease",
           marginBottom: "1.75rem",
           fontFamily: "var(--font-primary)",
-          display: "flex",
+          display: "inline-flex",
           alignItems: "center",
-          gap: "0.5rem",
+          gap: "1rem",
+          letterSpacing: "0.2em",
         }}
       >
-        <span>→</span>
+        <span style={{ display: "block", width: "12px", height: "2px", background: "rgba(239, 88, 58, 0.5)", flexShrink: 0 }} />
         <span>ვინ ვართ ჩვენ</span>
       </div>
 
@@ -94,9 +95,9 @@ export default function About() {
       {/* Body */}
       <p
         style={{
-          maxWidth: "35rem",
-          fontSize: "clamp(0.9375rem, 2vw, 1.125rem)",
-          lineHeight: 1.75,
+          fontSize: "clamp(1.25rem, 2.2vw, 2rem)",
+          lineHeight: "3.5rem",
+          letterSpacing: "0",
           fontFamily: "var(--font-primary)",
           opacity: visible ? 1 : 0,
           transform: visible ? "none" : "translateY(1.25rem)",
@@ -112,7 +113,39 @@ export default function About() {
         </span>
       </p>
 
-      {/* See more link */}
+      {/* Expandable extra text */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateRows: expanded ? "1fr" : "0fr",
+          transition: "grid-template-rows 0.5s ease",
+        }}
+      >
+        <div style={{ overflow: "hidden", minHeight: 0 }}>
+          <div style={{ display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)", alignItems: "center" }}>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
+                ჩვენთვის მარკეტინგი არ არის ცალკეული აქტივობების ნაკრები, ეს არის სისტემა,
+                რომელშიც ყველაფერი ერთმანეთთანაა დაკავშირებული.
+              </p>
+              <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
+                ვფიქრობთ, გამოწვევა არ არის ის, რომ ბრენდი საკმარის &quot;აქტივობას&quot; არ აკეთებს.
+                პრობლემა არის, რომ სტრატეგია, კრეატივი და შესრულება ერთმანეთისგან სრულიად
+                განცალკევებულია, რის გამოც არათანმიმდევრული ხდება.
+              </p>
+              <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
+                ზუსტად ამ ქაოსში ჩნდება Grapevine, არა იმისთვის, რომ გავაძლიეროთ მეტი, არამედ
+                იმისთვის, რომ ვმოქმედოთ სწორად.
+              </p>
+            </div>
+            <div style={{ flexShrink: 0, width: "clamp(9rem, 14vw, 13.75rem)" }}>
+              <Image src={logoOrange} alt="Grapevine" style={{ width: "100%", height: "auto" }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* See more / see less toggle */}
       <div
         style={{
           opacity: visible ? 1 : 0,
@@ -120,32 +153,38 @@ export default function About() {
           transition: "all 0.8s ease 0.35s",
         }}
       >
-        <a
-          href="#about-full"
+        <button
+          onClick={() => setExpanded((e) => !e)}
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "0.375rem",
-            color: "var(--orange)",
-            fontSize: "0.75rem",
-            letterSpacing: "0.15em",
+            color: "#902793",
+            fontSize: "clamp(1rem, 1.7vw, 1.5625rem)",
+            letterSpacing: "0",
             textTransform: "uppercase",
             textDecoration: "none",
             fontFamily: "var(--font-primary)",
-            transition: "gap 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.gap = "0.625rem";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.gap = "0.375rem";
+            background: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
           }}
         >
-          მეტის ნახვა
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 2L6 10M2 7L6 11L10 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          {expanded ? "ნაკლების ნახვა" : "მეტის ნახვა"}
+          <svg
+            width="20.67"
+            height="11.33"
+            viewBox="0 0 20.67 11.33"
+            fill="none"
+            style={{
+              transform: expanded ? "rotate(180deg)" : "none",
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <path d="M1 1L10.335 10.33L19.67 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-        </a>
+        </button>
       </div>
     </section>
   );
