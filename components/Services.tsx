@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, MOBILE_QUERY, SHORT_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, MOBILE_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
 import iconSocial      from "./assets/servicesIcons/social.png";
@@ -48,6 +48,7 @@ function ServiceCard({
   const [visible, setVisible] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const isShort = useMediaQuery(SHORT_QUERY);
+  const isWide = useMediaQuery(WIDE_QUERY);
 
   useEffect(() => {
     const el = ref.current;
@@ -67,11 +68,11 @@ function ServiceCard({
       ref={ref}
       style={{
         flexShrink: 0,
-        width: isMobile ? "11.5rem" : "18.3125rem",
-        minHeight: isMobile ? "17rem" : isShort ? "21rem" : "30rem",
+        width: isMobile ? "11.5rem" : isShort ? "18.3125rem" : isWide ? "22rem" : "18.3125rem",
+        minHeight: isMobile ? "17rem" : isShort ? "21rem" : isWide ? "35rem" : "30rem",
         background: "#FFEFAB",
         borderRadius: "1.25rem",
-        padding: isMobile ? "1.25rem 1rem 1rem" : "1.5rem 1.25rem 1.25rem",
+        padding: isMobile ? "1.25rem 1rem 1rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -98,7 +99,7 @@ function ServiceCard({
           justifyContent: "center",
         }}
       >
-        <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : 120} height={isMobile ? 78 : isShort ? 92 : 120} style={{ objectFit: "contain" }} />
+        <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} height={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} style={{ objectFit: "contain" }} />
       </div>
 
       {/* Service name */}

@@ -32,3 +32,7 @@ export const MOBILE_QUERY = "(max-width: 640px)";
 // Short viewports (e.g. 1024×600, landscape tablets) where full-height sticky
 // sections clip — used to shrink tall content like the service cards.
 export const SHORT_QUERY = "(max-height: 700px)";
+
+// Large desktops (≥1536px) — scale up the full-bleed gallery items (cards,
+// images, logos) so they don't look small beside the capped content.
+export const WIDE_QUERY = "(min-width: 1536px)";

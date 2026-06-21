@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, TABLET_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 
 import img01 from "./assets/portfolio/Frame 13.png";
 import img02 from "./assets/portfolio/Frame 13 (1).png";
@@ -55,6 +55,7 @@ function ProjectCard({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const isWide = useMediaQuery(WIDE_QUERY);
 
   useEffect(() => {
     const el = ref.current;
@@ -138,8 +139,8 @@ function ProjectCard({
       ref={ref}
       style={{
         flexShrink: 0,
-        width: "25.5625rem",
-        height: "26.3125rem",
+        width: isWide ? "30rem" : "25.5625rem",
+        height: isWide ? "30.75rem" : "26.3125rem",
         borderRadius: "2.1rem",
         overflow: "hidden",
         position: "relative",
@@ -159,7 +160,7 @@ function ProjectCard({
       }}
     >
       {/* Visual area */}
-      <div style={{ height: "16.9375rem", position: "relative" }}>
+      <div style={{ height: isWide ? "20rem" : "16.9375rem", position: "relative" }}>
         <Image src={project.image} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
 

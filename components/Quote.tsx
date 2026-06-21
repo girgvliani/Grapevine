@@ -39,6 +39,7 @@ export default function Quote() {
       }}
     >
       <div
+        className="container-cap"
         style={{
           display: "flex",
           flexDirection: isMobile ? "column" : "row",

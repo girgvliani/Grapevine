@@ -3,28 +3,28 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, SHORT_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 
-import logo01 from "./assets/partnerLogos/Frame 1597883296.png";
-import logo02 from "./assets/partnerLogos/Rectangle.png";
-import logo03 from "./assets/partnerLogos/Vector (1).png";
-import logo04 from "./assets/partnerLogos/Rectangle (1).png";
-import logo05 from "./assets/partnerLogos/Group.png";
-import logo06 from "./assets/partnerLogos/Frame 1597883297.png";
-import logo07 from "./assets/partnerLogos/Isolation_Mode.png";
-import logo08 from "./assets/partnerLogos/Isolation_Mode (1).png";
-import logo09 from "./assets/partnerLogos/Frame 1597883298.png";
-import logo10 from "./assets/partnerLogos/Frame 1597883298 (1).png";
-import logo11 from "./assets/partnerLogos/Isolation_Mode (2).png";
-import logo12 from "./assets/partnerLogos/Isolation_Mode (3).png";
-import logo13 from "./assets/partnerLogos/Isolation_Mode (4).png";
-import logo14 from "./assets/partnerLogos/Frame 1597883299.png";
-import logo15 from "./assets/partnerLogos/Isolation_Mode (5).png";
-import logo16 from "./assets/partnerLogos/Frame 1597883304.png";
-import logo17 from "./assets/partnerLogos/Frame 1597883301.png";
-import logo18 from "./assets/partnerLogos/Frame 1597883305.png";
-import logo19 from "./assets/partnerLogos/Group (1).png";
-import logo20 from "./assets/partnerLogos/Frame 1597883303.png";
+import logo01 from "./assets/partnerlogos/Frame 1597883296.png";
+import logo02 from "./assets/partnerlogos/Rectangle.png";
+import logo03 from "./assets/partnerlogos/Vector (1).png";
+import logo04 from "./assets/partnerlogos/Rectangle (1).png";
+import logo05 from "./assets/partnerlogos/Group.png";
+import logo06 from "./assets/partnerlogos/Frame 1597883297.png";
+import logo07 from "./assets/partnerlogos/Isolation_Mode.png";
+import logo08 from "./assets/partnerlogos/Isolation_Mode (1).png";
+import logo09 from "./assets/partnerlogos/Frame 1597883298.png";
+import logo10 from "./assets/partnerlogos/Frame 1597883298 (1).png";
+import logo11 from "./assets/partnerlogos/Isolation_Mode (2).png";
+import logo12 from "./assets/partnerlogos/Isolation_Mode (3).png";
+import logo13 from "./assets/partnerlogos/Isolation_Mode (4).png";
+import logo14 from "./assets/partnerlogos/Frame 1597883299.png";
+import logo15 from "./assets/partnerlogos/Isolation_Mode (5).png";
+import logo16 from "./assets/partnerlogos/Frame 1597883304.png";
+import logo17 from "./assets/partnerlogos/Frame 1597883301.png";
+import logo18 from "./assets/partnerlogos/Frame 1597883305.png";
+import logo19 from "./assets/partnerlogos/Group (1).png";
+import logo20 from "./assets/partnerlogos/Frame 1597883303.png";
 
 type LogoEntry = {
   src: StaticImageData;
@@ -91,16 +91,19 @@ const LOGOS: LogoEntry[] = [
 export default function Partners() {
   const { t } = useLang();
   const isShort = useMediaQuery(SHORT_QUERY);
+  const isWide = useMediaQuery(WIDE_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [outerHeight, setOuterHeight] = useState("300vh");
 
   // On short viewports, shrink the logos + grid spacing so the section fits.
-  const scale = isShort ? 0.68 : 1;
-  const colW = COL_W * scale;
-  const rowH = ROW_H * scale;
-  const gridLeft = GRID_LEFT * scale;
-  const gridTop = 76 * scale; // 4.75rem ≈ 76px
+  // On wide screens, enlarge just the logos (keep the grid spacing) so nothing overflows.
+  const gridScale = isShort ? 0.68 : isWide ? 1.2 : 1;
+  const logoScale = isShort ? 0.68 : isWide ? 1.2 : 1;
+  const colW = COL_W * gridScale;
+  const rowH = ROW_H * gridScale;
+  const gridLeft = GRID_LEFT * gridScale;
+  const gridTop = 76 * gridScale; // 4.75rem ≈ 76px
   const trackW = gridLeft + GRID_COLS * colW;
 
   useEffect(() => {
@@ -146,7 +149,7 @@ export default function Partners() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: isShort ? "31rem" : "41.0625rem", // 657px — grown to fit taller rows without clipping
+          height: isShort ? "31rem" : isWide ? "54rem" : "41.0625rem", // 657px — grown to fit taller rows without clipping
         }}
       >
         {/* Centre the content area vertically inside the section */}
@@ -156,7 +159,7 @@ export default function Partners() {
             style={{
               position: "relative",
               width: `${trackW}px`,
-              height: isShort ? "23rem" : "34.75rem", // 556px (grid offset + 3 taller rows)
+              height: isShort ? "23rem" : isWide ? "42rem" : "34.75rem", // 556px (grid offset + 3 taller rows)
               willChange: "transform",
               transition: "transform 0.05s linear",
             }}
@@ -200,17 +203,17 @@ export default function Partners() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    transform: `translate(${(logo.dx ?? 0) * scale}px, ${(logo.dy ?? 0) * scale}px)`,
+                    transform: `translate(${(logo.dx ?? 0) * gridScale}px, ${(logo.dy ?? 0) * gridScale}px)`,
                   }}
                 >
                   <Image
                     src={logo.src}
                     alt={logo.alt}
                     style={{
-                      width: `${logo.w * scale}px`,
+                      width: `${logo.w * logoScale}px`,
                       height: "auto",
                       objectFit: "contain",
-                      maxHeight: logo.maxH ? `${logo.maxH * scale}px` : undefined,
+                      maxHeight: logo.maxH ? `${logo.maxH * logoScale}px` : undefined,
                     }}
                   />
                 </div>

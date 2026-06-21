@@ -117,7 +117,7 @@ export default function Process() {
         padding: "5rem clamp(1.5rem, 5vw, 2.5rem) 3.75rem",
       }}
     >
-      <div style={{ display: "flex", gap: "clamp(2rem, 5vw, 3.75rem)", alignItems: "flex-start" }}>
+      <div className="container-cap" style={{ display: "flex", gap: "clamp(2rem, 5vw, 3.75rem)", alignItems: "flex-start" }}>
 
         {/* Left — bird + title */}
         <div style={{ flex: "0 0 42%", display: "flex", flexDirection: "row", alignItems: "flex-end" }}>

@@ -138,3 +138,10 @@ a, button {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Cap content width on large screens and centre it (backgrounds stay full-bleed). */
+.container-cap {
+  max-width: 90rem; /* 1440px — the design reference width */
+  margin-left: auto;
+  margin-right: auto;
+}

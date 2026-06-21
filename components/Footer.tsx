@@ -190,6 +190,7 @@ export default function Footer() {
         </div>
       ) : (
         <div
+          className="container-cap"
           style={{
             display: "flex",
             justifyContent: "space-between",

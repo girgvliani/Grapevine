@@ -265,6 +265,7 @@ export default function Cta() {
         </div>
       ) : (
         <div
+          className="container-cap"
           style={{
             display: "flex",
             gap: "clamp(2rem, 5vw, 3.75rem)",

@@ -55,6 +55,7 @@ export default function About() {
         <Image src={vectorImg} alt="" style={{ width: "100%", height: "auto" }} />
       </div>
 
+      <div className="container-cap" style={{ position: "relative", zIndex: 1 }}>
       {/* Eyebrow */}
       <div
         style={{
@@ -182,6 +183,7 @@ export default function About() {
             <path d="M1 1L10.335 10.33L19.67 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
+      </div>
       </div>
     </section>
   );
