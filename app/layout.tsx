@@ -3,6 +3,7 @@ import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
+import { LanguageProvider } from "@/components/LanguageProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -37,10 +38,12 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Mersad:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <div id="progress" />
-        <Cursor />
-        <Nav />
-        {children}
+        <LanguageProvider>
+          <div id="progress" />
+          <Cursor />
+          <Nav />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

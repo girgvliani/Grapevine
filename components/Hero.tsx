@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import Image from "next/image";
 import heroGif from "./assets/GIF/knot-landing page.gif";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -15,6 +17,8 @@ const fadeUp = (delay: number) =>
   } as const);
 
 export default function Hero() {
+  const { t } = useLang();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   return (
     <section
       style={{
@@ -41,7 +45,10 @@ export default function Hero() {
           alt=""
           fill
           unoptimized
-          style={{ objectFit: "cover" }}
+          style={{
+            objectFit: "cover",
+            transform: isMobile ? "rotate(90deg)" : "none",
+          }}
         />
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
       </motion.div>
@@ -61,7 +68,7 @@ export default function Hero() {
           zIndex: 1,
         }}
       >
-        Marketing Agency — Since 2014
+        {t.hero.label}
       </motion.div>
 
       {/* Description — bottom left */}
@@ -79,8 +86,7 @@ export default function Hero() {
           zIndex: 1,
         }}
       >
-        Grapevine finds the core thread of your brand and
-        helps you grow it — free of chaos, full of direction.
+        {t.hero.description}
       </motion.p>
 
       {/* Scroll hint — bottom right */}
@@ -111,7 +117,7 @@ export default function Hero() {
             transformOrigin: "left",
           }}
         />
-        <span>Scroll to explore</span>
+        <span>{t.hero.scroll}</span>
       </motion.div>
     </section>
   );

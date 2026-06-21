@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY, SHORT_QUERY } from "@/lib/useMediaQuery";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
 import iconSocial      from "./assets/servicesIcons/social.png";
@@ -15,30 +17,37 @@ import iconMobileApp   from "./assets/servicesIcons/mobileapp.png";
 import iconDigital     from "./assets/servicesIcons/digital.png";
 import iconWeb         from "./assets/servicesIcons/web.png";
 
-const SERVICES = [
-  { id: "social-media-audit",  name: "Social Media", sub: "Audit",        icon: iconSocMedia   },
-  { id: "seo",                 name: "SEO",          sub: "Optimisation", icon: iconSeo        },
-  { id: "social-media",        name: "Social",       sub: "Media",        icon: iconSocial     },
-  { id: "strategy",            name: "Strategy",     sub: "",             icon: iconStrategy   },
-  { id: "campaigns",           name: "Campaigns",    sub: "",             icon: iconCampaigns  },
-  { id: "production",          name: "Production",   sub: "",             icon: iconProduction },
-  { id: "pr-services",         name: "PR Services",  sub: "",             icon: iconPrServices },
-  { id: "crm-systems",         name: "CRM Systems",  sub: "",             icon: iconCrm        },
-  { id: "branding",            name: "Branding",     sub: "",             icon: iconBranding   },
-  { id: "mobile-app",          name: "Mobile App",   sub: "",             icon: iconMobileApp  },
-  { id: "digital-advertising", name: "Digital",      sub: "Advertising",  icon: iconDigital    },
-  { id: "web-development",     name: "Web",          sub: "Development",  icon: iconWeb        },
-];
+// Order + icons live here; the names/subtitles come from the i18n file.
+const SERVICE_ASSETS = [
+  { id: "social-media-audit",  icon: iconSocMedia   },
+  { id: "seo",                 icon: iconSeo        },
+  { id: "social-media",        icon: iconSocial     },
+  { id: "strategy",            icon: iconStrategy   },
+  { id: "campaigns",           icon: iconCampaigns  },
+  { id: "production",          icon: iconProduction },
+  { id: "pr-services",         icon: iconPrServices },
+  { id: "crm-systems",         icon: iconCrm        },
+  { id: "branding",            icon: iconBranding   },
+  { id: "mobile-app",          icon: iconMobileApp  },
+  { id: "digital-advertising", icon: iconDigital    },
+  { id: "web-development",      icon: iconWeb        },
+] as const;
 
 function ServiceCard({
-  service,
+  name,
+  sub,
+  icon,
   delay,
 }: {
-  service: (typeof SERVICES)[0];
+  name: string;
+  sub: string;
+  icon: StaticImageData;
   delay: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const isShort = useMediaQuery(SHORT_QUERY);
 
   useEffect(() => {
     const el = ref.current;
@@ -58,11 +67,11 @@ function ServiceCard({
       ref={ref}
       style={{
         flexShrink: 0,
-        width: "18.3125rem",
-        minHeight: "30rem",
+        width: isMobile ? "11.5rem" : "18.3125rem",
+        minHeight: isMobile ? "17rem" : isShort ? "21rem" : "30rem",
         background: "#FFEFAB",
         borderRadius: "1.25rem",
-        padding: "1.5rem 1.25rem 1.25rem",
+        padding: isMobile ? "1.25rem 1rem 1rem" : "1.5rem 1.25rem 1.25rem",
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -89,7 +98,7 @@ function ServiceCard({
           justifyContent: "center",
         }}
       >
-        <Image src={service.icon} alt={service.name} width={120} height={120} style={{ objectFit: "contain" }} />
+        <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : 120} height={isMobile ? 78 : isShort ? 92 : 120} style={{ objectFit: "contain" }} />
       </div>
 
       {/* Service name */}
@@ -102,14 +111,14 @@ function ServiceCard({
           textTransform: "uppercase",
           fontFamily: "var(--font-primary)",
           lineHeight: 1.2,
-          marginBottom: service.sub ? "0.25rem" : "0",
+          marginBottom: sub ? "0.25rem" : "0",
         }}
       >
-        {service.name}
+        {name}
       </div>
 
       {/* Subtitle */}
-      {service.sub && (
+      {sub && (
         <div
           style={{
             color: "var(--dark)",
@@ -121,7 +130,7 @@ function ServiceCard({
             marginBottom: "0.75rem",
           }}
         >
-          {service.sub}
+          {sub}
         </div>
       )}
 
@@ -156,6 +165,7 @@ function ServiceCard({
 }
 
 export default function Services() {
+  const { t } = useLang();
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -195,7 +205,7 @@ export default function Services() {
         }}
       >
         {/* Heading */}
-        <div style={{ padding: "clamp(3rem, 5.5vh, 5rem) clamp(3rem, 7.6vw, 6.875rem) 3rem" }}>
+        <div style={{ padding: "clamp(5rem, 9vh, 7.5rem) clamp(3rem, 7.6vw, 6.875rem) 3rem" }}>
           <h2
             style={{
               fontSize: "clamp(2rem, 4.44vw, 4rem)",
@@ -206,7 +216,7 @@ export default function Services() {
               fontFamily: "var(--font-heading)",
             }}
           >
-            სერვისები
+            {t.services.heading}
           </h2>
         </div>
 
@@ -221,9 +231,12 @@ export default function Services() {
               transition: "transform 0.05s linear",
             }}
           >
-            {SERVICES.map((s, i) => (
-              <ServiceCard key={s.id} service={s} delay={i * 0.05} />
-            ))}
+            {SERVICE_ASSETS.map((s, i) => {
+              const card = t.services.cards[s.id];
+              return (
+                <ServiceCard key={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />
+              );
+            })}
           </div>
         </div>
       </section>

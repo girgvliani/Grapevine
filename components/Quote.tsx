@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 export default function Quote() {
+  const { t } = useLang();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const ref = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);
@@ -31,23 +35,26 @@ export default function Quote() {
       style={{
         background: "var(--cream)",
         padding: "3.75rem clamp(1.5rem, 5vw, 2.5rem) 5rem",
+        marginTop: "-1px",
       }}
     >
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          gap: "clamp(2rem, 5vw, 3.75rem)",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "stretch" : "center",
+          gap: isMobile ? "2rem" : "clamp(2rem, 5vw, 3.75rem)",
         }}
       >
-        {/* Left — video */}
+        {/* Video */}
         <div
           style={{
-            flex: "0 0 46%",
+            flex: isMobile ? "0 0 auto" : "0 0 46%",
+            width: isMobile ? "100%" : undefined,
             borderRadius: "1.75rem",
             overflow: "hidden",
             opacity: visible ? 1 : 0,
-            transform: visible ? "none" : "translateX(-1.5rem)",
+            transform: visible ? "none" : isMobile ? "translateY(1.5rem)" : "translateX(-1.5rem)",
             transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
@@ -59,19 +66,20 @@ export default function Quote() {
             playsInline
             style={{
               width: "100%",
-              height: "100%",
+              height: isMobile ? "auto" : "100%",
               objectFit: "cover",
               display: "block",
             }}
           />
         </div>
 
-        {/* Right — quote */}
+        {/* Quote */}
         <blockquote
           style={{
             flex: 1,
+            margin: 0,
             opacity: visible ? 1 : 0,
-            transform: visible ? "none" : "translateX(1.5rem)",
+            transform: visible ? "none" : isMobile ? "translateY(1.5rem)" : "translateX(1.5rem)",
             transition: "opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s",
           }}
         >
@@ -84,9 +92,7 @@ export default function Quote() {
               marginBottom: "1.25rem",
             }}
           >
-            &ldquo;Engineers and designers simultaneously know too much and too
-            little. They know too much about technology and too little about how
-            other people live their lives and do their activities&rdquo;
+            &ldquo;{t.quote.text}&rdquo;
           </p>
           <cite
             style={{
@@ -99,7 +105,7 @@ export default function Quote() {
               opacity: 0.6,
             }}
           >
-            — Donald Norman
+            {t.quote.cite}
           </cite>
         </blockquote>
       </div>

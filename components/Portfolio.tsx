@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 import img01 from "./assets/portfolio/Frame 13.png";
 import img02 from "./assets/portfolio/Frame 13 (1).png";
@@ -18,28 +20,39 @@ import img12 from "./assets/portfolio/Frame 13 (11).png";
 
 type Project = {
   id: number;
-  title: string;
-  desc: string;
   bg: string;
   image: StaticImageData;
 };
 
+// Order + colors + images live here; titles/description come from the i18n file.
 const PROJECTS: Project[] = [
-  { id: 1,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#E8541A", image: img01 },
-  { id: 2,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#2B6CB0", image: img02 },
-  { id: 3,  title: "Fino 13 Years Campaign",   desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#111111", image: img03 },
-  { id: 4,  title: "Brand Identity",           desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#902793", image: img04 },
-  { id: 5,  title: "Digital Campaign",         desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#1A5C3A", image: img05 },
-  { id: 6,  title: "Social Media Strategy",    desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#C0392B", image: img06 },
-  { id: 7,  title: "SEO Optimisation",         desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#2C3E50", image: img07 },
-  { id: 8,  title: "Web Development",          desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#E67E22", image: img08 },
-  { id: 9,  title: "Visual Identity",          desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#AFA9FF", image: img09 },
-  { id: 10, title: "Brand Campaign",           desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#16A085", image: img10 },
-  { id: 11, title: "Creative Direction",       desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#8E44AD", image: img11 },
-  { id: 12, title: "Marketing Strategy",       desc: "The prerequisites for growth; the opening of new opportunities and events.", bg: "#D35400", image: img12 },
+  { id: 1,  bg: "#E8541A", image: img01 },
+  { id: 2,  bg: "#2B6CB0", image: img02 },
+  { id: 3,  bg: "#111111", image: img03 },
+  { id: 4,  bg: "#902793", image: img04 },
+  { id: 5,  bg: "#1A5C3A", image: img05 },
+  { id: 6,  bg: "#C0392B", image: img06 },
+  { id: 7,  bg: "#2C3E50", image: img07 },
+  { id: 8,  bg: "#E67E22", image: img08 },
+  { id: 9,  bg: "#AFA9FF", image: img09 },
+  { id: 10, bg: "#16A085", image: img10 },
+  { id: 11, bg: "#8E44AD", image: img11 },
+  { id: 12, bg: "#D35400", image: img12 },
 ];
 
-function ProjectCard({ project, delay }: { project: Project; delay: number }) {
+function ProjectCard({
+  project,
+  title,
+  desc,
+  delay,
+  variant,
+}: {
+  project: Project;
+  title: string;
+  desc: string;
+  delay: number;
+  variant: "desktop" | "tablet";
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -53,6 +66,72 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  // Tablet: horizontal card — image on the left, cream text panel on the right.
+  if (variant === "tablet") {
+    return (
+      <div
+        ref={ref}
+        style={{
+          width: "17rem",
+          height: "7.75rem",
+          borderRadius: "1rem",
+          overflow: "hidden",
+          display: "flex",
+          background: "var(--cream)",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "none" : "translateY(20px)",
+          transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+        }}
+      >
+        {/* Image side */}
+        <div style={{ flex: "0 0 45%", position: "relative", background: project.bg }}>
+          <Image src={project.image} alt={title} fill style={{ objectFit: "cover" }} />
+        </div>
+
+        {/* Text side */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 0,
+            background: "var(--cream)",
+            padding: "0.75rem 0.875rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              fontStyle: "italic",
+              color: "var(--dark)",
+              fontFamily: "var(--font-primary)",
+              lineHeight: 1.2,
+              marginBottom: "0.5rem",
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              fontSize: "0.6875rem",
+              color: "rgba(26,5,18,0.55)",
+              fontFamily: "var(--font-primary)",
+              lineHeight: 1.5,
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            } as React.CSSProperties}
+          >
+            &ldquo;{desc}&rdquo;
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -81,7 +160,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
     >
       {/* Visual area */}
       <div style={{ height: "16.9375rem", position: "relative" }}>
-        <Image src={project.image} alt={project.title} fill style={{ objectFit: "cover" }} />
+        <Image src={project.image} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
 
       {/* Text overlay */}
@@ -105,7 +184,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
             letterSpacing: "0.02em",
           }}
         >
-          {project.title}
+          {title}
         </div>
         <div
           style={{
@@ -115,7 +194,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
             lineHeight: 1.6,
           }}
         >
-          {project.desc}
+          {desc}
         </div>
       </div>
     </div>
@@ -123,6 +202,8 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
 }
 
 export default function Portfolio() {
+  const { t } = useLang();
+  const isTablet = useMediaQuery(TABLET_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [outerHeight, setOuterHeight] = useState("350vh");
@@ -167,7 +248,8 @@ export default function Portfolio() {
       window.removeEventListener("resize", computeHeight);
       window.removeEventListener("scroll", update);
     };
-  }, []);
+    // Re-measure when the layout switches between desktop (1 row) and tablet (3 rows)
+  }, [isTablet]);
 
   return (
     <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
@@ -178,11 +260,11 @@ export default function Portfolio() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: "48.625rem",
+          height: isTablet ? "37rem" : "48.625rem",
         }}
       >
         {/* Heading */}
-        <div style={{ padding: "3.75rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
+        <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
           <h2
             style={{
               fontSize: "clamp(2rem, 4.44vw, 4rem)",
@@ -193,7 +275,7 @@ export default function Portfolio() {
               fontFamily: "var(--font-heading)",
             }}
           >
-            პორტფოლიო
+            {t.portfolio.heading}
           </h2>
         </div>
 
@@ -206,15 +288,34 @@ export default function Portfolio() {
         >
           <div
             ref={trackRef}
-            style={{
-              display: "flex",
-              gap: "1rem",
-              willChange: "transform",
-              transition: "transform 0.05s linear",
-            }}
+            style={
+              isTablet
+                ? {
+                    display: "grid",
+                    gridTemplateRows: "repeat(3, 7.75rem)",
+                    gridAutoFlow: "column",
+                    gridAutoColumns: "17rem",
+                    gap: "1rem",
+                    willChange: "transform",
+                    transition: "transform 0.05s linear",
+                  }
+                : {
+                    display: "flex",
+                    gap: "1rem",
+                    willChange: "transform",
+                    transition: "transform 0.05s linear",
+                  }
+            }
           >
             {PROJECTS.map((p, i) => (
-              <ProjectCard key={p.id} project={p} delay={i * 0.08} />
+              <ProjectCard
+                key={p.id}
+                project={p}
+                title={t.portfolio.projects[p.id as keyof typeof t.portfolio.projects]}
+                desc={t.portfolio.desc}
+                delay={i * 0.08}
+                variant={isTablet ? "tablet" : "desktop"}
+              />
             ))}
           </div>
         </div>

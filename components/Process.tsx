@@ -3,40 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
-
-const STEPS = [
-  {
-    num: "01",
-    title: "ანალიზი",
-    sub: "პირველ ეტაპზე",
-    desc: "პირველ ეტაპზე ვიგებთ, რა სჭირდება რეალურად ბიზნესს, პრობლემებს განვსაზღვრავთ და ამოცანებს სივრცეს მივცემთ.",
-  },
-  {
-    num: "02",
-    title: "სტრუქტურა",
-    sub: "დიზაინი",
-    desc: "შევქმნით სტრუქტურას: რა არის მნიშვნელოვანი, რა არის და როგორ უკავშირდება ყველაფერი ერთმანეთს.",
-  },
-  {
-    num: "03",
-    title: "შესრულება",
-    sub: "დიზაინი",
-    desc: "მხოლოდ ამის შემდეგ გადავდგებით შესრულებაზე. რადგან სრულად გვაქვს ამოცანები განსაზღვრელი და ყველა ქმედება ელოდება სივრცეს.",
-  },
-];
-
-const BENEFITS = [
-  {
-    num: "01",
-    title: "ბიზნესის მხარეს",
-    items: ["მკაფიო პოზიციონირება", "სტრუქტურირებული მარკეტინგი", "პროგნოზირებადი ზრდა"],
-  },
-  {
-    num: "02",
-    title: "ოპერაციულ მხარეს",
-    items: ["გამართული პროცესები", "შედეგების გამჭვირვალობა", "უწყვეტი ოპტიმიზაცია"],
-  },
-];
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 function Dot({ active }: { active: boolean }) {
   return (
@@ -52,6 +20,8 @@ function Dot({ active }: { active: boolean }) {
 }
 
 export default function Process() {
+  const { t } = useLang();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const [panel, setPanel] = useState(0);
   const [fading, setFading] = useState(false);
   const [lockedHeight, setLockedHeight] = useState<number | undefined>(undefined);
@@ -68,6 +38,7 @@ export default function Process() {
   }, [lockedHeight]);
 
   useEffect(() => {
+    if (isMobile) return;
     const el = stepsRef.current;
     if (!el) return;
 
@@ -102,7 +73,41 @@ export default function Process() {
 
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
-  }, []);
+  }, [isMobile]);
+
+  // Mobile: only the bird + title, steps/benefits hidden (per the mobile design).
+  if (isMobile) {
+    return (
+      <section
+        id="process"
+        style={{
+          background: "var(--cream)",
+          padding: "4.5rem clamp(1.5rem, 5vw, 2.5rem) 4.5rem",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem" }}>
+          <div style={{ position: "relative", width: "55%", aspectRatio: "1 / 1.05" }}>
+            <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain" }} priority />
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontWeight: 900,
+              fontSize: "clamp(2rem, 9vw, 2.75rem)",
+              lineHeight: 1.1,
+              textTransform: "uppercase",
+              letterSpacing: "-0.02em",
+              textAlign: "center",
+            }}
+          >
+            <span style={{ color: "var(--orange)" }}>{t.process.titleLine1}</span>
+            <br />
+            <span style={{ color: "var(--dark)" }}>{t.process.titleLine2}</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -116,7 +121,7 @@ export default function Process() {
 
         {/* Left — bird + title */}
         <div style={{ flex: "0 0 42%", display: "flex", flexDirection: "row", alignItems: "flex-end" }}>
-          <div style={{ position: "relative", width: "60%", aspectRatio: "1 / 1.1", flexShrink: 0 }}>
+          <div style={{ position: "relative", width: "44%", aspectRatio: "1 / 1.1", flexShrink: 0 }}>
             <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain", objectPosition: "left center" }} priority />
           </div>
           <div style={{
@@ -128,9 +133,9 @@ export default function Process() {
             letterSpacing: "-0.02em",
             paddingBottom: "1rem",
           }}>
-            <span style={{ color: "var(--orange)" }}>როგორ</span>
+            <span style={{ color: "var(--orange)" }}>{t.process.titleLine1}</span>
             <br />
-            <span style={{ color: "var(--dark)" }}>ვმუშაობთ?</span>
+            <span style={{ color: "var(--dark)" }}>{t.process.titleLine2}</span>
           </div>
         </div>
 
@@ -144,13 +149,13 @@ export default function Process() {
             {/* Panel 0 — how we work */}
             {panel === 0 && (
               <>
-                {STEPS.map((step) => (
+                {t.process.steps.map((step, i) => (
                   <div key={step.num} style={{
                     display: "flex",
                     gap: "1.5rem",
                     paddingBottom: "2rem",
                     marginBottom: "2rem",
-                    borderBottom: "1px solid rgba(26,5,18,0.12)",
+                    borderBottom: i === t.process.steps.length - 1 ? "none" : "1px solid rgba(26,5,18,0.12)",
                   }}>
                     <div style={{ fontSize: "clamp(1.75rem, 4vw, 2.625rem)", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", minWidth: "4rem", lineHeight: 1 }}>
                       {step.num}
@@ -183,10 +188,10 @@ export default function Process() {
                   fontFamily: "var(--font-heading)",
                   marginBottom: "2.5rem",
                 }}>
-                  რას იღებს კლიენტი?
+                  {t.process.benefitsHeading}
                 </h3>
 
-                {BENEFITS.map((group) => (
+                {t.process.benefits.map((group) => (
                   <div key={group.num} style={{ marginBottom: "2rem" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", marginBottom: "1rem" }}>
                       <span style={{ fontSize: "clamp(1.75rem, 4vw, 2.625rem)", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", lineHeight: 1, flexShrink: 0 }}>

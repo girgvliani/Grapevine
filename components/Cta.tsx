@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 function FloatingField({
   label,
@@ -81,47 +83,56 @@ function FloatingField({
 }
 
 export default function Cta() {
-  return (
-    <section
-      id="cta"
+  const { t } = useLang();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+
+  const heading = (
+    <h2
       style={{
-        background: "var(--cream)",
-        padding: "5rem clamp(1.5rem, 6vw, 3.75rem) 6.25rem",
+        fontSize: "clamp(2rem, 5vw, 3.75rem)",
+        fontWeight: 900,
+        textTransform: "uppercase",
+        letterSpacing: "-0.02em",
+        color: "var(--dark)",
+        fontFamily: "var(--font-heading)",
+        lineHeight: 1,
+        marginBottom: isMobile ? 0 : "2.5rem",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          gap: "clamp(2rem, 5vw, 3.75rem)",
-          alignItems: "flex-start",
-        }}
-      >
-        {/* Left — form */}
-        <div style={{ flex: 1 }}>
-          {/* Heading */}
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3.75rem)",
-              fontWeight: 900,
-              textTransform: "uppercase",
-              letterSpacing: "-0.02em",
-              color: "var(--dark)",
-              fontFamily: "var(--font-heading)",
-              lineHeight: 1,
-              marginBottom: "2.5rem",
-            }}
-          >
-            Let&apos;s Talk Mess.
-          </h2>
+      {t.cta.heading}
+    </h2>
+  );
 
-          {/* Form */}
+  const card = (
+    <div
+      style={{
+        flex: isMobile ? "0 0 auto" : "0 0 38%",
+        width: isMobile ? "100%" : undefined,
+        background: "var(--orange)",
+        borderRadius: "1.5rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2.5rem",
+        aspectRatio: isMobile ? "1 / 0.8" : "1 / 1",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{ position: "relative", width: "80%", aspectRatio: "1 / 1" }}>
+        <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain" }} />
+      </div>
+    </div>
+  );
+
+  const formBody = (
           <form
             style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
             onSubmit={(e) => e.preventDefault()}
           >
-            <FloatingField label="Email" type="email" placeholder="Enter Email" />
-            <FloatingField label="Subject" placeholder="Subject" />
-            <FloatingField label="Message" placeholder="Write your message..." multiline />
+            <FloatingField label={t.cta.fields.email} type="email" placeholder={t.cta.placeholders.email} />
+            <FloatingField label={t.cta.fields.subject} placeholder={t.cta.placeholders.subject} />
+            <FloatingField label={t.cta.fields.message} placeholder={t.cta.placeholders.message} multiline />
 
             {/* Send button */}
             <button
@@ -149,7 +160,7 @@ export default function Cta() {
                 (e.currentTarget as HTMLButtonElement).style.transform = "none";
               }}
             >
-              Send
+              {t.cta.send}
             </button>
 
             {/* Or divider */}
@@ -162,14 +173,15 @@ export default function Cta() {
                 letterSpacing: "0.1em",
               }}
             >
-              or
+              {t.cta.or}
             </div>
 
             {/* Contact info row */}
             <div
               style={{
                 display: "flex",
-                gap: "2rem",
+                flexDirection: isMobile ? "column" : "row",
+                gap: isMobile ? "1.25rem" : "2rem",
                 flexWrap: "wrap",
               }}
             >
@@ -180,7 +192,7 @@ export default function Cta() {
                   <path d="M1 5L9 10L17 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>Email</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.email}</div>
                   <a href="mailto:placeholder@gmail.com" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
                     placeholder@gmail.com
                   </a>
@@ -193,7 +205,7 @@ export default function Cta() {
                   <path d="M3 2h4l1.5 4-2 1.5a10 10 0 004 4L12 9.5l4 1.5v4a1 1 0 01-1 1C6 16 2 10 2 3a1 1 0 011-1z" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>Phone Number</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.phone}</div>
                   <a href="tel:+995557544555" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
                     +995 557 544 555
                   </a>
@@ -207,7 +219,7 @@ export default function Cta() {
                   <path d="M2 16c0-3 3-5 7-5s7 2 7 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>Social Media</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
                   <div style={{ display: "flex", gap: "0.375rem" }}>
                     {["f", "in", "ig"].map((s) => (
                       <div
@@ -235,33 +247,37 @@ export default function Cta() {
               </div>
             </div>
           </form>
-        </div>
+  );
 
-        {/* Right — orange card with bird */}
+  return (
+    <section
+      id="cta"
+      style={{
+        background: "var(--cream)",
+        padding: "5rem clamp(1.5rem, 6vw, 3.75rem) 6.25rem",
+      }}
+    >
+      {isMobile ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+          {heading}
+          {card}
+          {formBody}
+        </div>
+      ) : (
         <div
           style={{
-            flex: "0 0 38%",
-            background: "var(--orange)",
-            borderRadius: "1.5rem",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "2.5rem",
-            aspectRatio: "1 / 1",
-            position: "relative",
-            overflow: "hidden",
+            gap: "clamp(2rem, 5vw, 3.75rem)",
+            alignItems: "flex-start",
           }}
         >
-          <div style={{ position: "relative", width: "80%", aspectRatio: "1 / 1" }}>
-            <Image
-              src={birdImg}
-              alt="Grapevine bird"
-              fill
-              style={{ objectFit: "contain" }}
-            />
+          <div style={{ flex: 1 }}>
+            {heading}
+            {formBody}
           </div>
+          {card}
         </div>
-      </div>
+      )}
     </section>
   );
 }

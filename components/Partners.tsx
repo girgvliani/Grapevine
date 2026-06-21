@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
+import { useLang } from "./LanguageProvider";
+import { useMediaQuery, SHORT_QUERY } from "@/lib/useMediaQuery";
 
 import logo01 from "./assets/partnerLogos/Frame 1597883296.png";
 import logo02 from "./assets/partnerLogos/Rectangle.png";
@@ -39,9 +41,7 @@ type LogoEntry = {
 const GRID_LEFT  = 280;  // px from track left where logo grid starts (heading lives here)
 const COL_W      = 225;  // px per grid column
 const ROW_H      = 160;  // px per row — extra breathing room between logos
-const GRID_COLS  = 9;    // 5 visible cols + 4 scrollable cols
-const TRACK_W    = GRID_LEFT + GRID_COLS * COL_W; // 200 + 2025 = 2225px
-const GRID_TOP   = "4.75rem"; // vertical offset pushing the whole logo grid down (~60px)
+const GRID_COLS  = 8;    // 5 visible + 3 scrollable cols (all filled with logos)
 
 // Logos: col/row set the grid cell, dx/dy nudge within the cell for scattered look.
 // Identified from screenshot:
@@ -89,16 +89,26 @@ const LOGOS: LogoEntry[] = [
 ];
 
 export default function Partners() {
+  const { t } = useLang();
+  const isShort = useMediaQuery(SHORT_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [outerHeight, setOuterHeight] = useState("300vh");
+
+  // On short viewports, shrink the logos + grid spacing so the section fits.
+  const scale = isShort ? 0.68 : 1;
+  const colW = COL_W * scale;
+  const rowH = ROW_H * scale;
+  const gridLeft = GRID_LEFT * scale;
+  const gridTop = 76 * scale; // 4.75rem ≈ 76px
+  const trackW = gridLeft + GRID_COLS * colW;
 
   useEffect(() => {
     const outer = outerRef.current;
     const track = trackRef.current;
     if (!outer || !track) return;
 
-    const getMaxShift = () => Math.max(0, TRACK_W - window.innerWidth);
+    const getMaxShift = () => Math.max(0, trackW - window.innerWidth);
 
     const computeHeight = () => {
       setOuterHeight(`${getMaxShift() + window.innerHeight + 200}px`);
@@ -125,7 +135,7 @@ export default function Partners() {
       window.removeEventListener("resize", computeHeight);
       window.removeEventListener("scroll", update);
     };
-  }, []);
+  }, [trackW]);
 
   return (
     <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
@@ -136,17 +146,17 @@ export default function Partners() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: "41.0625rem", // 657px — grown to fit taller rows without clipping
+          height: isShort ? "31rem" : "41.0625rem", // 657px — grown to fit taller rows without clipping
         }}
       >
         {/* Centre the content area vertically inside the section */}
-        <div style={{ paddingTop: "6.0625rem", paddingBottom: "6.0625rem" }}>
+        <div style={{ paddingTop: isShort ? "5rem" : "6.0625rem", paddingBottom: isShort ? "3rem" : "6.0625rem" }}>
           <div
             ref={trackRef}
             style={{
               position: "relative",
-              width: `${TRACK_W}px`,
-              height: "34.75rem", // 556px (grid offset + 3 taller rows)
+              width: `${trackW}px`,
+              height: isShort ? "23rem" : "34.75rem", // 556px (grid offset + 3 taller rows)
               willChange: "transform",
               transition: "transform 0.05s linear",
             }}
@@ -167,18 +177,18 @@ export default function Partners() {
                 lineHeight: 1,
               }}
             >
-              პარტნიორები
+              {t.partners.heading}
             </h2>
 
             {/* Logo grid — CSS grid for placement, transform for asymmetry */}
             <div
               style={{
                 position: "absolute",
-                left: `${GRID_LEFT}px`,
-                top: GRID_TOP,
+                left: `${gridLeft}px`,
+                top: `${gridTop}px`,
                 display: "grid",
-                gridTemplateColumns: `repeat(${GRID_COLS}, ${COL_W}px)`,
-                gridTemplateRows: `repeat(3, ${ROW_H}px)`,
+                gridTemplateColumns: `repeat(${GRID_COLS}, ${colW}px)`,
+                gridTemplateRows: `repeat(3, ${rowH}px)`,
               }}
             >
               {LOGOS.map((logo, i) => (
@@ -190,17 +200,17 @@ export default function Partners() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    transform: `translate(${logo.dx ?? 0}px, ${logo.dy ?? 0}px)`,
+                    transform: `translate(${(logo.dx ?? 0) * scale}px, ${(logo.dy ?? 0) * scale}px)`,
                   }}
                 >
                   <Image
                     src={logo.src}
                     alt={logo.alt}
                     style={{
-                      width: `${logo.w}px`,
+                      width: `${logo.w * scale}px`,
                       height: "auto",
                       objectFit: "contain",
-                      maxHeight: logo.maxH ? `${logo.maxH}px` : undefined,
+                      maxHeight: logo.maxH ? `${logo.maxH * scale}px` : undefined,
                     }}
                   />
                 </div>

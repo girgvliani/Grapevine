@@ -1,16 +1,11 @@
-const items = [
-  "Strategy",
-  "Branding",
-  "Social Media",
-  "Social Media Audit",
-  "Digital Advertising",
-  "Web Development",
-  "Mobile App",
-];
+"use client";
 
-const allItems = [...items, ...items];
+import { useLang } from "./LanguageProvider";
 
 export default function Marquee() {
+  const { t } = useLang();
+  const allItems = [...t.marquee, ...t.marquee];
+
   return (
     <div
       style={{

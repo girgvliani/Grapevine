@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import vectorImg from "./assets/Vector.png";
 import logoOrange from "./assets/logo_orange.png";
+import { useLang } from "./LanguageProvider";
 
 export default function About() {
+  const { t } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -71,7 +73,7 @@ export default function About() {
         }}
       >
         <span style={{ display: "block", width: "12px", height: "2px", background: "rgba(239, 88, 58, 0.5)", flexShrink: 0 }} />
-        <span>ვინ ვართ ჩვენ</span>
+        <span>{t.about.eyebrow}</span>
       </div>
 
       {/* Heading */}
@@ -89,7 +91,7 @@ export default function About() {
           transition: "all 0.8s ease 0.1s",
         }}
       >
-        ჩვენ შესახებ
+        {t.about.heading}
       </h2>
 
       {/* Body */}
@@ -106,10 +108,9 @@ export default function About() {
         }}
       >
         <span style={{ color: "var(--orange)", fontWeight: 700 }}>Grapevine</span>
-        {" "}არის სტრატეგიული და ციფრული პარტნიორი ბრენდებისთვის,
-        რომელსაც სურთ ზრდა იყოს{" "}
+        {" "}{t.about.bodyMid}{" "}
         <span style={{ color: "var(--orange)" }}>
-          სტრუქტურირებული გრძელვადიანი და ლოგიკური
+          {t.about.bodyHighlight}
         </span>
       </p>
 
@@ -125,17 +126,13 @@ export default function About() {
           <div style={{ display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)", alignItems: "center" }}>
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
-                ჩვენთვის მარკეტინგი არ არის ცალკეული აქტივობების ნაკრები, ეს არის სისტემა,
-                რომელშიც ყველაფერი ერთმანეთთანაა დაკავშირებული.
+                {t.about.para1}
               </p>
               <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
-                ვფიქრობთ, გამოწვევა არ არის ის, რომ ბრენდი საკმარის &quot;აქტივობას&quot; არ აკეთებს.
-                პრობლემა არის, რომ სტრატეგია, კრეატივი და შესრულება ერთმანეთისგან სრულიად
-                განცალკევებულია, რის გამოც არათანმიმდევრული ხდება.
+                {t.about.para2}
               </p>
               <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
-                ზუსტად ამ ქაოსში ჩნდება Grapevine, არა იმისთვის, რომ გავაძლიეროთ მეტი, არამედ
-                იმისთვის, რომ ვმოქმედოთ სწორად.
+                {t.about.para3}
               </p>
             </div>
             <div style={{ flexShrink: 0, width: "clamp(9rem, 14vw, 13.75rem)" }}>
@@ -171,7 +168,7 @@ export default function About() {
             cursor: "pointer",
           }}
         >
-          {expanded ? "ნაკლების ნახვა" : "მეტის ნახვა"}
+          {expanded ? t.about.seeLess : t.about.seeMore}
           <svg
             width="20.67"
             height="11.33"
