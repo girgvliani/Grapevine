@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import Image from "next/image";
 import heroGif from "./assets/GIF/knot-landing page.gif";
+import heroMobile from "./assets/mobileversion.png";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
@@ -38,18 +39,27 @@ export default function Hero() {
           position: "absolute",
           inset: 0,
           zIndex: 0,
+          overflow: "hidden",
         }}
       >
-        <Image
-          src={heroGif}
-          alt=""
-          fill
-          unoptimized
-          style={{
-            objectFit: "cover",
-            transform: isMobile ? "rotate(90deg)" : "none",
-          }}
-        />
+        {isMobile ? (
+          // Rotated 90° clockwise; width/height swapped to viewport units so the
+          // rotated image fills the portrait screen.
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "100vh",
+              height: "100vw",
+              transform: "translate(-50%, -50%) rotate(90deg)",
+            }}
+          >
+            <Image src={heroMobile} alt="" fill unoptimized style={{ objectFit: "cover" }} />
+          </div>
+        ) : (
+          <Image src={heroGif} alt="" fill unoptimized style={{ objectFit: "contain" }} />
+        )}
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
       </motion.div>
 
