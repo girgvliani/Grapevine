@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 
 import logo01 from "./assets/partnerlogos/Frame 1597883296.png";
 import logo02 from "./assets/partnerlogos/Rectangle.png";
@@ -90,6 +90,10 @@ const LOGOS: LogoEntry[] = [
 
 export default function Partners() {
   const { t } = useLang();
+  // Scroll-jacked horizontal track is desktop-only. On tablet/mobile the logos
+  // flow in a normal centered wrap (see the early return below).
+  const isTablet = useMediaQuery(TABLET_QUERY);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const isShort = useMediaQuery(SHORT_QUERY);
   const isWide = useMediaQuery(WIDE_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
@@ -107,6 +111,7 @@ export default function Partners() {
   const trackW = gridLeft + GRID_COLS * colW;
 
   useEffect(() => {
+    if (isTablet) return;
     const outer = outerRef.current;
     const track = trackRef.current;
     if (!outer || !track) return;
@@ -138,7 +143,69 @@ export default function Partners() {
       window.removeEventListener("resize", computeHeight);
       window.removeEventListener("scroll", update);
     };
-  }, [trackW]);
+  }, [trackW, isTablet]);
+
+  // Tablet / mobile: no scroll-jacking — heading on top, logos in a centered wrap.
+  if (isTablet) {
+    const logoScaleStatic = isMobile ? 0.7 : 0.85;
+    return (
+      <section
+        id="partners"
+        style={{
+          background: "var(--dark)",
+          overflow: "hidden",
+          padding: "clamp(4rem, 8vh, 6rem) clamp(1.5rem, 5vw, 3rem)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 7vw, 4rem)",
+            fontWeight: 900,
+            textTransform: "uppercase",
+            letterSpacing: "-0.02em",
+            color: "var(--orange)",
+            fontFamily: "var(--font-heading)",
+            lineHeight: 1,
+            marginBottom: "2.5rem",
+          }}
+        >
+          {t.partners.heading}
+        </h2>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: isMobile ? "1.75rem 2rem" : "2.5rem 3rem",
+          }}
+        >
+          {LOGOS.map((logo, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: `${logo.w * logoScaleStatic}px`,
+              }}
+            >
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "contain",
+                  maxHeight: logo.maxH ? `${logo.maxH * logoScaleStatic}px` : undefined,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>

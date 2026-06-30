@@ -7,6 +7,25 @@ export default function Cursor() {
   const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Scroll progress bar — runs on every device, independent of the cursor.
+    const progressEl = document.getElementById("progress");
+    const onScroll = () => {
+      if (!progressEl) return;
+      const pct =
+        window.scrollY /
+        (document.documentElement.scrollHeight - window.innerHeight);
+      progressEl.style.transform = `scaleX(${pct})`;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // The custom cursor only makes sense with a precise hovering pointer.
+    // On touch / coarse-pointer devices, skip the rAF loop + MutationObserver
+    // entirely (the dots are hidden via CSS too).
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (!finePointer) {
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+
     let mx = -100, my = -100;
     let rx = -100, ry = -100;
     let rafId: number;
@@ -32,17 +51,6 @@ export default function Cursor() {
 
     document.addEventListener("mousemove", onMouseMove);
     rafId = requestAnimationFrame(animate);
-
-    // Scroll progress bar
-    const progressEl = document.getElementById("progress");
-    const onScroll = () => {
-      if (!progressEl) return;
-      const pct =
-        window.scrollY /
-        (document.documentElement.scrollHeight - window.innerHeight);
-      progressEl.style.transform = `scaleX(${pct})`;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
 
     // Hover state for interactive elements
     const addHover = () => document.body.classList.add("cursor-hover");

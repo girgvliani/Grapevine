@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 function FloatingField({
   label,
@@ -84,7 +84,9 @@ function FloatingField({
 
 export default function Cta() {
   const { t } = useLang();
-  const isMobile = useMediaQuery(MOBILE_QUERY);
+  // Stack the heading/card/form into one column from tablet width down — the
+  // side-by-side form + card only fits comfortably on desktop.
+  const isMobile = useMediaQuery(TABLET_QUERY);
 
   const heading = (
     <h2

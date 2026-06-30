@@ -43,7 +43,13 @@ body {
   color: var(--white);
   font-family: var(--font-primary);
   overflow-x: hidden;
-  cursor: none;
+}
+
+/* Custom cursor — hidden by default; only shown on fine-pointer devices
+   (see the @media block below). Touch devices keep their native pointer. */
+#cursor,
+#cursor-ring {
+  display: none;
 }
 
 /* Custom cursor */
@@ -99,8 +105,19 @@ body.cursor-hover #cursor-ring {
   transform: scaleX(0);
 }
 
-a, button {
-  cursor: none;
+/* Enable the custom cursor only where a precise hovering pointer exists.
+   Touch / coarse-pointer devices fall through to the native cursor. */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button {
+    cursor: none;
+  }
+
+  #cursor,
+  #cursor-ring {
+    display: block;
+  }
 }
 
 /* Marquee animation */
@@ -134,9 +151,13 @@ a, button {
   animation: scaleXPulse 1.5s 1.5s infinite;
 }
 
-/* Hide scrollbar on service card row */
+/* Hide scrollbar on horizontally-scrollable rows (service/portfolio tracks) */
+.hide-scrollbar {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* legacy Edge/IE */
+}
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none;                  /* WebKit/Blink */
 }
 
 /* Cap content width on large screens and centre it (backgrounds stay full-bleed). */

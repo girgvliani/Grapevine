@@ -5,9 +5,11 @@ import Image from "next/image";
 import vectorImg from "./assets/Vector.png";
 import logoOrange from "./assets/logo_orange.png";
 import { useLang } from "./LanguageProvider";
+import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 export default function About() {
   const { t } = useLang();
+  const stacked = useMediaQuery(TABLET_QUERY);
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -99,7 +101,7 @@ export default function About() {
       <p
         style={{
           fontSize: "clamp(1.25rem, 2.2vw, 2rem)",
-          lineHeight: "3.5rem",
+          lineHeight: stacked ? 1.7 : "3.5rem",
           letterSpacing: "0",
           fontFamily: "var(--font-primary)",
           opacity: visible ? 1 : 0,
@@ -124,7 +126,14 @@ export default function About() {
         }}
       >
         <div style={{ overflow: "hidden", minHeight: 0 }}>
-          <div style={{ display: "flex", gap: "clamp(1.5rem, 4vw, 3rem)", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: stacked ? "column" : "row",
+              gap: "clamp(1.5rem, 4vw, 3rem)",
+              alignItems: stacked ? "flex-start" : "center",
+            }}
+          >
             <div style={{ flex: 1 }}>
               <p style={{ fontSize: "1.25rem", lineHeight: 1.6, fontFamily: "var(--font-primary)", marginBottom: "1.25rem" }}>
                 {t.about.para1}
@@ -136,7 +145,7 @@ export default function About() {
                 {t.about.para3}
               </p>
             </div>
-            <div style={{ flexShrink: 0, width: "clamp(9rem, 14vw, 13.75rem)" }}>
+            <div style={{ flexShrink: 0, width: stacked ? "9rem" : "clamp(9rem, 14vw, 13.75rem)" }}>
               <Image src={logoOrange} alt="Grapevine" style={{ width: "100%", height: "auto" }} />
             </div>
           </div>

@@ -210,6 +210,9 @@ export default function Portfolio() {
   const [outerHeight, setOuterHeight] = useState("350vh");
 
   useEffect(() => {
+    // Tablet/mobile: no scroll-jacking — the track is natively swipeable
+    // horizontally (see the early return below), so skip the scroll-driven transform.
+    if (isTablet) return;
     const outer = outerRef.current;
     const track = trackRef.current;
     if (!outer || !track) return;
@@ -252,6 +255,71 @@ export default function Portfolio() {
     // Re-measure when the layout switches between desktop (1 row) and tablet (3 rows)
   }, [isTablet]);
 
+  const heading = (
+    <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
+      <h2
+        style={{
+          fontSize: "clamp(2rem, 4.44vw, 4rem)",
+          fontWeight: 900,
+          textTransform: "uppercase",
+          letterSpacing: "0",
+          color: "var(--orange)",
+          fontFamily: "var(--font-heading)",
+        }}
+      >
+        {t.portfolio.heading}
+      </h2>
+    </div>
+  );
+
+  // Tablet / mobile: same horizontal card layout, but natively swipeable
+  // left/right instead of hijacking vertical scroll.
+  if (isTablet) {
+    return (
+      <section
+        id="work"
+        style={{
+          background: "var(--dark)",
+          overflow: "hidden",
+          paddingBottom: "3rem",
+        }}
+      >
+        {heading}
+        <div
+          className="hide-scrollbar"
+          style={{
+            overflowX: "auto",
+            overflowY: "hidden",
+            WebkitOverflowScrolling: "touch",
+            padding: "0 clamp(1.5rem, 5vw, 3rem)",
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateRows: "repeat(3, 7.75rem)",
+              gridAutoFlow: "column",
+              gridAutoColumns: "17rem",
+              gap: "1rem",
+              width: "max-content",
+            }}
+          >
+            {PROJECTS.map((p, i) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                title={t.portfolio.projects[p.id as keyof typeof t.portfolio.projects]}
+                desc={t.portfolio.desc}
+                delay={i * 0.08}
+                variant="tablet"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
       <section
@@ -261,24 +329,10 @@ export default function Portfolio() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: isTablet ? "37rem" : "48.625rem",
+          height: "48.625rem",
         }}
       >
-        {/* Heading */}
-        <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 4.44vw, 4rem)",
-              fontWeight: 900,
-              textTransform: "uppercase",
-              letterSpacing: "0",
-              color: "var(--orange)",
-              fontFamily: "var(--font-heading)",
-            }}
-          >
-            {t.portfolio.heading}
-          </h2>
-        </div>
+        {heading}
 
         {/* Cards track */}
         <div
@@ -289,24 +343,12 @@ export default function Portfolio() {
         >
           <div
             ref={trackRef}
-            style={
-              isTablet
-                ? {
-                    display: "grid",
-                    gridTemplateRows: "repeat(3, 7.75rem)",
-                    gridAutoFlow: "column",
-                    gridAutoColumns: "17rem",
-                    gap: "1rem",
-                    willChange: "transform",
-                    transition: "transform 0.05s linear",
-                  }
-                : {
-                    display: "flex",
-                    gap: "1rem",
-                    willChange: "transform",
-                    transition: "transform 0.05s linear",
-                  }
-            }
+            style={{
+              display: "flex",
+              gap: "1rem",
+              willChange: "transform",
+              transition: "transform 0.05s linear",
+            }}
           >
             {PROJECTS.map((p, i) => (
               <ProjectCard
@@ -315,7 +357,7 @@ export default function Portfolio() {
                 title={t.portfolio.projects[p.id as keyof typeof t.portfolio.projects]}
                 desc={t.portfolio.desc}
                 delay={i * 0.08}
-                variant={isTablet ? "tablet" : "desktop"}
+                variant="desktop"
               />
             ))}
           </div>

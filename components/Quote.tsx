@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 export default function Quote() {
   const { t } = useLang();
-  const isMobile = useMediaQuery(MOBILE_QUERY);
+  // Stack the video above the quote from tablet width down — side-by-side
+  // only has room on desktop.
+  const isMobile = useMediaQuery(TABLET_QUERY);
   const ref = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);

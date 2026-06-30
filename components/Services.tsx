@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, MOBILE_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
 import iconSocial      from "./assets/servicesIcons/social.png";
@@ -167,10 +167,14 @@ function ServiceCard({
 
 export default function Services() {
   const { t } = useLang();
+  // Scroll-jacked horizontal track is desktop-only. On tablet/mobile we render
+  // a normal vertical wrapping grid (see the early return below).
+  const isTablet = useMediaQuery(TABLET_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (isTablet) return;
     const outer = outerRef.current;
     const track = trackRef.current;
     if (!outer || !track) return;
@@ -191,7 +195,54 @@ export default function Services() {
     window.addEventListener("scroll", update, { passive: true });
     update();
     return () => window.removeEventListener("scroll", update);
-  }, []);
+  }, [isTablet]);
+
+  const cards = SERVICE_ASSETS.map((s, i) => {
+    const card = t.services.cards[s.id];
+    return <ServiceCard key={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />;
+  });
+
+  // Tablet / mobile: same single-row layout, but natively swipeable left/right
+  // instead of hijacking vertical scroll.
+  if (isTablet) {
+    return (
+      <section
+        id="services"
+        style={{
+          background: "#10030a",
+          overflow: "hidden",
+          padding: "clamp(4rem, 8vh, 6rem) 0 clamp(4rem, 8vh, 6rem)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "clamp(2rem, 6vw, 3.5rem)",
+            fontWeight: 900,
+            textTransform: "uppercase",
+            letterSpacing: "-0.02em",
+            color: "var(--orange)",
+            fontFamily: "var(--font-heading)",
+            margin: "0 clamp(1.5rem, 5vw, 3rem) 2.5rem",
+          }}
+        >
+          {t.services.heading}
+        </h2>
+        <div
+          className="hide-scrollbar"
+          style={{
+            overflowX: "auto",
+            overflowY: "hidden",
+            WebkitOverflowScrolling: "touch",
+            padding: "0 clamp(1.5rem, 5vw, 3rem)",
+          }}
+        >
+          <div style={{ display: "flex", gap: "1rem", width: "max-content" }}>
+            {cards}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div ref={outerRef} style={{ height: "400vh", position: "relative" }}>
@@ -232,12 +283,7 @@ export default function Services() {
               transition: "transform 0.05s linear",
             }}
           >
-            {SERVICE_ASSETS.map((s, i) => {
-              const card = t.services.cards[s.id];
-              return (
-                <ServiceCard key={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />
-              );
-            })}
+            {cards}
           </div>
         </div>
       </section>
