@@ -8,7 +8,7 @@ import { LANGUAGES } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 const LINKS = [
-  { href: "#services", key: "services" as const },
+  { href: "/services", key: "services" as const },
   { href: "#work", key: "portfolio" as const },
 ];
 
@@ -42,6 +42,11 @@ export default function Nav() {
 
   const goTo = (href: string) => {
     setMenuOpen(false);
+    // Route paths navigate; in-page anchors smooth-scroll.
+    if (href.startsWith("/")) {
+      window.location.href = href;
+      return;
+    }
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 

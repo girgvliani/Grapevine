@@ -66,6 +66,32 @@ const ka = {
       "web-development": { name: "ვები", sub: "დეველოპმენტი" },
     },
   },
+  servicesPage: {
+    eyebrow: "Grapevine — სერვისები",
+    tagline: "ყველაფერი, რასაც ვაკეთებთ თქვენი ბრენდის ქაოსის მოსაგვარებლად — და მის გასაზრდელად.",
+    intro:
+      "სტრატეგიიდან შესრულებამდე, ყველა სერვისი ერთ ძაფზეა აკინძული. ჩვენ არ ვყიდით ცალკეულ აქტივობებს — ვქმნით სისტემას, სადაც თითოეული ნაწილი წინ სწევს თქვენს ბრენდს.",
+    clickToOpen: "დააჭირეთ გასახსნელად",
+    startingFrom: "ფასი იწყება",
+    priceValue: "₾0,000",
+    priceNote: "პროექტზე · სანიმუშო",
+    includedLabel: "რას მოიცავს",
+    lorem:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    included: [
+      "Lorem ipsum dolor sit",
+      "Consectetur adipiscing",
+      "Tempor incididunt labore",
+      "Quis nostrud exercitation",
+      "Ullamco laboris nisi",
+      "Dolore magna aliqua",
+    ],
+    bandPre: "მზად ხართ ",
+    bandAccent: "ქაოსის ამოსახსნელად?",
+    bandDesc:
+      "გვითხარით, სად არის თქვენი ბრენდი აღრეული. ჩვენ ვიპოვით ძაფს და გეგმას მის გასასწორებლად.",
+    bandCta: "მოდი ვისაუბროთ ქაოსზე",
+  },
   process: {
     titleLine1: "როგორ",
     titleLine2: "ვმუშაობთ?",
@@ -202,6 +228,32 @@ const en: typeof ka = {
       "digital-advertising": { name: "Digital", sub: "Advertising" },
       "web-development": { name: "Web", sub: "Development" },
     },
+  },
+  servicesPage: {
+    eyebrow: "Grapevine — Services",
+    tagline: "Everything we do to untangle your brand — and grow it.",
+    intro:
+      "From strategy to execution, every service connects to one thread. We don't sell isolated activities — we build a system where each piece moves your brand forward.",
+    clickToOpen: "Click to open",
+    startingFrom: "Starting from",
+    priceValue: "₾0,000",
+    priceNote: "per project · placeholder",
+    includedLabel: "What's included",
+    lorem:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    included: [
+      "Lorem ipsum dolor sit",
+      "Consectetur adipiscing",
+      "Tempor incididunt labore",
+      "Quis nostrud exercitation",
+      "Ullamco laboris nisi",
+      "Dolore magna aliqua",
+    ],
+    bandPre: "Ready to ",
+    bandAccent: "untangle the mess?",
+    bandDesc:
+      "Tell us where your brand is tangled. We'll find the thread and a plan to pull it straight.",
+    bandCta: "Let's Talk Mess",
   },
   process: {
     titleLine1: "HOW WE",
