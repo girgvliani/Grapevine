@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import logo from "./assets/logo.png";
+import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
 import { LANGUAGES } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
@@ -12,11 +14,24 @@ const LINKS = [
   { href: "#work", key: "portfolio" as const },
 ];
 
+// Routes with a light (cream) background need dark nav text + black logo.
+const LIGHT_ROUTES = ["/contact"];
+
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, setLang, t } = useLang();
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  const pathname = usePathname();
+  // Path without its leading /en or /ka segment, so route checks are locale-agnostic.
+  const routePath = pathname.replace(/^\/(en|ka)(?=\/|$)/, "") || "/";
+  const light = LIGHT_ROUTES.includes(routePath);
+  // Prefix internal route links with the active locale; leave hashes untouched.
+  const withLocale = (href: string) => (href.startsWith("/") ? `/${lang}${href}` : href);
+
+  // Colour tokens that flip between the dark (default) and light page themes.
+  const fg = light ? "var(--dark)" : "var(--white)";
+  const toggleBorder = light ? "rgba(26,5,18,0.25)" : "rgba(255,255,255,0.25)";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -57,7 +72,7 @@ export default function Nav() {
         display: "flex",
         alignItems: "center",
         gap: "0.125rem",
-        border: "1px solid rgba(255,255,255,0.25)",
+        border: `1px solid ${toggleBorder}`,
         borderRadius: "100px",
         padding: compact ? "0.125rem" : "0.1875rem",
       }}
@@ -69,8 +84,8 @@ export default function Nav() {
             key={code}
             onClick={() => setLang(code)}
             style={{
-              background: active ? "var(--white)" : "transparent",
-              color: active ? "var(--dark)" : "var(--white)",
+              background: active ? (light ? "var(--dark)" : "var(--white)") : "transparent",
+              color: active ? (light ? "var(--cream)" : "var(--dark)") : fg,
               border: "none",
               borderRadius: "100px",
               padding: compact ? "0.1875rem 0.5rem" : "0.25rem 0.625rem",
@@ -104,12 +119,16 @@ export default function Nav() {
           justifyContent: "space-between",
           alignItems: "center",
           transition: "background 0.3s ease",
-          background: scrolled ? "rgba(26, 5, 18, 0.85)" : "transparent",
+          background: scrolled
+            ? light
+              ? "rgba(255, 250, 236, 0.85)"
+              : "rgba(26, 5, 18, 0.85)"
+            : "transparent",
           backdropFilter: scrolled ? "blur(12px)" : "none",
         }}
       >
         {/* Logo */}
-        <Image src={logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
+        <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
 
         {isMobile ? (
           /* Burger */
@@ -125,7 +144,7 @@ export default function Nav() {
             }}
           >
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M4 8H24M4 14H24M4 20H24" stroke="var(--white)" strokeWidth="2" strokeLinecap="round" />
+              <path d="M4 8H24M4 14H24M4 20H24" stroke={fg} strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
         ) : (
@@ -135,9 +154,9 @@ export default function Nav() {
               {LINKS.map(({ href, key }) => (
                 <li key={href}>
                   <a
-                    href={href}
+                    href={withLocale(href)}
                     style={{
-                      color: "var(--white)",
+                      color: fg,
                       textDecoration: "none",
                       fontSize: "0.75rem",
                       letterSpacing: "0.12em",
@@ -182,7 +201,7 @@ export default function Nav() {
                   btn.style.background = "var(--purple-dark)";
                   btn.style.transform = "scale(1)";
                 }}
-                onClick={() => goTo("#cta")}
+                onClick={() => goTo(withLocale("/contact"))}
               >
                 {t.nav.cta}
               </button>
@@ -261,7 +280,7 @@ export default function Nav() {
             {LINKS.map(({ href, key }) => (
               <button
                 key={href}
-                onClick={() => goTo(href)}
+                onClick={() => goTo(withLocale(href))}
                 style={{
                   background: "none",
                   border: "none",
@@ -288,7 +307,7 @@ export default function Nav() {
 
           {/* CTA */}
           <button
-            onClick={() => goTo("#cta")}
+            onClick={() => goTo(withLocale("/contact"))}
             style={{
               width: "100%",
               background: "var(--purple-dark)",

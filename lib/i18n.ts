@@ -165,6 +165,7 @@ const ka = {
     send: "გაგზავნა",
     or: "ან",
     contact: { email: "ელ.ფოსტა", phone: "ტელეფონის ნომერი", social: "სოციალური მედია" },
+    eyebrow: "Grapevine — კონტაქტი",
   },
   footer: {
     taglineLine1: "ბრენდებისთვის, რომელთაც",
@@ -328,6 +329,7 @@ const en: typeof ka = {
     send: "Send",
     or: "or",
     contact: { email: "Email", phone: "Phone Number", social: "Social Media" },
+    eyebrow: "Grapevine — Contact",
   },
   footer: {
     taglineLine1: "For Brands That",

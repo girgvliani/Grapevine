@@ -1,9 +1,11 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { translations, type Lang, type Translation } from "@/lib/i18n";
 
-const STORAGE_KEY = "grapevine_lang";
+// Mirrors the cookie the proxy reads to pick a locale for unprefixed URLs.
+const COOKIE_KEY = "grapevine_lang";
 
 type LanguageContextValue = {
   lang: Lang;
@@ -13,27 +15,29 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Always start on the default ("ka") so server and first client render match,
-  // then hydrate the stored preference on mount.
-  const [lang, setLangState] = useState<Lang>("ka");
-
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "ka" || stored === "en") setLangState(stored);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
+// `lang` is the source of truth and comes from the [lang] route segment
+// (passed down by app/[lang]/layout.tsx), so the URL always matches the UI.
+export function LanguageProvider({
+  lang,
+  children,
+}: {
+  lang: Lang;
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const router = useRouter();
 
   const setLang = (next: Lang) => {
-    setLangState(next);
+    if (next === lang) return;
+    // Remember the choice so the proxy honours it on the next unprefixed visit.
     try {
-      localStorage.setItem(STORAGE_KEY, next);
+      document.cookie = `${COOKIE_KEY}=${next};path=/;max-age=31536000;samesite=lax`;
     } catch {
       /* ignore write failures (private mode, etc.) */
     }
+    // Swap the leading locale segment, keeping the rest of the path.
+    const rest = pathname.replace(/^\/(en|ka)(?=\/|$)/, "");
+    router.push(`/${next}${rest || ""}`);
   };
 
   return (

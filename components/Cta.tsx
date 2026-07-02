@@ -82,27 +82,51 @@ function FloatingField({
   );
 }
 
-export default function Cta() {
+export default function Cta({
+  eyebrow,
+  standalone = false,
+}: {
+  // Optional label above the heading — used by the dedicated /contact page.
+  eyebrow?: string;
+  // `true` on the /contact route: adds top padding to clear the fixed nav.
+  standalone?: boolean;
+} = {}) {
   const { t } = useLang();
   // Stack the heading/card/form into one column from tablet width down — the
   // side-by-side form + card only fits comfortably on desktop.
   const isMobile = useMediaQuery(TABLET_QUERY);
 
   const heading = (
-    <h2
-      style={{
-        fontSize: "clamp(2rem, 5vw, 3.75rem)",
-        fontWeight: 900,
-        textTransform: "uppercase",
-        letterSpacing: "-0.02em",
-        color: "var(--dark)",
-        fontFamily: "var(--font-heading)",
-        lineHeight: 1,
-        marginBottom: isMobile ? 0 : "2.5rem",
-      }}
-    >
-      {t.cta.heading}
-    </h2>
+    <>
+      {eyebrow && (
+        <div
+          style={{
+            color: "var(--orange)",
+            fontSize: "0.75rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            fontFamily: "var(--font-primary)",
+            marginBottom: "1rem",
+          }}
+        >
+          {eyebrow}
+        </div>
+      )}
+      <h2
+        style={{
+          fontSize: "clamp(2rem, 5vw, 3.75rem)",
+          fontWeight: 900,
+          textTransform: "uppercase",
+          letterSpacing: "-0.02em",
+          color: "var(--dark)",
+          fontFamily: "var(--font-heading)",
+          lineHeight: 1,
+          marginBottom: isMobile ? 0 : "2.5rem",
+        }}
+      >
+        {t.cta.heading}
+      </h2>
+    </>
   );
 
   const card = (
@@ -256,7 +280,9 @@ export default function Cta() {
       id="cta"
       style={{
         background: "var(--cream)",
-        padding: "5rem clamp(1.5rem, 6vw, 3.75rem) 6.25rem",
+        padding: standalone
+          ? "8.5rem clamp(1.5rem, 6vw, 3.75rem) 6.25rem"
+          : "5rem clamp(1.5rem, 6vw, 3.75rem) 6.25rem",
       }}
     >
       {isMobile ? (
