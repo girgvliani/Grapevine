@@ -11,7 +11,7 @@ import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 const LINKS = [
   { href: "/services", key: "services" as const },
-  { href: "#work", key: "portfolio" as const },
+  { href: "/portfolio", key: "portfolio" as const },
 ];
 
 // Routes with a light (cream) background need dark nav text + black logo.
@@ -127,8 +127,10 @@ export default function Nav() {
           backdropFilter: scrolled ? "blur(12px)" : "none",
         }}
       >
-        {/* Logo */}
-        <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
+        {/* Logo — returns to the home page */}
+        <a href={withLocale("/")} aria-label="Grapevine — home" style={{ display: "inline-flex" }}>
+          <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
+        </a>
 
         {isMobile ? (
           /* Burger */

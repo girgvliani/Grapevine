@@ -33,6 +33,36 @@ const SERVICE_ASSETS = [
   { id: "web-development",      icon: iconWeb        },
 ] as const;
 
+function FlipArrow({ flipped }: { flipped: boolean }) {
+  return (
+    <div
+      style={{
+        width: "1.75rem",
+        height: "1.75rem",
+        border: `1.5px solid ${flipped ? "var(--dark)" : "rgba(26,5,18,0.2)"}`,
+        background: flipped ? "var(--dark)" : "transparent",
+        borderRadius: "0.375rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "background 0.25s, border-color 0.25s, transform 0.4s cubic-bezier(0.16,1,0.3,1)",
+        transform: flipped ? "rotate(180deg)" : "none",
+      }}
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path
+          d="M2 10L10 2M10 2H4M10 2V8"
+          stroke={flipped ? "#FFEFAB" : "#1A0512"}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity={flipped ? 1 : 0.5}
+        />
+      </svg>
+    </div>
+  );
+}
+
 function ServiceCard({
   name,
   sub,
@@ -44,8 +74,11 @@ function ServiceCard({
   icon: StaticImageData;
   delay: number;
 }) {
+  const { t } = useLang();
+  const p = t.servicesPage;
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const isShort = useMediaQuery(SHORT_QUERY);
   const isWide = useMediaQuery(WIDE_QUERY);
@@ -63,19 +96,33 @@ function ServiceCard({
     return () => io.disconnect();
   }, []);
 
+  const width = isMobile ? "11.5rem" : isShort ? "18.3125rem" : isWide ? "22rem" : "18.3125rem";
+  const height = isMobile ? "17rem" : isShort ? "21rem" : isWide ? "35rem" : "30rem";
+  const padding = isMobile ? "1.25rem 1rem 1rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem";
+
+  // Shared styles for the two faces of the flip card.
+  const face: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    background: "#FFEFAB",
+    borderRadius: "1.25rem",
+    padding,
+    display: "flex",
+    flexDirection: "column",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+    overflow: "hidden",
+  };
+
   return (
     <div
       ref={ref}
       style={{
         flexShrink: 0,
-        width: isMobile ? "11.5rem" : isShort ? "18.3125rem" : isWide ? "22rem" : "18.3125rem",
-        minHeight: isMobile ? "17rem" : isShort ? "21rem" : isWide ? "35rem" : "30rem",
-        background: "#FFEFAB",
-        borderRadius: "1.25rem",
-        padding: isMobile ? "1.25rem 1rem 1rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem",
-        display: "flex",
-        flexDirection: "column",
+        width,
+        height,
         position: "relative",
+        perspective: "1400px",
         opacity: visible ? 1 : 0,
         transform: visible ? "none" : "translateY(2rem)",
         transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
@@ -90,76 +137,148 @@ function ServiceCard({
         (e.currentTarget as HTMLDivElement).style.transition = "transform 0.25s ease";
       }}
     >
-      {/* Icon */}
+      {/* Rotating inner — front + back live on opposite faces */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-pressed={flipped}
+        aria-label={`${name}${sub ? " " + sub : ""} — ${p.clickToOpen}`}
+        onClick={() => setFlipped((f) => !f)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setFlipped((f) => !f);
+          }
+        }}
         style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+          transition: "transform 0.7s cubic-bezier(0.16,1,0.3,1)",
+          transform: flipped ? "rotateY(180deg)" : "none",
         }}
       >
-        <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} height={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} style={{ objectFit: "contain" }} />
-      </div>
+        {/* FRONT */}
+        <div style={face}>
+          {/* Icon */}
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} height={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} style={{ objectFit: "contain" }} />
+          </div>
 
-      {/* Service name */}
-      <div
-        style={{
-          color: "var(--orange)",
-          fontSize: "0.8125rem",
-          fontWeight: 700,
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          fontFamily: "var(--font-primary)",
-          lineHeight: 1.2,
-          marginBottom: sub ? "0.25rem" : "0",
-        }}
-      >
-        {name}
-      </div>
+          {/* Service name */}
+          <div
+            style={{
+              color: "var(--orange)",
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              fontFamily: "var(--font-primary)",
+              lineHeight: 1.2,
+              marginBottom: sub ? "0.25rem" : "0",
+            }}
+          >
+            {name}
+          </div>
 
-      {/* Subtitle */}
-      {sub && (
-        <div
-          style={{
-            color: "var(--dark)",
-            fontSize: "0.625rem",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            fontFamily: "var(--font-primary)",
-            opacity: 0.6,
-            marginBottom: "0.75rem",
-          }}
-        >
-          {sub}
+          {/* Subtitle */}
+          {sub && (
+            <div
+              style={{
+                color: "var(--dark)",
+                fontSize: "0.625rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                fontFamily: "var(--font-primary)",
+                opacity: 0.6,
+                marginBottom: "0.5rem",
+              }}
+            >
+              {sub}
+            </div>
+          )}
+
+          {/* Flip hint */}
+          <div
+            style={{
+              fontSize: "0.5625rem",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "rgba(26,5,18,0.42)",
+              fontFamily: "var(--font-primary)",
+            }}
+          >
+            {p.clickToOpen}
+          </div>
+
+          {/* Arrow — bottom right */}
+          <div style={{ position: "absolute", bottom: "1.25rem", right: "1.25rem" }}>
+            <FlipArrow flipped={false} />
+          </div>
         </div>
-      )}
 
-      {/* Arrow — bottom right */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "1.25rem",
-          right: "1.25rem",
-          width: "1.75rem",
-          height: "1.75rem",
-          border: "1.5px solid rgba(26,5,18,0.2)",
-          borderRadius: "0.375rem",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path
-            d="M2 10L10 2M10 2H4M10 2V8"
-            stroke="#1A0512"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.5"
-          />
-        </svg>
+        {/* BACK */}
+        <div style={{ ...face, transform: "rotateY(180deg)" }}>
+          <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+            {/* Name */}
+            <div
+              style={{
+                color: "var(--orange)",
+                fontSize: "0.8125rem",
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                fontFamily: "var(--font-primary)",
+                lineHeight: 1.2,
+                marginBottom: "0.75rem",
+              }}
+            >
+              {name}{sub ? " " + sub : ""}
+            </div>
+
+            {/* Description */}
+            <p
+              style={{
+                color: "rgba(26,5,18,0.8)",
+                fontSize: isMobile ? "0.625rem" : "0.75rem",
+                lineHeight: 1.6,
+                fontFamily: "var(--font-primary)",
+                marginBottom: "1rem",
+                display: "-webkit-box",
+                WebkitLineClamp: isMobile ? 5 : isWide ? 10 : 7,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              } as React.CSSProperties}
+            >
+              {p.lorem}
+            </p>
+
+            {/* Price */}
+            <div style={{ marginTop: "auto" }}>
+              <div
+                style={{
+                  fontSize: "0.5625rem",
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "rgba(26,5,18,0.45)",
+                  fontFamily: "var(--font-primary)",
+                  marginBottom: "0.25rem",
+                }}
+              >
+                {p.startingFrom}
+              </div>
+              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: isMobile ? "1.25rem" : "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
+                {p.priceValue}
+              </div>
+            </div>
+          </div>
+
+          {/* Arrow — bottom right (active) */}
+          <div style={{ position: "absolute", bottom: "1.25rem", right: "1.25rem" }}>
+            <FlipArrow flipped={true} />
+          </div>
+        </div>
       </div>
     </div>
   );

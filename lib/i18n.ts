@@ -151,6 +151,26 @@ const ka = {
       12: "მარკეტინგული სტრატეგია",
     },
   },
+  portfolioPage: {
+    eyebrow: "Grapevine — პორტფოლიო",
+    intro:
+      "ზრდის წინაპირობები; ახალი შესაძლებლობებისა და ღონისძიებების გახსნა. შერჩევა ბრენდებისა, რომლებიც ამოვხსენით და გავზარდეთ.",
+    filterAll: "ყველა",
+    year: "2024",
+    categories: {
+      campaign: "კამპანია",
+      branding: "ბრენდინგი",
+      social: "სოციალური",
+      seo: "SEO",
+      web: "ვები",
+      strategy: "სტრატეგია",
+    },
+    bandPre: "გინდა იყო ჩვენი ",
+    bandAccent: "შემდეგი ქეისი?",
+    bandDesc:
+      "გვითხარით, სად არის თქვენი ბრენდი აღრეული. ჩვენ ვიპოვით ძაფს და გეგმას მის გასასწორებლად.",
+    bandCta: "მოდი ვისაუბროთ ქაოსზე",
+  },
   partners: {
     heading: "პარტნიორები",
   },
@@ -314,6 +334,26 @@ const en: typeof ka = {
       11: "Creative Direction",
       12: "Marketing Strategy",
     },
+  },
+  portfolioPage: {
+    eyebrow: "Grapevine — Portfolio",
+    intro:
+      "The prerequisites for growth; the opening of new opportunities and events. A selection of brands we've untangled and grown.",
+    filterAll: "All",
+    year: "2024",
+    categories: {
+      campaign: "Campaign",
+      branding: "Branding",
+      social: "Social",
+      seo: "SEO",
+      web: "Web",
+      strategy: "Strategy",
+    },
+    bandPre: "Want to be our ",
+    bandAccent: "next case study?",
+    bandDesc:
+      "Tell us where your brand is tangled. We'll find the thread and a plan to pull it straight.",
+    bandCta: "Let's Talk Mess",
   },
   partners: {
     heading: "Partners",
