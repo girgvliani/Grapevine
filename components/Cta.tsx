@@ -146,7 +146,7 @@ export default function Cta({
       }}
     >
       <div style={{ position: "relative", width: "80%", aspectRatio: "1 / 1" }}>
-        <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain" }} />
+        <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 640px) 60vw, 30vw" style={{ objectFit: "contain" }} />
       </div>
     </div>
   );

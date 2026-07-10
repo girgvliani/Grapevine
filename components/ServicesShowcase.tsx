@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import BehanceLink from "./BehanceLink";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
 import iconSocial      from "./assets/servicesIcons/social.png";
@@ -324,6 +325,9 @@ export default function ServicesShowcase() {
           overflow: "hidden",
         }}
       >
+        <div style={{ marginBottom: "1.5rem" }}>
+          <BehanceLink />
+        </div>
         <div
           style={{
             color: "var(--orange)",

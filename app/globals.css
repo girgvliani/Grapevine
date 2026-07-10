@@ -1,17 +1,31 @@
 @import "tailwindcss";
 
-/* TT Autonomous Mono Trl — place font files in /public/fonts/ to activate */
+/* ── Brand fonts ──────────────────────────────────────────────────────────────
+   Body / UI (--font-primary) uses Space Mono, loaded via next/font/google in
+   layout.tsx and exposed as --font-mono (OFL, free for commercial use).
+   Headings (--font-heading) use self-hosted Mersad below.
+   TTF for now; converting Mersad to .woff2 (Transfonter) would cut ~40% off the
+   file size — just swap the url + format('woff2') per face when you do. */
+
+/* Mersad — headings (--font-heading); ships Latin + Georgian glyphs */
 @font-face {
-  font-family: 'TT Autonomous Mono Trl';
-  src: url('/fonts/TTAutonomousMonoTrl-Regular.woff2') format('woff2');
+  font-family: 'Mersad';
+  src: url('/fonts/Mersad%20Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'TT Autonomous Mono Trl';
-  src: url('/fonts/TTAutonomousMonoTrl-Bold.woff2') format('woff2');
+  font-family: 'Mersad';
+  src: url('/fonts/Mersad%20Bold.ttf') format('truetype');
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mersad';
+  src: url('/fonts/Mersad%20Black.ttf') format('truetype');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
@@ -24,7 +38,7 @@
   --dark: #1A0512;
   --white: #FFFFFF;
 
-  --font-primary: 'TT Autonomous Mono Trl', var(--font-mono), 'Courier New', monospace;
+  --font-primary: var(--font-mono), 'Courier New', monospace;
   --font-heading: 'Mersad', var(--font-space), 'Arial Black', Arial, sans-serif;
 }
 

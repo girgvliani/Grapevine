@@ -87,7 +87,7 @@ function ProjectCard({
       >
         {/* Image side */}
         <div style={{ flex: "0 0 45%", position: "relative", background: project.bg }}>
-          <Image src={project.image} alt={title} fill style={{ objectFit: "cover" }} />
+          <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 45vw, 180px" style={{ objectFit: "cover" }} />
         </div>
 
         {/* Text side */}
@@ -161,7 +161,7 @@ function ProjectCard({
     >
       {/* Visual area */}
       <div style={{ height: isWide ? "20rem" : "16.9375rem", position: "relative" }}>
-        <Image src={project.image} alt={title} fill style={{ objectFit: "cover" }} />
+        <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "cover" }} />
       </div>
 
       {/* Text overlay */}

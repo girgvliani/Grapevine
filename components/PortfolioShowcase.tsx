@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
+import BehanceLink from "./BehanceLink";
 
 import img01 from "./assets/portfolio/Frame 13.png";
 import img02 from "./assets/portfolio/Frame 13 (1).png";
@@ -125,6 +126,7 @@ function ProjectCard({
           src={project.image}
           alt={title}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           style={{
             objectFit: "cover",
             transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
@@ -229,6 +231,9 @@ export default function PortfolioShowcase() {
           overflow: "hidden",
         }}
       >
+        <div style={{ marginBottom: "1.5rem" }}>
+          <BehanceLink />
+        </div>
         <div
           style={{
             color: "var(--orange)",

@@ -163,7 +163,20 @@ function ServiceCard({
         <div style={face}>
           {/* Icon */}
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Image src={icon} alt={name} width={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} height={isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120} style={{ objectFit: "contain" }} />
+            <Image
+              src={icon}
+              alt={name}
+              // Icons vary in aspect ratio (some 244x244, some 244x254). Cap the
+              // footprint and keep width/height auto so the ratio is preserved
+              // (forcing a square tripped Next's aspect-ratio warning).
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120,
+                maxHeight: isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120,
+                objectFit: "contain",
+              }}
+            />
           </div>
 
           {/* Service name */}

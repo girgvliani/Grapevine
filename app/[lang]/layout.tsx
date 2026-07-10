@@ -13,8 +13,7 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space",
 });
 
-// Closest web approximation to TT Autonomous Mono Trl
-// To use the actual font: place TTAutonomousMonoTrl-*.woff2 in /public/fonts/
+// Body / UI font (--font-primary via --font-mono). OFL, free for commercial use.
 const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -46,11 +45,6 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Mersad:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-      </head>
       <body>
         <LanguageProvider lang={lang as Lang}>
           <div id="progress" />

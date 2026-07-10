@@ -5,6 +5,7 @@ import birdImg from "./assets/Component 9.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import BehanceLink from "./BehanceLink";
 
 export default function Footer() {
   const { t } = useLang();
@@ -132,6 +133,7 @@ export default function Footer() {
           {label}
         </a>
       ))}
+      <BehanceLink variant="badge" />
     </div>
   );
 
@@ -156,7 +158,7 @@ export default function Footer() {
           pointerEvents: "none",
         }}
       >
-        <Image src={birdImg} alt="" fill style={{ objectFit: "contain", objectPosition: "right top" }} />
+        <Image src={birdImg} alt="" fill sizes="220px" style={{ objectFit: "contain", objectPosition: "right top" }} />
       </div>
 
       {/* Main content */}

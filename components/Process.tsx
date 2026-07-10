@@ -87,7 +87,7 @@ export default function Process() {
       >
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem" }}>
           <div style={{ position: "relative", width: "55%", aspectRatio: "1 / 1.05" }}>
-            <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain" }} priority />
+            <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 640px) 55vw, 30vw" loading="eager" style={{ objectFit: "contain" }} />
           </div>
           <div
             style={{
@@ -122,7 +122,7 @@ export default function Process() {
         {/* Left — bird + title */}
         <div style={{ flex: "0 0 42%", display: "flex", flexDirection: "row", alignItems: "flex-end" }}>
           <div style={{ position: "relative", width: "44%", aspectRatio: "1 / 1.1", flexShrink: 0 }}>
-            <Image src={birdImg} alt="Grapevine bird" fill style={{ objectFit: "contain", objectPosition: "left center" }} priority />
+            <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 1024px) 25vw, 220px" loading="eager" style={{ objectFit: "contain", objectPosition: "left center" }} />
           </div>
           <div style={{
             fontFamily: "var(--font-heading)",

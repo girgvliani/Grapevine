@@ -129,7 +129,7 @@ export default function Nav() {
       >
         {/* Logo — returns to the home page */}
         <a href={withLocale("/")} aria-label="Grapevine — home" style={{ display: "inline-flex" }}>
-          <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} priority />
+          <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} loading="eager" />
         </a>
 
         {isMobile ? (

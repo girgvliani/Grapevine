@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import Image from "next/image";
-import heroGif from "./assets/GIF/knot-landing page.gif";
 import heroMobile from "./assets/mobileversion.png";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
@@ -55,10 +54,29 @@ export default function Hero() {
               transform: "translate(-50%, -50%) rotate(90deg)",
             }}
           >
-            <Image src={heroMobile} alt="" fill unoptimized style={{ objectFit: "cover" }} />
+            <Image src={heroMobile} alt="" fill unoptimized sizes="100vw" loading="eager" style={{ objectFit: "cover" }} />
           </div>
         ) : (
-          <Image src={heroGif} alt="" fill unoptimized style={{ objectFit: "contain" }} />
+          // Full-bleed hero animation. Converted from a 13 MB GIF to WebM/MP4
+          // (~250 KB) — see /public/hero. Poster paints instantly as the LCP.
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/hero/knot-poster.jpg"
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          >
+            <source src="/hero/knot.webm" type="video/webm" />
+            <source src="/hero/knot.mp4" type="video/mp4" />
+          </video>
         )}
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
       </motion.div>
