@@ -22,6 +22,10 @@ function Dot({ active }: { active: boolean }) {
 export default function Process() {
   const { t } = useLang();
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  // Tablet range (~iPad widths). The two-column layout gets cramped here — the
+  // big heading collides with the steps, worse in Georgian — so scale the whole
+  // section down a notch.
+  const isTablet = useMediaQuery("(min-width: 641px) and (max-width: 900px)");
   const [panel, setPanel] = useState(0);
   const [fading, setFading] = useState(false);
   const [lockedHeight, setLockedHeight] = useState<number | undefined>(undefined);
@@ -117,17 +121,18 @@ export default function Process() {
         padding: "5rem clamp(1.5rem, 5vw, 2.5rem) 3.75rem",
       }}
     >
-      <div className="container-cap" style={{ display: "flex", gap: "clamp(2rem, 5vw, 3.75rem)", alignItems: "flex-start" }}>
+      <div className="container-cap" style={{ display: "flex", gap: isTablet ? "1.25rem" : "clamp(2rem, 5vw, 3.75rem)", alignItems: "flex-start" }}>
 
-        {/* Left — bird + title */}
-        <div style={{ flex: "0 0 42%", display: "flex", flexDirection: "row", alignItems: "flex-end" }}>
-          <div style={{ position: "relative", width: "44%", aspectRatio: "1 / 1.1", flexShrink: 0 }}>
+        {/* Left — bird + title. Sticky so it follows the scroll until the
+            section ends (tablet+ only; the mobile branch above is unaffected). */}
+        <div style={{ flex: "0 0 42%", display: "flex", flexDirection: "row", alignItems: "flex-end", position: "sticky", top: "6rem", alignSelf: "flex-start" }}>
+          <div style={{ position: "relative", width: isTablet ? "32%" : "40%", aspectRatio: "1 / 1.1", flexShrink: 0 }}>
             <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 1024px) 25vw, 220px" loading="eager" style={{ objectFit: "contain", objectPosition: "left center" }} />
           </div>
           <div style={{
             fontFamily: "var(--font-heading)",
             fontWeight: 900,
-            fontSize: "clamp(2.5rem, 6vw, 4.875rem)",
+            fontSize: isTablet ? "clamp(1.6rem, 3.6vw, 2.25rem)" : "clamp(2.5rem, 3.6vw, 3.25rem)",
             lineHeight: 1.1,
             textTransform: "uppercase",
             letterSpacing: "-0.02em",
@@ -142,7 +147,7 @@ export default function Process() {
         {/* Right — interactive steps column */}
         <div
           ref={stepsRef}
-          style={{ flex: 1, paddingTop: "0.5rem", paddingLeft: "clamp(1rem, 6vw, 6.25rem)", userSelect: "none" }}
+          style={{ flex: 1, paddingTop: "0.5rem", paddingLeft: isTablet ? "1.25rem" : "clamp(1rem, 6vw, 6.25rem)", userSelect: "none" }}
         >
           <div ref={contentRef} style={{ opacity: fading ? 0 : 1, transition: "opacity 0.3s ease", minHeight: lockedHeight }}>
 
@@ -157,11 +162,11 @@ export default function Process() {
                     marginBottom: "2rem",
                     borderBottom: i === t.process.steps.length - 1 ? "none" : "1px solid rgba(26,5,18,0.12)",
                   }}>
-                    <div style={{ fontSize: "clamp(1.75rem, 4vw, 2.625rem)", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", minWidth: "4rem", lineHeight: 1 }}>
+                    <div style={{ fontSize: isTablet ? "1.375rem" : "clamp(1.75rem, 4vw, 2.625rem)", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", minWidth: isTablet ? "2.5rem" : "4rem", lineHeight: 1 }}>
                       {step.num}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: "clamp(1.625rem, 3vw, 2.375rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1, marginBottom: "0.375rem" }}>
+                      <div style={{ fontSize: isTablet ? "1.375rem" : "clamp(1.625rem, 3vw, 2.375rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1, marginBottom: "0.375rem" }}>
                         {step.title}
                       </div>
                       <div style={{ fontSize: "0.6875rem", color: "var(--orange)", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-primary)", marginBottom: "0.625rem" }}>

@@ -56,7 +56,7 @@ function ImpactItem({
   delay: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [counted, setCounted] = useState(false);
   const count = useCountUp(item.count, counted);
 

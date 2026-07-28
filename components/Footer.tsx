@@ -146,19 +146,21 @@ export default function Footer() {
         borderTop: "1px solid rgba(26,5,18,0.1)",
       }}
     >
-      {/* Faded bird — decorative */}
+      {/* Faded bird — decorative watermark, fully contained in the bottom-right
+          corner (positive offsets so nothing pokes past the page edge) and kept
+          faint so it doesn't clash with the footer content. */}
       <div
         style={{
           position: "absolute",
-          right: isMobile ? "-1rem" : "12rem",
-          top: isMobile ? "7.5rem" : "3.5rem",
-          width: isMobile ? "12rem" : "13.75rem",
-          height: isMobile ? "12rem" : "13.75rem",
-          opacity: 0.1,
+          right: isMobile ? "1rem" : "1.5rem",
+          bottom: isMobile ? "1.5rem" : "1.5rem",
+          width: isMobile ? "6.5rem" : "8rem",
+          height: isMobile ? "6.5rem" : "8rem",
+          opacity: 0.09,
           pointerEvents: "none",
         }}
       >
-        <Image src={birdImg} alt="" fill sizes="220px" style={{ objectFit: "contain", objectPosition: "right top" }} />
+        <Image src={birdImg} alt="" fill sizes="130px" style={{ objectFit: "contain", objectPosition: "center" }} />
       </div>
 
       {/* Main content */}

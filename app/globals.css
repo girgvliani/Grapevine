@@ -198,3 +198,25 @@ body.cursor-hover #cursor-ring {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Nav links: absolutely centred on wide screens, normal flow below 889px.
+   Done in CSS (not a JS media query) so the layout is correct on the very first
+   paint and doesn't jump on page load/reload. */
+.nav-links {
+  display: flex;
+  gap: 2.25rem;
+  list-style: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+@media (max-width: 888px) {
+  .nav-links {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    gap: 1.5rem;
+  }
+}

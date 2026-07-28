@@ -36,3 +36,8 @@ export const SHORT_QUERY = "(max-height: 700px)";
 // Large desktops (≥1536px) — scale up the full-bleed gallery items (cards,
 // images, logos) so they don't look small beside the capped content.
 export const WIDE_QUERY = "(min-width: 1536px)";
+
+// Huge / ultra-wide displays (≥2100px). Here the horizontally-scrolling galleries
+// (services, portfolio) get bigger cards whose height is tied to the viewport
+// height, so tall screens fill vertically instead of leaving a dead band below.
+export const HUGE_QUERY = "(min-width: 2100px)";

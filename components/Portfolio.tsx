@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, TABLET_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 
 import img01 from "./assets/portfolio/Frame 13.png";
 import img02 from "./assets/portfolio/Frame 13 (1).png";
@@ -54,19 +54,9 @@ function ProjectCard({
   variant: "desktop" | "tablet";
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const visible = true;
   const isWide = useMediaQuery(WIDE_QUERY);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); io.disconnect(); } },
-      { threshold: 0.1 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const isHuge = useMediaQuery(HUGE_QUERY);
 
   // Tablet: horizontal card — image on the left, cream text panel on the right.
   if (variant === "tablet") {
@@ -139,8 +129,9 @@ function ProjectCard({
       ref={ref}
       style={{
         flexShrink: 0,
-        width: isWide ? "30rem" : "25.5625rem",
-        height: isWide ? "30.75rem" : "26.3125rem",
+        width: isHuge ? "36rem" : isWide ? "30rem" : "25.5625rem",
+        // isHuge height tracks viewport height so tall ultra-wide screens fill.
+        height: isHuge ? "clamp(33rem, 58vh, 46rem)" : isWide ? "30.75rem" : "26.3125rem",
         borderRadius: "2.1rem",
         overflow: "hidden",
         position: "relative",
@@ -160,7 +151,7 @@ function ProjectCard({
       }}
     >
       {/* Visual area */}
-      <div style={{ height: isWide ? "20rem" : "16.9375rem", position: "relative" }}>
+      <div style={{ height: isHuge ? "clamp(23rem, 40vh, 32rem)" : isWide ? "20rem" : "16.9375rem", position: "relative" }}>
         <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "cover" }} />
       </div>
 
@@ -205,6 +196,7 @@ function ProjectCard({
 export default function Portfolio() {
   const { t } = useLang();
   const isTablet = useMediaQuery(TABLET_QUERY);
+  const isHuge = useMediaQuery(HUGE_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [outerHeight, setOuterHeight] = useState("350vh");
@@ -329,7 +321,9 @@ export default function Portfolio() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          height: "48.625rem",
+          // isHuge: grow the pinned band with the viewport height so tall
+          // ultra-wide screens don't leave a dead band under the cards.
+          height: isHuge ? "clamp(48.625rem, 92vh, 66rem)" : "48.625rem",
         }}
       >
         {heading}

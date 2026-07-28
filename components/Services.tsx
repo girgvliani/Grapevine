@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
-import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
+import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
 import iconSocial      from "./assets/servicesIcons/social.png";
@@ -33,33 +33,25 @@ const SERVICE_ASSETS = [
   { id: "web-development",      icon: iconWeb        },
 ] as const;
 
-function FlipArrow({ flipped }: { flipped: boolean }) {
+// Loop / repeat mark — the "turn" indicator shown on each service card.
+function RepeatIcon({ size = 22 }: { size?: number }) {
   return (
-    <div
-      style={{
-        width: "1.75rem",
-        height: "1.75rem",
-        border: `1.5px solid ${flipped ? "var(--dark)" : "rgba(26,5,18,0.2)"}`,
-        background: flipped ? "var(--dark)" : "transparent",
-        borderRadius: "0.375rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        transition: "background 0.25s, border-color 0.25s, transform 0.4s cubic-bezier(0.16,1,0.3,1)",
-        transform: flipped ? "rotate(180deg)" : "none",
-      }}
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#1A0512"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
     >
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path
-          d="M2 10L10 2M10 2H4M10 2V8"
-          stroke={flipped ? "#FFEFAB" : "#1A0512"}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity={flipped ? 1 : 0.5}
-        />
-      </svg>
-    </div>
+      <path d="m17 2 4 4-4 4" />
+      <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+      <path d="m7 22-4-4 4-4" />
+      <path d="M21 13v1a4 4 0 0 1-4 4H3" />
+    </svg>
   );
 }
 
@@ -77,28 +69,19 @@ function ServiceCard({
   const { t } = useLang();
   const p = t.servicesPage;
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const visible = true;
   const [flipped, setFlipped] = useState(false);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const isShort = useMediaQuery(SHORT_QUERY);
   const isWide = useMediaQuery(WIDE_QUERY);
+  const isHuge = useMediaQuery(HUGE_QUERY);
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) { setVisible(true); io.disconnect(); }
-      },
-      { threshold: 0.1 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const width = isMobile ? "11.5rem" : isShort ? "18.3125rem" : isWide ? "22rem" : "18.3125rem";
-  const height = isMobile ? "17rem" : isShort ? "21rem" : isWide ? "35rem" : "30rem";
-  const padding = isMobile ? "1.25rem 1rem 1rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem";
+  // isHuge height uses vh so tall ultra-wide screens fill vertically. At ~1000px
+  // tall it resolves to ~35rem (matching the previous wide size), growing taller
+  // as the viewport does. isShort still wins on short screens.
+  const width = isMobile ? "11.5rem" : isShort ? "18.3125rem" : isHuge ? "24rem" : isWide ? "22rem" : "18.3125rem";
+  const height = isMobile ? "17rem" : isShort ? "21rem" : isHuge ? "clamp(35rem, 57vh, 54rem)" : isWide ? "35rem" : "30rem";
+  const padding = isMobile ? "1.25rem 1rem 1rem" : isHuge ? "2.5rem 2rem 2rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem";
 
   // Shared styles for the two faces of the flip card.
   const face: React.CSSProperties = {
@@ -160,7 +143,7 @@ function ServiceCard({
         }}
       >
         {/* FRONT */}
-        <div style={face}>
+        <div style={{ ...face, alignItems: "center", textAlign: "center" }}>
           {/* Icon */}
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Image
@@ -172,8 +155,8 @@ function ServiceCard({
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120,
-                maxHeight: isMobile ? 78 : isShort ? 92 : isWide ? 150 : 120,
+                maxWidth: isMobile ? 78 : isShort ? 92 : isHuge ? 180 : isWide ? 150 : 120,
+                maxHeight: isMobile ? 78 : isShort ? 92 : isHuge ? 180 : isWide ? 150 : 120,
                 objectFit: "contain",
               }}
             />
@@ -183,13 +166,13 @@ function ServiceCard({
           <div
             style={{
               color: "var(--orange)",
-              fontSize: "0.8125rem",
+              fontSize: isMobile ? "0.875rem" : isHuge ? "1.25rem" : "1.0625rem",
               fontWeight: 700,
-              letterSpacing: "0.12em",
+              letterSpacing: "0.08em",
               textTransform: "uppercase",
               fontFamily: "var(--font-primary)",
-              lineHeight: 1.2,
-              marginBottom: sub ? "0.25rem" : "0",
+              lineHeight: 1.15,
+              marginBottom: sub ? "0.35rem" : "0",
             }}
           >
             {name}
@@ -199,35 +182,21 @@ function ServiceCard({
           {sub && (
             <div
               style={{
-                color: "var(--dark)",
-                fontSize: "0.625rem",
-                letterSpacing: "0.18em",
+                color: "var(--orange)",
+                fontSize: isMobile ? "0.6875rem" : isHuge ? "0.875rem" : "0.75rem",
+                letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 fontFamily: "var(--font-primary)",
-                opacity: 0.6,
-                marginBottom: "0.5rem",
+                opacity: 0.85,
               }}
             >
               {sub}
             </div>
           )}
 
-          {/* Flip hint */}
-          <div
-            style={{
-              fontSize: "0.5625rem",
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "rgba(26,5,18,0.42)",
-              fontFamily: "var(--font-primary)",
-            }}
-          >
-            {p.clickToOpen}
-          </div>
-
-          {/* Arrow — bottom right */}
-          <div style={{ position: "absolute", bottom: "1.25rem", right: "1.25rem" }}>
-            <FlipArrow flipped={false} />
+          {/* Turn / flip logo — bottom centre */}
+          <div style={{ marginTop: isMobile ? "0.85rem" : "1.35rem", display: "flex", justifyContent: "center" }}>
+            <RepeatIcon size={isMobile ? 18 : 22} />
           </div>
         </div>
 
@@ -287,9 +256,9 @@ function ServiceCard({
             </div>
           </div>
 
-          {/* Arrow — bottom right (active) */}
+          {/* Turn / flip logo — bottom right */}
           <div style={{ position: "absolute", bottom: "1.25rem", right: "1.25rem" }}>
-            <FlipArrow flipped={true} />
+            <RepeatIcon size={20} />
           </div>
         </div>
       </div>
@@ -302,6 +271,7 @@ export default function Services() {
   // Scroll-jacked horizontal track is desktop-only. On tablet/mobile we render
   // a normal vertical wrapping grid (see the early return below).
   const isTablet = useMediaQuery(TABLET_QUERY);
+  const isHuge = useMediaQuery(HUGE_QUERY);
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -410,7 +380,7 @@ export default function Services() {
             ref={trackRef}
             style={{
               display: "flex",
-              gap: "1rem",
+              gap: isHuge ? "1.75rem" : "1rem",
               willChange: "transform",
               transition: "transform 0.05s linear",
             }}

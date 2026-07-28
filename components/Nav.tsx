@@ -151,8 +151,10 @@ export default function Nav() {
           </button>
         ) : (
           <>
-            {/* Links */}
-            <ul style={{ display: "flex", gap: "2.25rem", listStyle: "none" }}>
+            {/* Links — centred on wide screens, normal flow below 889px. The
+                centre↔left switch lives in CSS (.nav-links) so it applies on the
+                first paint and doesn't jump on reload. */}
+            <ul className="nav-links">
               {LINKS.map(({ href, key }) => (
                 <li key={href}>
                   <a
