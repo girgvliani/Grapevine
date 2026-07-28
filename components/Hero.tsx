@@ -1,20 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
-import type { Transition } from "framer-motion";
 import Image from "next/image";
 import heroMobile from "./assets/mobileversion.png";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
-const fadeUp = (delay: number) =>
-  ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, delay, ease: EASE } as Transition,
-  } as const);
+// Entrance easing, mirrors the old framer-motion curve. Animations themselves
+// live in globals.css (@keyframes heroFade / heroFadeUp / heroFadeInDim).
+const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
 export default function Hero() {
   const { t } = useLang();
@@ -29,16 +22,14 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Hero GIF — full bleed background */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.2, ease: EASE }}
+      {/* Hero animation — full bleed background */}
+      <div
         style={{
           position: "absolute",
           inset: 0,
           zIndex: 0,
           overflow: "hidden",
+          animation: `heroFade 1.2s ${EASE} 0.2s both`,
         }}
       >
         {isMobile ? (
@@ -54,7 +45,7 @@ export default function Hero() {
               transform: "translate(-50%, -50%) rotate(90deg)",
             }}
           >
-            <Image src={heroMobile} alt="" fill unoptimized sizes="100vw" loading="eager" style={{ objectFit: "cover" }} />
+            <Image src={heroMobile} alt="" fill sizes="100vh" fetchPriority="high" loading="eager" style={{ objectFit: "cover" }} />
           </div>
         ) : (
           // Full-bleed hero animation. Converted from a 13 MB GIF to WebM/MP4
@@ -79,11 +70,10 @@ export default function Hero() {
           </video>
         )}
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
-      </motion.div>
+      </div>
 
       {/* Label — top left */}
-      <motion.div
-        {...fadeUp(0.4)}
+      <div
         style={{
           position: "absolute",
           top: "clamp(5rem, 10vh, 7rem)",
@@ -94,14 +84,14 @@ export default function Hero() {
           color: "var(--orange)",
           fontFamily: "var(--font-primary)",
           zIndex: 1,
+          animation: `heroFadeUp 0.8s ${EASE} 0.4s both`,
         }}
       >
         {t.hero.label}
-      </motion.div>
+      </div>
 
       {/* Description — bottom left */}
-      <motion.p
-        {...fadeUp(1.0)}
+      <p
         style={{
           position: "absolute",
           bottom: "clamp(3rem, 8vh, 5rem)",
@@ -109,19 +99,16 @@ export default function Hero() {
           maxWidth: "17.5rem",
           fontSize: "0.75rem",
           lineHeight: 1.9,
-          opacity: 0.55,
           fontFamily: "var(--font-primary)",
           zIndex: 1,
+          animation: `heroFadeUp 0.8s ${EASE} 1s both`,
         }}
       >
         {t.hero.description}
-      </motion.p>
+      </p>
 
       {/* Scroll hint — bottom right */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.35 }}
-        transition={{ delay: 1.6, duration: 1 }}
+      <div
         style={{
           position: "absolute",
           bottom: "clamp(1.5rem, 4vh, 2.5rem)",
@@ -134,6 +121,7 @@ export default function Hero() {
           textTransform: "uppercase",
           fontFamily: "var(--font-primary)",
           zIndex: 1,
+          animation: `heroFadeInDim 1s ease 1.6s both`,
         }}
       >
         <div
@@ -146,7 +134,7 @@ export default function Hero() {
           }}
         />
         <span>{t.hero.scroll}</span>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -199,6 +199,20 @@ body.cursor-hover #cursor-ring {
   margin-right: auto;
 }
 
+/* Hero entrance animations — replaces framer-motion (kept the bundle lean). */
+@keyframes heroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFadeInDim {
+  from { opacity: 0; }
+  to   { opacity: 0.35; }
+}
+
 /* Nav links: absolutely centred on wide screens, normal flow below 889px.
    Done in CSS (not a JS media query) so the layout is correct on the very first
    paint and doesn't jump on page load/reload. */
