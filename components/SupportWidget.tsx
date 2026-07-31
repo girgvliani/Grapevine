@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/components/LanguageProvider";
+import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import { localizedHref } from "@/lib/routing";
 
 // Deployed support SPA (its own React app + /api/ask on Vercel). Override with
 // NEXT_PUBLIC_SUPPORT_URL for previews / self-hosting.
@@ -19,6 +21,7 @@ const LABELS = {
 
 export default function SupportWidget() {
   const { lang } = useLang();
+  const isMobile = useMediaQuery(MOBILE_QUERY);
   const [open, setOpen] = useState(false);
   // Mount the iframe on first open, then keep it mounted so the conversation
   // survives closing/reopening and language switches.
@@ -78,17 +81,34 @@ export default function SupportWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // The widget's "See more" chips ask the parent to navigate to a service page
+  // (so it happens on this origin, not inside the iframe). We validate the slug
+  // and build the localized URL ourselves — the message only carries a slug.
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== SUPPORT_ORIGIN) return;
+      const data = e.data;
+      if (!data || data.type !== "grapevine:navigate") return;
+      const slug = String(data.slug || "");
+      if (!/^[a-z][a-z0-9-]{0,40}$/.test(slug)) return;
+      const loc = data.lang === "en" ? "en" : "ka";
+      window.location.assign(localizedHref(`/services/${slug}`, loc));
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
   return (
     <div
       style={{
         position: "fixed",
-        right: 24,
-        bottom: 24,
+        right: isMobile ? 12 : 24,
+        bottom: isMobile ? 16 : 24,
         zIndex: 9990,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",
-        gap: 14,
+        gap: isMobile ? 12 : 14,
       }}
     >
       {mounted && (
@@ -97,9 +117,13 @@ export default function SupportWidget() {
           aria-label="Grapevine support"
           aria-hidden={!open}
           style={{
-            width: "min(384px, calc(100vw - 32px))",
-            height: "min(600px, calc(100vh - 140px))",
-            borderRadius: 18,
+            // On phones the panel becomes a tall sheet (full width minus a small
+            // gutter, dvh so browser chrome is handled). The 176px offset leaves
+            // room below for the bubble and, above, clears the fixed nav (~82px)
+            // so the panel never overlaps the header.
+            width: isMobile ? "calc(100vw - 24px)" : "min(384px, calc(100vw - 32px))",
+            height: isMobile ? "calc(100dvh - 176px)" : "min(600px, calc(100vh - 140px))",
+            borderRadius: isMobile ? 20 : 18,
             overflow: "hidden",
             background: "var(--dark)",
             border: "1px solid rgba(255, 239, 171, 0.16)",
@@ -130,8 +154,8 @@ export default function SupportWidget() {
         aria-expanded={open}
         aria-label={open ? label.close : label.open}
         style={{
-          width: 58,
-          height: 58,
+          width: isMobile ? 52 : 58,
+          height: isMobile ? 52 : 58,
           borderRadius: "50%",
           border: 0,
           background: "var(--orange)",

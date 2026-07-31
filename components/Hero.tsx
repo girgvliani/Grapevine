@@ -107,11 +107,12 @@ export default function Hero() {
         {t.hero.description}
       </p>
 
-      {/* Scroll hint — bottom right */}
+      {/* Scroll hint — bottom right, lifted so it clears the floating support
+          bubble (fixed at bottom:24px, ~58px tall) that shares this corner. */}
       <div
         style={{
           position: "absolute",
-          bottom: "clamp(1.5rem, 4vh, 2.5rem)",
+          bottom: "clamp(5.75rem, calc(4vh + 4rem), 6.75rem)",
           right: "clamp(1.5rem, 5vw, 2.5rem)",
           display: "flex",
           alignItems: "center",
