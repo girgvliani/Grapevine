@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
+import { getServiceDetail } from "@/lib/serviceContent";
+import { localizedHref } from "@/lib/routing";
+import type { ServiceSlug } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
@@ -56,18 +59,24 @@ function RepeatIcon({ size = 22 }: { size?: number }) {
 }
 
 function ServiceCard({
+  slug,
   name,
   sub,
   icon,
   delay,
 }: {
+  slug: ServiceSlug;
   name: string;
   sub: string;
   icon: StaticImageData;
   delay: number;
 }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.servicesPage;
+  // Short annotation per service (its one-line intro) + optional price.
+  const detail = getServiceDetail(slug, lang);
+  const annotation = detail?.intro || p.lorem;
+  const price = detail?.price ?? "";
   const ref = useRef<HTMLDivElement>(null);
   const visible = true;
   const [flipped, setFlipped] = useState(false);
@@ -233,26 +242,51 @@ function ServiceCard({
                 overflow: "hidden",
               } as React.CSSProperties}
             >
-              {p.lorem}
+              {annotation}
             </p>
 
-            {/* Price */}
-            <div style={{ marginTop: "auto" }}>
-              <div
+            {/* Bottom: optional price + "see more" link to the service page */}
+            <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "0.85rem", alignItems: "flex-start" }}>
+              {price && (
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.5625rem",
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      color: "rgba(26,5,18,0.45)",
+                      fontFamily: "var(--font-primary)",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    {p.startingFrom}
+                  </div>
+                  <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: isMobile ? "1.25rem" : "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
+                    {price}
+                  </div>
+                </div>
+              )}
+              <a
+                href={localizedHref(`/services/${slug}`, lang)}
+                onClick={(e) => e.stopPropagation()}
                 style={{
-                  fontSize: "0.5625rem",
-                  letterSpacing: "0.16em",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                  background: "var(--purple-dark)",
+                  color: "var(--white)",
+                  padding: isMobile ? "0.4rem 0.75rem" : "0.5rem 0.9rem",
+                  borderRadius: "100px",
+                  fontSize: isMobile ? "0.5625rem" : "0.625rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
                   textTransform: "uppercase",
-                  color: "rgba(26,5,18,0.45)",
                   fontFamily: "var(--font-primary)",
-                  marginBottom: "0.25rem",
+                  textDecoration: "none",
                 }}
               >
-                {p.startingFrom}
-              </div>
-              <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: isMobile ? "1.25rem" : "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
-                {p.priceValue}
-              </div>
+                {p.seeMore} →
+              </a>
             </div>
           </div>
 
@@ -301,7 +335,7 @@ export default function Services() {
 
   const cards = SERVICE_ASSETS.map((s, i) => {
     const card = t.services.cards[s.id];
-    return <ServiceCard key={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />;
+    return <ServiceCard key={s.id} slug={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />;
   });
 
   // Tablet / mobile: same single-row layout, but natively swipeable left/right

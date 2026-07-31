@@ -3,20 +3,9 @@
 import { useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
+import { localizedHref } from "@/lib/routing";
+import { CLIENT_LOGOS } from "./assets/clientLogos";
 import BehanceLink from "./BehanceLink";
-
-import img01 from "./assets/portfolio/Frame 13.png";
-import img02 from "./assets/portfolio/Frame 13 (1).png";
-import img03 from "./assets/portfolio/Frame 13 (2).png";
-import img04 from "./assets/portfolio/Frame 13 (3).png";
-import img05 from "./assets/portfolio/Frame 13 (4).png";
-import img06 from "./assets/portfolio/Frame 13 (5).png";
-import img07 from "./assets/portfolio/Frame 13 (6).png";
-import img08 from "./assets/portfolio/Frame 13 (7).png";
-import img09 from "./assets/portfolio/Frame 13 (8).png";
-import img10 from "./assets/portfolio/Frame 13 (9).png";
-import img11 from "./assets/portfolio/Frame 13 (10).png";
-import img12 from "./assets/portfolio/Frame 13 (11).png";
 
 type CategoryId = "campaign" | "branding" | "social" | "seo" | "web" | "strategy";
 
@@ -27,22 +16,29 @@ type Project = {
   cat: CategoryId;
 };
 
-// Order + colours + category live here (matching the homepage Portfolio section);
-// titles come from t.portfolio.projects and category labels from t.portfolioPage.
-const PROJECTS: Project[] = [
-  { id: 1,  bg: "#E8541A", image: img01, cat: "campaign" },
-  { id: 2,  bg: "#2B6CB0", image: img02, cat: "campaign" },
-  { id: 3,  bg: "#111111", image: img03, cat: "campaign" },
-  { id: 4,  bg: "#902793", image: img04, cat: "branding" },
-  { id: 5,  bg: "#1A5C3A", image: img05, cat: "campaign" },
-  { id: 6,  bg: "#C0392B", image: img06, cat: "social" },
-  { id: 7,  bg: "#2C3E50", image: img07, cat: "seo" },
-  { id: 8,  bg: "#E67E22", image: img08, cat: "web" },
-  { id: 9,  bg: "#AFA9FF", image: img09, cat: "branding" },
-  { id: 10, bg: "#16A085", image: img10, cat: "campaign" },
-  { id: 11, bg: "#8E44AD", image: img11, cat: "branding" },
-  { id: 12, bg: "#D35400", image: img12, cat: "strategy" },
+// Dummy project data — categories/colours are fixed; images are (temporarily)
+// the client logos until real project visuals are available. Titles come from
+// t.portfolio.projects, category labels from t.portfolioPage.
+const META: { bg: string; cat: CategoryId }[] = [
+  { bg: "#E8541A", cat: "campaign" },
+  { bg: "#2B6CB0", cat: "campaign" },
+  { bg: "#111111", cat: "campaign" },
+  { bg: "#902793", cat: "branding" },
+  { bg: "#1A5C3A", cat: "campaign" },
+  { bg: "#C0392B", cat: "social" },
+  { bg: "#2C3E50", cat: "seo" },
+  { bg: "#E67E22", cat: "web" },
+  { bg: "#AFA9FF", cat: "branding" },
+  { bg: "#16A085", cat: "campaign" },
+  { bg: "#8E44AD", cat: "branding" },
+  { bg: "#D35400", cat: "strategy" },
 ];
+const PROJECTS: Project[] = META.map((m, i) => ({
+  id: i + 1,
+  bg: m.bg,
+  cat: m.cat,
+  image: CLIENT_LOGOS[i].src,
+}));
 
 // Unique categories in first-appearance order — drives the filter chips.
 const CATEGORY_ORDER = PROJECTS.reduce<CategoryId[]>((acc, p) => {
@@ -104,15 +100,16 @@ function ProjectCard({
           : "0 0.75rem 1.5rem -0.75rem rgba(0,0,0,0.5)",
       }}
     >
-      {/* Screenshot */}
-      <div style={{ height: "64%", position: "relative", overflow: "hidden" }}>
+      {/* Logo placeholder — white so the mixed logo backgrounds read cleanly */}
+      <div style={{ height: "64%", position: "relative", overflow: "hidden", background: "#fff" }}>
         <Image
           src={project.image}
           alt={title}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           style={{
-            objectFit: "cover",
+            objectFit: "contain",
+            padding: "2rem",
             transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)",
             transform: hover ? "scale(1.06)" : "none",
           }}
@@ -199,7 +196,7 @@ function ProjectCard({
 }
 
 export default function PortfolioShowcase() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.portfolioPage;
   const [filter, setFilter] = useState<CategoryId | "all">("all");
 
@@ -286,16 +283,6 @@ export default function PortfolioShowcase() {
                 fontWeight: 700,
                 transition: "background 0.2s, color 0.2s, border-color 0.2s",
               }}
-              onMouseEnter={(e) => {
-                if (active) return;
-                e.currentTarget.style.borderColor = "rgba(255,250,236,0.6)";
-                e.currentTarget.style.color = "var(--white)";
-              }}
-              onMouseLeave={(e) => {
-                if (active) return;
-                e.currentTarget.style.borderColor = "rgba(255,250,236,0.25)";
-                e.currentTarget.style.color = "rgba(255,250,236,0.7)";
-              }}
             >
               {label}
             </button>
@@ -359,7 +346,7 @@ export default function PortfolioShowcase() {
           {p.bandDesc}
         </p>
         <a
-          href="contact"
+          href={localizedHref("/contact", lang)}
           style={{
             display: "inline-block",
             background: "var(--purple-dark)",
@@ -372,15 +359,6 @@ export default function PortfolioShowcase() {
             fontFamily: "var(--font-primary)",
             fontWeight: 700,
             textDecoration: "none",
-            transition: "transform 0.2s, background 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#a030aa";
-            e.currentTarget.style.transform = "scale(1.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--purple-dark)";
-            e.currentTarget.style.transform = "scale(1)";
           }}
         >
           {p.bandCta}

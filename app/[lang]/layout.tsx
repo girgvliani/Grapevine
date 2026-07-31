@@ -5,7 +5,8 @@ import "../globals.css";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import { LanguageProvider } from "@/components/LanguageProvider";
-import { LANGUAGES, type Lang } from "@/lib/i18n";
+import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
+import { SITE_URL, isLocale, pageAlternates } from "@/lib/routing";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -20,11 +21,27 @@ const spaceMono = Space_Mono({
   variable: "--font-mono",
 });
 
-export const metadata: Metadata = {
-  title: "Grapevine — We Untangle The Mess",
-  description:
-    "Grapevine finds the core thread of your brand and helps you grow it — free of chaos, full of direction.",
-};
+// Locale-aware defaults. Each page may override title/description/alternates;
+// the home page ("/") inherits the alternates set here.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : "ka";
+  const t = translations[locale];
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title:
+      locale === "ka"
+        ? "Grapevine — მარკეტინგ სააგენტო"
+        : "Grapevine — We Untangle The Mess",
+    description: t.hero.description,
+    alternates: pageAlternates("/", locale),
+  };
+}
 
 // Pre-render both locales at build time.
 export function generateStaticParams() {

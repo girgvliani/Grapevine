@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
 import PortfolioShowcase from "@/components/PortfolioShowcase";
 import Footer from "@/components/Footer";
+import { translations } from "@/lib/i18n";
+import { isLocale, pageAlternates } from "@/lib/routing";
 
-export const metadata: Metadata = {
-  title: "Grapevine — Portfolio",
-  description:
-    "A selection of brands we've untangled and grown — campaigns, branding, social, SEO, web and strategy.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = isLocale(lang) ? lang : "ka";
+  const t = translations[locale];
+  return {
+    title: locale === "ka" ? "პორტფოლიო — Grapevine" : "Portfolio — Grapevine",
+    description: t.portfolioPage.intro,
+    alternates: pageAlternates("/portfolio", locale),
+  };
+}
 
 export default function PortfolioPage() {
   return (

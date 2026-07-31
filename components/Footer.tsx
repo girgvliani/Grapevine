@@ -104,9 +104,9 @@ export default function Footer() {
   const socials = (
     <div style={{ display: "flex", gap: "0.5rem" }}>
       {[
-        { label: "f", href: "#" },
-        { label: "ig", href: "#" },
-        { label: "in", href: "#" },
+        { label: "f", href: "https://www.facebook.com/Grapevinegeo" },
+        { label: "ig", href: "https://www.instagram.com/grapevine.agency/" },
+        { label: "in", href: "https://www.linkedin.com/company/grapevine-georgia/" },
       ].map(({ label, href }) => (
         <a
           key={label}

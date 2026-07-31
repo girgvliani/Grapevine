@@ -2,41 +2,60 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Next 16 renamed the `middleware` file convention to `proxy`. This runs before
-// routing and redirects any URL missing a locale prefix to the right /en or /ka.
+// routing and implements the "bare Georgian, prefixed English" URL scheme:
+//
+//   • /en, /en/…   → served as-is (English locale).
+//   • /ka, /ka/…   → 308-redirected to the bare Georgian URL, so there is a
+//                    single canonical Georgian path (no duplicate content).
+//   • anything else → a bare Georgian path, internally REWRITTEN to /ka/… so the
+//                     [lang] route resolves while the visible URL stays clean.
+//
+// Bare paths always resolve to Georgian (the default locale). We intentionally
+// do NOT auto-redirect based on Accept-Language: a stable, crawlable canonical
+// URL matters more for SEO than guessing the visitor's language. English is
+// opt-in via the language toggle, which navigates to the /en prefix.
 
-const LOCALES = ["en", "ka"] as const;
 const DEFAULT_LOCALE = "ka";
-
-// Cookie (set by the language toggle) wins; then the browser's Accept-Language;
-// finally the default. Only en/ka are supported so the parse is intentionally small.
-function getLocale(request: NextRequest): string {
-  const cookie = request.cookies.get("grapevine_lang")?.value;
-  if (cookie === "en" || cookie === "ka") return cookie;
-
-  const accept = (request.headers.get("accept-language") ?? "").toLowerCase();
-  for (const part of accept.split(",")) {
-    const tag = part.split(";")[0].trim();
-    if (tag === "ka" || tag.startsWith("ka-")) return "ka";
-    if (tag === "en" || tag.startsWith("en-")) return "en";
-  }
-  return DEFAULT_LOCALE;
-}
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const hasLocale = LOCALES.some(
-    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
-  );
-  if (hasLocale) return NextResponse.next();
+  // English is already correctly prefixed.
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    return NextResponse.next();
+  }
 
-  const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale}${pathname}`;
-  return NextResponse.redirect(request.nextUrl);
+  // Explicit /ka/* → canonical bare Georgian URL (permanent).
+  if (pathname === "/ka" || pathname.startsWith("/ka/")) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.slice("/ka".length) || "/";
+    return NextResponse.redirect(url, 308);
+  }
+
+  // Old WordPress blog (/ბლოგი) — the new site has no blog by design, so send
+  // the indexed URL to home instead of 404. Handled here rather than in
+  // next.config because redirects() doesn't reliably match non-ASCII sources.
+  let decoded = pathname;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    /* malformed escape — leave as-is */
+  }
+  if (decoded === "/ბლოგი" || decoded === "/ბლოგი/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url, 308);
+  }
+
+  // Bare Georgian path → rewrite onto the internal /ka segment. The browser URL
+  // is unchanged; Next serves the statically rendered /ka/<path> page.
+  const url = request.nextUrl.clone();
+  url.pathname = `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`;
+  return NextResponse.rewrite(url);
 }
 
 export const config = {
   // Run on everything except Next internals and files with an extension
-  // (favicon.ico, images, etc.), which must not be locale-prefixed.
+  // (favicon.ico, sitemap.xml, robots.txt, images), which must not be rewritten.
   matcher: ["/((?!_next|.*\\..*).*)"],
 };

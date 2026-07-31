@@ -7,6 +7,7 @@ import logo from "./assets/logo.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
 import { LANGUAGES } from "@/lib/i18n";
+import { localizedHref, stripLocale } from "@/lib/routing";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 const LINKS = [
@@ -23,11 +24,12 @@ export default function Nav() {
   const { lang, setLang, t } = useLang();
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const pathname = usePathname();
-  // Path without its leading /en or /ka segment, so route checks are locale-agnostic.
-  const routePath = pathname.replace(/^\/(en|ka)(?=\/|$)/, "") || "/";
+  // Path without its leading locale segment, so route checks are locale-agnostic.
+  const routePath = stripLocale(pathname);
   const light = LIGHT_ROUTES.includes(routePath);
-  // Prefix internal route links with the active locale; leave hashes untouched.
-  const withLocale = (href: string) => (href.startsWith("/") ? `/${lang}${href}` : href);
+  // Localize internal route links (bare for ka, /en-prefixed for en); leave
+  // in-page hashes untouched.
+  const withLocale = (href: string) => localizedHref(href, lang);
 
   // Colour tokens that flip between the dark (default) and light page themes.
   const fg = light ? "var(--dark)" : "var(--white)";

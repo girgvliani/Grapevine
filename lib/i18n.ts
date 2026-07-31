@@ -13,6 +13,26 @@ export const LANGUAGES: { code: Lang; label: string }[] = [
   { code: "en", label: "ENG" },
 ];
 
+// Canonical service slugs — the order matches the cards on the /services page
+// and each has its own detail route at /services/<slug>. Keep in sync with the
+// `services.cards` keys below.
+export const SERVICE_SLUGS = [
+  "social-media-audit",
+  "seo",
+  "social-media",
+  "strategy",
+  "campaigns",
+  "production",
+  "pr-services",
+  "crm-systems",
+  "branding",
+  "mobile-app",
+  "digital-advertising",
+  "web-development",
+] as const;
+
+export type ServiceSlug = (typeof SERVICE_SLUGS)[number];
+
 const ka = {
   nav: {
     services: "სერვისები",
@@ -38,14 +58,14 @@ const ka = {
     eyebrow: "ვინ ვართ ჩვენ",
     heading: "ჩვენ შესახებ",
     bodyMid:
-      "არის სტრატეგიული და ციფრული პარტნიორი ბრენდებისთვის, რომელსაც სურთ ზრდა იყოს",
-    bodyHighlight: "სტრუქტურირებული გრძელვადიანი და ლოგიკური",
+      "არის სტრატეგიული და ციფრული პარტნიორი ბრენდებისთვის, რომლებსაც სურთ ზრდა იყოს",
+    bodyHighlight: "სტრუქტურირებული, გრძელვადიანი და ლოგიკური",
     para1:
-      "ჩვენთვის მარკეტინგი არ არის ცალკეული აქტივობების ნაკრები, ეს არის სისტემა, რომელშიც ყველაფერი ერთმანეთთანაა დაკავშირებული.",
+      "ვეხმარებით ბრენდებს, ჩამოაყალიბონ მკაფიო მიმართულება და ააწყონ სისტემა, სადაც სტრატეგია, კრეატივი და შესრულება მუშაობს ერთად და არა ცალ-ცალკე.",
     para2:
-      "ვფიქრობთ, გამოწვევა არ არის ის, რომ ბრენდი საკმარის „აქტივობას“ არ აკეთებს. პრობლემა არის, რომ სტრატეგია, კრეატივი და შესრულება ერთმანეთისგან სრულიად განცალკევებულია, რის გამოც არათანმიმდევრული ხდება.",
+      "ვმუშაობთ როგორც კლიენტის გარე სტრატეგიული გუნდი — ვერთვებით გადაწყვეტილებებში, ვაყალიბებთ ლოგიკას და ვზრუნავთ, რომ შესრულება იყოს თანმიმდევრული.",
     para3:
-      "ზუსტად ამ ქაოსში ჩნდება Grapevine, არა იმისთვის, რომ გავაძლიეროთ მეტი, არამედ იმისთვის, რომ ვმოქმედოთ სწორად.",
+      "2014 წლიდან ვთანამშრომლობთ სხვადასხვა ინდუსტრიის ბრენდებთან — პოზიციონირებიდან სრულ ციფრულ შესრულებამდე. ჩვენთვის სტრატეგია და შესრულება ერთი პროცესის ორი ნაწილია.",
     seeMore: "მეტის ნახვა",
     seeLess: "ნაკლების ნახვა",
   },
@@ -72,6 +92,7 @@ const ka = {
     intro:
       "სტრატეგიიდან შესრულებამდე, ყველა სერვისი ერთ ძაფზეა აკინძული. ჩვენ არ ვყიდით ცალკეულ აქტივობებს — ვქმნით სისტემას, სადაც თითოეული ნაწილი წინ სწევს თქვენს ბრენდს.",
     clickToOpen: "დააჭირეთ გასახსნელად",
+    seeMore: "ნახე მეტი",
     startingFrom: "ფასი იწყება",
     priceValue: "₾0,000",
     priceNote: "პროექტზე · სანიმუშო",
@@ -100,19 +121,19 @@ const ka = {
         num: "01",
         title: "ანალიზი",
         sub: "პირველ ეტაპზე",
-        desc: "პირველ ეტაპზე ვიგებთ, რა სჭირდება რეალურად ბიზნესს, პრობლემებს განვსაზღვრავთ და ამოცანებს სივრცეს მივცემთ.",
+        desc: "პირველ ეტაპზე ვიგებთ, რა ხდება რეალურად ბაზარზე, პროდუქტში, აუდიტორიასა თუ მიმდინარე შედეგებში.",
       },
       {
         num: "02",
         title: "სტრუქტურა",
         sub: "დიზაინი",
-        desc: "შევქმნით სტრუქტურას: რა არის მნიშვნელოვანი, რა არის და როგორ უკავშირდება ყველაფერი ერთმანეთს.",
+        desc: "ვაწყობთ სტრუქტურას: რა არის მნიშვნელოვანი, რა არა და როგორ უკავშირდება ყველაფერი ერთმანეთს.",
       },
       {
         num: "03",
         title: "შესრულება",
         sub: "დიზაინი",
-        desc: "მხოლოდ ამის შემდეგ გადავდგებით შესრულებაზე. რადგან სრულად გვაქვს ამოცანები განსაზღვრელი და ყველა ქმედება ელოდება სივრცეს.",
+        desc: "მხოლოდ ამის შემდეგ გადავდივართ შესრულებაზე. ჩვენ არ ვმუშაობთ ცალკეულ ამოცანებზე იზოლირებულად — ყველა ქმედება ერთიან სისტემას ეფუძნება.",
       },
     ],
     benefitsHeading: "რას იღებს კლიენტი?",
@@ -225,11 +246,11 @@ const en: typeof ka = {
       "is a strategic and digital partner for brands that want their growth to be",
     bodyHighlight: "structured, long-term and logical",
     para1:
-      "For us, marketing is not a set of separate activities — it is a system in which everything is connected to one another.",
+      "We help brands define a clear direction and build a system where strategy, creative and execution work together — not separately.",
     para2:
-      "We believe the challenge isn't that a brand doesn't do enough “activity”. The problem is that strategy, creative and execution are completely separated from each other, which makes it inconsistent.",
+      "We work as the client's external strategic team: we get involved in the decisions, shape the logic, and make sure execution stays consistent.",
     para3:
-      "It's exactly in this chaos that Grapevine appears — not to do more, but to act correctly.",
+      "Since 2014 we've partnered with brands across different industries — from positioning to full digital execution. For us, strategy and execution are two parts of one process.",
     seeMore: "See more",
     seeLess: "See less",
   },
@@ -256,6 +277,7 @@ const en: typeof ka = {
     intro:
       "From strategy to execution, every service connects to one thread. We don't sell isolated activities — we build a system where each piece moves your brand forward.",
     clickToOpen: "Click to open",
+    seeMore: "See more",
     startingFrom: "Starting from",
     priceValue: "₾0,000",
     priceNote: "per project · placeholder",
@@ -284,19 +306,19 @@ const en: typeof ka = {
         num: "01",
         title: "Analysis",
         sub: "First Stage",
-        desc: "In the first stage we understand what the business really needs, define the problems and give the tasks room.",
+        desc: "In the first stage we learn what's really happening — in the market, the product, the audience and the current results.",
       },
       {
         num: "02",
         title: "Structure",
         sub: "Design",
-        desc: "We build the structure: what matters, what exists and how everything connects to one another.",
+        desc: "We build the structure: what matters, what doesn't, and how everything connects to one another.",
       },
       {
         num: "03",
         title: "Execution",
         sub: "Design",
-        desc: "Only after that do we move to execution — because the tasks are fully defined and every action has its space.",
+        desc: "Only then do we move to execution. We don't work on isolated tasks — every action is grounded in one system.",
       },
     ],
     benefitsHeading: "What does the client get?",

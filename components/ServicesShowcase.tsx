@@ -1,9 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import { localizedHref, stripLocale } from "@/lib/routing";
+import { getServiceDetail } from "@/lib/serviceContent";
+import type { ServiceSlug } from "@/lib/i18n";
 import BehanceLink from "./BehanceLink";
 import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
 import iconSeo         from "./assets/servicesIcons/seo.png";
@@ -18,7 +21,9 @@ import iconMobileApp   from "./assets/servicesIcons/mobileapp.png";
 import iconDigital     from "./assets/servicesIcons/digital.png";
 import iconWeb         from "./assets/servicesIcons/web.png";
 
-// Order + icons live here; the names/subtitles come from the i18n file.
+// Order + icons live here; the names/subtitles come from the i18n file and the
+// expanded copy comes from content/services.json (via getServiceDetail). The
+// `id` is also the URL slug of the matching /services/<id> detail page.
 const SERVICE_ASSETS = [
   { id: "social-media-audit",  icon: iconSocMedia   },
   { id: "seo",                 icon: iconSeo        },
@@ -34,8 +39,7 @@ const SERVICE_ASSETS = [
   { id: "web-development",      icon: iconWeb        },
 ] as const;
 
-// Cards stack vertically (icon over detail) below this width, matching the
-// 820px break in the original design.
+// Cards stack vertically (icon over detail) below this width.
 const STACK_QUERY = "(max-width: 820px)";
 
 function ExpandArrow({ open }: { open: boolean }) {
@@ -60,6 +64,7 @@ function ExpandArrow({ open }: { open: boolean }) {
 }
 
 function ServiceCard({
+  slug,
   name,
   sub,
   icon,
@@ -67,6 +72,7 @@ function ServiceCard({
   open,
   onToggle,
 }: {
+  slug: ServiceSlug;
   name: string;
   sub: string;
   icon: StaticImageData;
@@ -74,19 +80,23 @@ function ServiceCard({
   open: boolean;
   onToggle: () => void;
 }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.servicesPage;
-  const ref = useRef<HTMLDivElement>(null);
-  const visible = true;
   const [hover, setHover] = useState(false);
   const stack = useMediaQuery(STACK_QUERY);
 
+  // Real per-service copy when available; otherwise the generic shared text
+  // (used by the not-yet-written services).
+  const detail = getServiceDetail(slug, lang);
+  const bodyParagraphs = (detail?.body || p.lorem).split("\n\n");
+  const included = detail?.included?.length ? detail.included : p.included;
+  const price = detail?.price ?? "";
   const arrowActive = open || hover;
 
   return (
     <div
-      ref={ref}
-      onClick={onToggle}
+      data-slug={slug}
+      onClick={open ? undefined : onToggle}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -96,15 +106,14 @@ function ServiceCard({
         padding: open ? "clamp(1.75rem,3vw,2.75rem)" : "1.75rem 1.5rem 1.5rem",
         minHeight: open ? "0" : "15rem",
         position: "relative",
-        cursor: open ? "default" : "pointer",
+        cursor: "none",
         display: "flex",
         flexDirection: open ? (stack ? "column" : "row") : "column",
         alignItems: open ? (stack ? "center" : "stretch") : "center",
         textAlign: open && !stack ? "left" : "center",
         gap: open ? "clamp(1.5rem,4vw,3.5rem)" : "0",
-        opacity: visible ? 1 : 0,
-        transform: visible ? (hover && !open ? "translateY(-0.375rem)" : "none") : "translateY(2rem)",
-        transition: `opacity 0.55s ease ${delay}s, transform 0.55s cubic-bezier(0.16,1,0.3,1) ${delay}s, box-shadow 0.35s ease, background 0.3s, padding 0.4s cubic-bezier(0.16,1,0.3,1), gap 0.4s cubic-bezier(0.16,1,0.3,1)`,
+        transform: hover && !open ? "translateY(-0.375rem)" : "none",
+        transition: `opacity 0.55s ease ${delay}s, transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, padding 0.4s cubic-bezier(0.16,1,0.3,1), gap 0.4s cubic-bezier(0.16,1,0.3,1)`,
         boxShadow: open
           ? "0 1.75rem 3rem -1.25rem rgba(16,3,10,0.45)"
           : hover
@@ -194,17 +203,14 @@ function ServiceCard({
           </div>
         )}
 
-        {/* Price (open only) */}
-        {open && (
+        {/* Price (open only, when set) */}
+        {open && price && (
           <div style={{ marginTop: "1.25rem", animation: "svcRise 0.5s 0.16s cubic-bezier(0.16,1,0.3,1) both" }}>
             <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(26,5,18,0.45)", marginBottom: "0.25rem", fontFamily: "var(--font-primary)" }}>
               {p.startingFrom}
             </div>
             <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
-              {p.priceValue}
-            </div>
-            <div style={{ fontSize: "0.625rem", color: "rgba(26,5,18,0.5)", marginTop: "0.35rem", letterSpacing: "0.04em", fontFamily: "var(--font-primary)" }}>
-              {p.priceNote}
+              {price}
             </div>
           </div>
         )}
@@ -227,10 +233,25 @@ function ServiceCard({
           <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "1.25rem", textTransform: "uppercase", letterSpacing: "-0.01em", color: "var(--dark)", marginBottom: "0.75rem", animation: "svcRise 0.5s 0.14s cubic-bezier(0.16,1,0.3,1) both" }}>
             {name}{sub ? " " + sub : ""}
           </h4>
-          <p style={{ fontSize: "0.9375rem", lineHeight: 1.7, color: "rgba(26,5,18,0.8)", maxWidth: "46rem", marginBottom: "1.5rem", fontFamily: "var(--font-primary)", animation: "svcRise 0.5s 0.2s cubic-bezier(0.16,1,0.3,1) both" }}>
-            {p.lorem}
-          </p>
-          <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--orange)", marginBottom: "0.75rem", fontFamily: "var(--font-primary)", animation: "svcRise 0.5s 0.26s cubic-bezier(0.16,1,0.3,1) both" }}>
+
+          {bodyParagraphs.map((para, i) => (
+            <p
+              key={i}
+              style={{
+                fontSize: "0.9375rem",
+                lineHeight: 1.7,
+                color: "rgba(26,5,18,0.8)",
+                maxWidth: "46rem",
+                marginBottom: "1rem",
+                fontFamily: "var(--font-primary)",
+                animation: `svcRise 0.5s ${0.2 + i * 0.05}s cubic-bezier(0.16,1,0.3,1) both`,
+              }}
+            >
+              {para}
+            </p>
+          ))}
+
+          <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--orange)", margin: "1.25rem 0 0.75rem", fontFamily: "var(--font-primary)", animation: "svcRise 0.5s 0.26s cubic-bezier(0.16,1,0.3,1) both" }}>
             {p.includedLabel}
           </div>
           <ul
@@ -242,7 +263,7 @@ function ServiceCard({
               textAlign: stack ? "left" : "inherit",
             }}
           >
-            {p.included.map((item, i) => (
+            {included.map((item, i) => (
               <li
                 key={i}
                 style={{
@@ -273,8 +294,9 @@ function ServiceCard({
         </div>
       )}
 
-      {/* Arrow badge — top-right */}
+      {/* Arrow badge — top-right (also collapses an open card) */}
       <div
+        onClick={open ? onToggle : undefined}
         style={{
           position: "absolute",
           top: "1.25rem",
@@ -296,11 +318,44 @@ function ServiceCard({
   );
 }
 
-export default function ServicesShowcase() {
-  const { t } = useLang();
+export default function ServicesShowcase({
+  initialOpen = null,
+}: {
+  initialOpen?: string | null;
+}) {
+  const { t, lang } = useLang();
   const p = t.servicesPage;
   const isMobile = useMediaQuery(MOBILE_QUERY);
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(initialOpen);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Reflect the open card in the URL as a path slug (/services/<slug>) without a
+  // full navigation, and sync when the user presses back/forward. A direct visit
+  // to /services/<slug> server-renders this page with that card already open.
+  const openService = (id: string | null) => {
+    setOpenId(id);
+    const url = id
+      ? localizedHref(`/services/${id}`, lang)
+      : localizedHref("/services", lang);
+    window.history.pushState(null, "", url);
+  };
+
+  useEffect(() => {
+    const sync = () => {
+      const m = stripLocale(window.location.pathname).match(/^\/services\/(.+)$/);
+      setOpenId(m ? decodeURIComponent(m[1]) : null);
+    };
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+
+  // Deep-linked open: scroll the expanded card into view on first render.
+  useEffect(() => {
+    if (!initialOpen) return;
+    gridRef.current
+      ?.querySelector<HTMLElement>(`[data-slug="${initialOpen}"]`)
+      ?.scrollIntoView({ block: "center" });
+  }, [initialOpen]);
 
   return (
     <>
@@ -369,6 +424,7 @@ export default function ServicesShowcase() {
       {/* Grid */}
       <div style={{ padding: "1.5rem clamp(1.5rem,7.6vw,6.875rem) 5rem" }}>
         <div
+          ref={gridRef}
           style={{
             display: "grid",
             gridTemplateColumns: isMobile
@@ -383,12 +439,13 @@ export default function ServicesShowcase() {
             return (
               <ServiceCard
                 key={s.id}
+                slug={s.id}
                 name={card.name}
                 sub={card.sub}
                 icon={s.icon}
                 delay={i * 0.045}
                 open={openId === s.id}
-                onToggle={() => setOpenId((cur) => (cur === s.id ? null : s.id))}
+                onToggle={() => openService(openId === s.id ? null : s.id)}
               />
             );
           })}
@@ -423,31 +480,24 @@ export default function ServicesShowcase() {
         >
           {p.bandDesc}
         </p>
-        <button
+        <a
+          href={localizedHref("/contact", lang)}
           style={{
+            display: "inline-block",
             background: "var(--purple-dark)",
             color: "var(--white)",
-            padding: "0.625rem 1.375rem",
+            padding: "0.75rem 1.5rem",
             borderRadius: "100px",
             fontSize: "0.75rem",
             letterSpacing: "0.08em",
             textTransform: "uppercase",
             fontFamily: "var(--font-primary)",
-            border: "none",
             fontWeight: 700,
-            transition: "transform 0.2s, background 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#a030aa";
-            e.currentTarget.style.transform = "scale(1.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = "var(--purple-dark)";
-            e.currentTarget.style.transform = "scale(1)";
+            textDecoration: "none",
           }}
         >
           {p.bandCta}
-        </button>
+        </a>
       </section>
     </>
   );

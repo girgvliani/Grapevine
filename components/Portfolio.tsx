@@ -4,19 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image, { StaticImageData } from "next/image";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
-
-import img01 from "./assets/portfolio/Frame 13.png";
-import img02 from "./assets/portfolio/Frame 13 (1).png";
-import img03 from "./assets/portfolio/Frame 13 (2).png";
-import img04 from "./assets/portfolio/Frame 13 (3).png";
-import img05 from "./assets/portfolio/Frame 13 (4).png";
-import img06 from "./assets/portfolio/Frame 13 (5).png";
-import img07 from "./assets/portfolio/Frame 13 (6).png";
-import img08 from "./assets/portfolio/Frame 13 (7).png";
-import img09 from "./assets/portfolio/Frame 13 (8).png";
-import img10 from "./assets/portfolio/Frame 13 (9).png";
-import img11 from "./assets/portfolio/Frame 13 (10).png";
-import img12 from "./assets/portfolio/Frame 13 (11).png";
+import { CLIENT_LOGOS } from "./assets/clientLogos";
 
 type Project = {
   id: number;
@@ -24,21 +12,18 @@ type Project = {
   image: StaticImageData;
 };
 
-// Order + colors + images live here; titles/description come from the i18n file.
-const PROJECTS: Project[] = [
-  { id: 1,  bg: "#E8541A", image: img01 },
-  { id: 2,  bg: "#2B6CB0", image: img02 },
-  { id: 3,  bg: "#111111", image: img03 },
-  { id: 4,  bg: "#902793", image: img04 },
-  { id: 5,  bg: "#1A5C3A", image: img05 },
-  { id: 6,  bg: "#C0392B", image: img06 },
-  { id: 7,  bg: "#2C3E50", image: img07 },
-  { id: 8,  bg: "#E67E22", image: img08 },
-  { id: 9,  bg: "#AFA9FF", image: img09 },
-  { id: 10, bg: "#16A085", image: img10 },
-  { id: 11, bg: "#8E44AD", image: img11 },
-  { id: 12, bg: "#D35400", image: img12 },
+// Dummy project data: titles/description come from the i18n file, colours are
+// fixed, and the images are (temporarily) the client logos until real project
+// visuals are available.
+const BGS = [
+  "#E8541A", "#2B6CB0", "#111111", "#902793", "#1A5C3A", "#C0392B",
+  "#2C3E50", "#E67E22", "#AFA9FF", "#16A085", "#8E44AD", "#D35400",
 ];
+const PROJECTS: Project[] = BGS.map((bg, i) => ({
+  id: i + 1,
+  bg,
+  image: CLIENT_LOGOS[i].src,
+}));
 
 function ProjectCard({
   project,
@@ -76,8 +61,8 @@ function ProjectCard({
         }}
       >
         {/* Image side */}
-        <div style={{ flex: "0 0 45%", position: "relative", background: project.bg }}>
-          <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 45vw, 180px" style={{ objectFit: "cover" }} />
+        <div style={{ flex: "0 0 45%", position: "relative", background: "#fff" }}>
+          <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 45vw, 180px" style={{ objectFit: "contain", padding: "0.75rem" }} />
         </div>
 
         {/* Text side */}
@@ -130,7 +115,6 @@ function ProjectCard({
       style={{
         flexShrink: 0,
         width: isHuge ? "36rem" : isWide ? "30rem" : "25.5625rem",
-        // isHuge height tracks viewport height so tall ultra-wide screens fill.
         height: isHuge ? "clamp(33rem, 58vh, 46rem)" : isWide ? "30.75rem" : "26.3125rem",
         borderRadius: "2.1rem",
         overflow: "hidden",
@@ -150,9 +134,9 @@ function ProjectCard({
         (e.currentTarget as HTMLDivElement).style.transition = "transform 0.3s ease";
       }}
     >
-      {/* Visual area */}
-      <div style={{ height: isHuge ? "clamp(23rem, 40vh, 32rem)" : isWide ? "20rem" : "16.9375rem", position: "relative" }}>
-        <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "cover" }} />
+      {/* Visual area — white so the logo placeholders read cleanly */}
+      <div style={{ height: isHuge ? "clamp(23rem, 40vh, 32rem)" : isWide ? "20rem" : "16.9375rem", position: "relative", background: "#fff" }}>
+        <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "contain", padding: "2.5rem" }} />
       </div>
 
       {/* Text overlay */}
@@ -202,8 +186,6 @@ export default function Portfolio() {
   const [outerHeight, setOuterHeight] = useState("350vh");
 
   useEffect(() => {
-    // Tablet/mobile: no scroll-jacking — the track is natively swipeable
-    // horizontally (see the early return below), so skip the scroll-driven transform.
     if (isTablet) return;
     const outer = outerRef.current;
     const track = trackRef.current;
@@ -230,7 +212,6 @@ export default function Portfolio() {
       track.style.transform = `translateX(-${progress * maxShift}px)`;
     };
 
-    // Defer to next frame so track.scrollWidth is fully laid out
     const raf = requestAnimationFrame(() => {
       computeHeight();
       update();
@@ -244,7 +225,6 @@ export default function Portfolio() {
       window.removeEventListener("resize", computeHeight);
       window.removeEventListener("scroll", update);
     };
-    // Re-measure when the layout switches between desktop (1 row) and tablet (3 rows)
   }, [isTablet]);
 
   const heading = (
@@ -264,8 +244,7 @@ export default function Portfolio() {
     </div>
   );
 
-  // Tablet / mobile: same horizontal card layout, but natively swipeable
-  // left/right instead of hijacking vertical scroll.
+  // Tablet / mobile: same horizontal card layout, but natively swipeable.
   if (isTablet) {
     return (
       <section
@@ -321,8 +300,6 @@ export default function Portfolio() {
           overflow: "hidden",
           position: "sticky",
           top: 0,
-          // isHuge: grow the pinned band with the viewport height so tall
-          // ultra-wide screens don't leave a dead band under the cards.
           height: isHuge ? "clamp(48.625rem, 92vh, 66rem)" : "48.625rem",
         }}
       >

@@ -219,8 +219,8 @@ export default function Cta({
                 </svg>
                 <div>
                   <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.email}</div>
-                  <a href="mailto:placeholder@gmail.com" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
-                    placeholder@gmail.com
+                  <a href="mailto:info@grapevine.ge" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
+                    info@grapevine.ge
                   </a>
                 </div>
               </div>
@@ -232,8 +232,8 @@ export default function Cta({
                 </svg>
                 <div>
                   <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.phone}</div>
-                  <a href="tel:+995557544555" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
-                    +995 557 544 555
+                  <a href="tel:+995599495574" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
+                    +995 599 495 574
                   </a>
                 </div>
               </div>

@@ -1,0 +1,393 @@
+{
+  "_readme": {
+    "what": "Service detail page copy. ka = verbatim from old grapevine.ge; en = translation (review recommended). Fill the 5 services that have empty fields (no old page existed).",
+    "fields": {
+      "title": "Page H1 / card name.",
+      "metaTitle": "Browser tab + Google result title. Keyword near the front. Blank = auto '<title> — Grapevine'.",
+      "metaDescription": "~150-char Google snippet. Unique per service.",
+      "intro": "One short lead sentence under the H1.",
+      "body": "Main descriptive paragraph(s). \\n\\n separates paragraphs.",
+      "included": "Bullet list — what the service includes.",
+      "price": "e.g. '₾1,500'. '' hides the price block. Old site listed no prices."
+    },
+    "notes": "sourceUrl = old page the copy came from ('' = new service, write fresh). Do not rename service keys (they are URLs)."
+  },
+  "services": {
+    "social-media-audit": {
+      "sourceUrl": "https://grapevine.ge/social-media-audit/",
+      "ka": {
+        "title": "სოციალური მედია აუდიტი",
+        "metaTitle": "სოციალური მედია აუდიტი — უფასო | Grapevine",
+        "metaDescription": "მიიღეთ უფასო სოციალური მედია აუდიტი Grapevine-ისგან — პროფილების, კონტენტის, აუდიტორიისა და კონკურენტების ანალიზი და კონკრეტული რეკომენდაციები.",
+        "intro": "სოციალური მედია აუდიტი – ეს არის პროცესი, რომელიც მოიცავს თქვენი ბიზნესის სოციალური მედიის არსებული აქტივობების დეტალურ ანალიზს.",
+        "body": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ სოციალური მედიის აუდიტს, რათა გაიგოთ, რამდენად ეფექტურია თქვენი ამჟამინდელი სტრატეგიები და სად არის გაუმჯობესების შესაძლებლობები. ეს გულისხმობს თქვენი სოციალური მედიის პროფილების, კონტენტის, აუდიტორიის და კონკურენტების შესწავლას, რათა მიიღოთ ხელშესახები ინსაითები და გაზარდოთ თქვენი ბრენდის წარმატება ციფრულ სივრცეში.\n\nრატომ არის მნიშვნელოვანი სოციალური მედია აუდიტის გაკეთება? სწორად ოპტიმიზებული სოციალური მედია გვერდები გეხმარებათ მიიპყროთ დაინტერესებული მომხმარებლების ყურადღება, სწორად შეარჩიოთ სამიზნე აუდიტორია, მიიღოთ სწრაფი შედეგები, გაზარდოთ ბრენდის ცნობადობა და გაყიდვები, და მიიღოთ გაზომვადი, ხელშესახები შედეგები.",
+        "included": [
+          "კონტენტის შეფასება",
+          "არხების ანალიზი",
+          "მეტრიკების განხილვა",
+          "რეკომენდაციები"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Social Media Audit",
+        "metaTitle": "Social Media Audit — Free | Grapevine",
+        "metaDescription": "Get a free social media audit from Grapevine — analysis of your profiles, content, audience and competitors, plus concrete recommendations.",
+        "intro": "A social media audit is a detailed analysis of your business's existing social media activity.",
+        "body": "Grapevine provides a complete social media audit so you can see how effective your current strategies are and where the opportunities to improve lie. It examines your profiles, content, audience and competitors to give you tangible insights and grow your brand's success in the digital space.\n\nWhy does a social media audit matter? Well-optimised social pages help you capture the attention of already-interested customers, choose the right target audience, get fast results, grow brand awareness and sales, and deliver measurable, tangible outcomes.",
+        "included": [
+          "Content assessment",
+          "Channel analysis",
+          "Metrics review",
+          "Recommendations"
+        ],
+        "price": ""
+      }
+    },
+    "seo": {
+      "sourceUrl": "",
+      "ka": {
+        "title": "SEO ოპტიმიზაცია",
+        "metaTitle": "SEO ოპტიმიზაცია — ორგანული ზრდა | Grapevine",
+        "metaDescription": "SEO ოპტიმიზაცია Grapevine-ისგან — საკვანძო სიტყვების კვლევა, ტექნიკური და on-page ოპტიმიზაცია გრძელვადიანი ორგანული ზრდისთვის.",
+        "intro": "SEO ეხმარება ბრენდს, გამოჩნდეს მაშინ, როცა მომხმარებელი მას აქტიურად ეძებს.",
+        "body": "ვამუშავებთ თქვენი ვებსაიტის ტექნიკურ და კონტენტ მხარეს, რომ საძიებო სისტემებში მოწინავე პოზიციები დაიკავოს. საკვანძო სიტყვების კვლევიდან ტექნიკურ ოპტიმიზაციამდე — ვქმნით სტრუქტურას, რომელიც გრძელვადიან ორგანულ ზრდას უზრუნველყოფს.\n\nSEO ჩვენთვის ცალკე აქტივობა არ არის — ის ვებ დეველოპმენტთან და კონტენტ სტრატეგიასთან ერთ სისტემაში მუშაობს.",
+        "included": [
+          "საკვანძო სიტყვების კვლევა",
+          "ტექნიკური SEO ოპტიმიზაცია",
+          "On-page ოპტიმიზაცია",
+          "კონტენტის სტრუქტურა",
+          "ანალიტიკა და მონიტორინგი"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "SEO Optimisation",
+        "metaTitle": "SEO Optimisation — Organic Growth | Grapevine",
+        "metaDescription": "SEO optimisation from Grapevine — keyword research, technical and on-page optimisation for long-term organic growth.",
+        "intro": "SEO helps your brand show up exactly when customers are actively searching for it.",
+        "body": "We work on your website's technical and content side so it earns leading positions in search engines. From keyword research to technical optimisation, we build a structure that delivers long-term organic growth.\n\nFor us SEO isn't a separate activity — it works in one system with web development and content strategy.",
+        "included": [
+          "Keyword research",
+          "Technical SEO optimisation",
+          "On-page optimisation",
+          "Content structure",
+          "Analytics and monitoring"
+        ],
+        "price": ""
+      }
+    },
+    "social-media": {
+      "sourceUrl": "https://grapevine.ge/social-media/",
+      "ka": {
+        "title": "სოციალური მედია მენეჯმენტი",
+        "metaTitle": "სოციალური მედია მენეჯმენტი | Grapevine",
+        "metaDescription": "სოციალური მედია მენეჯმენტი Grapevine-ისგან — სტრატეგია, დიზაინი, ქოფირაითინგი, კომუნიკაცია და ყოველთვიური რეპორტინგი Facebook, Instagram, TikTok-ისთვის.",
+        "intro": "მომხმარებელთა ერთგული ბაზის შესაქმნელად მხოლოდ კარგი პროდუქტი საკმარისი არაა — სწორ აუდიტორიას მუდმივად უნდა ხვდებოდეთ თვალში და მათ გონებაში მოწინავე პოზიცია დაიკავოთ.",
+        "body": "პაკეტი აერთიანებს 360°-იან მომსახურებას სოციალური მედიის პოტენციალის სრულად ასათვისებლად. მასში შესულია მარკეტინგული პროცესების ყველა რგოლი: სამიზნე აუდიტორიის სწორად განსაზღვრიდან პროდუქტის გაყიდვამდე.\n\nსოციალური მედია მენეჯმენტი გულისხმობს კონტენტის დაგეგმვას, შექმნას, გამოქვეყნებასა და ანალიზს ისეთი პლატფორმებისთვის, როგორიცაა Facebook, Instagram, TikTok, X და სხვა. ის მოიცავს მომხმარებლებთან ეფექტური და გრძელვადიანი ურთიერთობის ჩამოყალიბებას.\n\nსოციალური მედია პლატფორმები დღეს ერთ-ერთ ყველაზე ეფექტურ ინსტრუმენტს წარმოადგენს გაყიდვების სტიმულირებისთვის: Facebook — მრავალრიცხოვანი აუდიტორია და ძლიერი სარეკლამო სისტემა; Instagram — ვიზუალურ კონტენტზე ორიენტირებული; TikTok — ვირუსული კონტენტისა და სწრაფი ცნობადობის ეპიცენტრი; LinkedIn — B2B გაყიდვებისთვის.",
+        "included": [
+          "კონტენტ სტრატეგია",
+          "დაგეგმვა",
+          "კონტენტის შექმნა",
+          "ანგარიშების მართვა და ოპტიმიზაცია"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Social Media Management",
+        "metaTitle": "Social Media Management | Grapevine",
+        "metaDescription": "Social media management from Grapevine — strategy, design, copywriting, community and monthly reporting across Facebook, Instagram and TikTok.",
+        "intro": "A loyal customer base takes more than a good product — you have to stay in front of the right audience and hold a leading position in their minds.",
+        "body": "The package brings together 360° service to unlock the full potential of social media. It includes every link in the marketing chain: from correctly defining the target audience to selling the product.\n\nSocial media management covers planning, creating, publishing and analysing content for platforms such as Facebook, Instagram, TikTok, X and others, building effective, long-term relationships with customers.\n\nSocial platforms are among today's most effective tools for driving sales: Facebook — a large audience and a powerful ad system; Instagram — visual-content focused; TikTok — the epicentre of viral content and fast awareness; LinkedIn — built for B2B sales.",
+        "included": [
+          "Content strategy",
+          "Planning",
+          "Content creation",
+          "Account management & optimisation"
+        ],
+        "price": ""
+      }
+    },
+    "strategy": {
+      "sourceUrl": "",
+      "ka": {
+        "title": "სტრატეგია",
+        "metaTitle": "სტრატეგია — მარკეტინგული სტრატეგია | Grapevine",
+        "metaDescription": "მარკეტინგული სტრატეგია Grapevine-ისგან — პოზიციონირება, აუდიტორიის სეგმენტაცია, საკომუნიკაციო და არხების ჩარჩო ერთ სისტემაში.",
+        "intro": "სტრატეგია არის ის ძაფი, რომელიც ბრენდის ყველა ქმედებას ერთ ლოგიკურ სისტემაში აკავშირებს.",
+        "body": "სანამ შესრულებაზე გადავალთ, ვსაზღვრავთ მიმართულებას: სად არის ბრენდი დღეს, სად უნდა მივიდეს და რა ნაბიჯები აკავშირებს ამ ორ წერტილს. ვქმნით მკაფიო პოზიციონირებას, აუდიტორიის სეგმენტაციასა და საკომუნიკაციო ჩარჩოს, რომელზეც შემდგომი ყველა აქტივობა შენდება.\n\nჩვენთვის სტრატეგია ცალკე დოკუმენტი არ არის — ეს არის სისტემა, რომელიც კრეატივსა და შესრულებას ერთმანეთს უკავშირებს.",
+        "included": [
+          "მარკეტინგული სტრატეგია",
+          "ბრენდისა და პროდუქტის პოზიციონირება",
+          "აუდიტორიის სეგმენტაცია",
+          "საკომუნიკაციო ჩარჩო",
+          "არხების სტრატეგია"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Strategy",
+        "metaTitle": "Strategy — Marketing Strategy | Grapevine",
+        "metaDescription": "Marketing strategy from Grapevine — positioning, audience segmentation, and a communication and channel framework in one system.",
+        "intro": "Strategy is the thread that ties every brand action into one logical system.",
+        "body": "Before we move to execution, we define the direction: where the brand is today, where it needs to go, and the steps that connect the two. We build clear positioning, audience segmentation and a communication framework that everything else is built on.\n\nFor us strategy isn't a separate document — it's a system that connects creative and execution.",
+        "included": [
+          "Marketing strategy",
+          "Brand and product positioning",
+          "Audience segmentation",
+          "Communication framework",
+          "Channel strategy"
+        ],
+        "price": ""
+      }
+    },
+    "campaigns": {
+      "sourceUrl": "https://grapevine.ge/google-ads/",
+      "ka": {
+        "title": "სარეკლამო კამპანიები",
+        "metaTitle": "სარეკლამო კამპანიები — Google Ads | Grapevine",
+        "metaDescription": "სარეკლამო კამპანიები Grapevine-ისგან — Google Ads და ციფრული კამპანიები საძიებო სიტყვების კვლევით, ქოფირაითინგითა და ყოველთვიური რეპორტინგით.",
+        "intro": "სწორად დაგეგმილი სარეკლამო კამპანია გხვდებათ მომხმარებელს ზუსტად იმ მომენტში, როცა თქვენს პროდუქტს ეძებს. რეკლამა Google-ში (Google Ads) ბიზნესებს საშუალებას აძლევს, პროდუქტები და სერვისები აჩვენონ პოტენციურ მომხმარებლებს.",
+        "body": "რეკლამა Google Ads-ის მეშვეობით ჩნდება გუგლის საძიებო სისტემასა და მის პარტნიორ პლატფორმებზე (YouTube, Gmail და ა.შ.). მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ სარეკლამო მომსახურებას არა მხოლოდ Google-ზე, არამედ ყველა მნიშვნელოვან პლატფორმაზე.\n\nრატომ არის მნიშვნელოვანი, რომ თქვენი რეკლამა გუგლში ჩანდეს? მომხმარებელი თავად გეძებთ; ეფექტურია ლოკალური თარგეთინგი საძიებო სიტყვების მიხედვით; შედეგები უფრო სწრაფია SEO-სთან შედარებით; იზრდება ცნობადობა და გაყიდვები; შედეგები კი გაზომვადი და ხელშესახებია.",
+        "included": [
+          "დაგეგმვა",
+          "კრეატიული მიმართულება",
+          "არხების კოორდინაცია",
+          "შესრულება და ანალიზი"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Campaigns",
+        "metaTitle": "Advertising Campaigns — Google Ads | Grapevine",
+        "metaDescription": "Advertising campaigns from Grapevine — Google Ads and digital campaigns with keyword research, copywriting and monthly reporting.",
+        "intro": "A well-planned advertising campaign meets the customer at the exact moment they're searching for your product. Google Ads lets businesses show their products and services to potential customers.",
+        "body": "Ads through Google Ads appear on Google search and its partner platforms (YouTube, Gmail, etc.). Grapevine provides complete advertising services not only on Google but across every major platform.\n\nWhy should your ad appear on Google? Customers search for you; local targeting by keyword is effective; results come faster than SEO; awareness and sales grow; and the results are measurable and tangible.",
+        "included": [
+          "Planning",
+          "Creative direction",
+          "Channel coordination",
+          "Execution & analysis"
+        ],
+        "price": ""
+      }
+    },
+    "production": {
+      "sourceUrl": "",
+      "ka": {
+        "title": "პროდაქშენი",
+        "metaTitle": "პროდაქშენი — ვიდეო და ფოტო | Grapevine",
+        "metaDescription": "პროდაქშენი Grapevine-ისგან — ვიდეო, ფოტო და კამპანიის მასალები ბრენდის ერთიან ვიზუალურ ენაზე.",
+        "intro": "პროდაქშენი აქცევს სტრატეგიასა და იდეას ხელშესახებ ვიზუალურ მასალად.",
+        "body": "კრეატიული მიმართულებიდან საბოლოო შედეგამდე — ვქმნით ვიდეო, ფოტო და კამპანიის მასალებს, რომლებიც ბრენდის ერთიან ვიზუალურ ენას მისდევს. თითოეული კადრი ემსახურება უფრო დიდ სისტემას და არა ცალკე აქტივობას.",
+        "included": [
+          "ვიდეო პროდაქშენი",
+          "ფოტო პროდაქშენი",
+          "კამპანიის მასალები"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Production",
+        "metaTitle": "Production — Video & Photo | Grapevine",
+        "metaDescription": "Production from Grapevine — video, photo and campaign materials in one consistent brand visual language.",
+        "intro": "Production turns strategy and ideas into tangible visual material.",
+        "body": "From creative direction to the final result, we produce video, photo and campaign materials that follow one consistent brand visual language. Every frame serves the larger system, not an isolated activity.",
+        "included": [
+          "Video production",
+          "Photo production",
+          "Campaign materials"
+        ],
+        "price": ""
+      }
+    },
+    "pr-services": {
+      "sourceUrl": "https://grapevine.ge/pr-service/",
+      "ka": {
+        "title": "PR სერვისები",
+        "metaTitle": "PR სერვისი — ონლაინ PR მენეჯმენტი | Grapevine",
+        "metaDescription": "Grapevine-ის ციფრული PR მომსახურება — სტრატეგია, კონტენტი, მედია-ურთიერთობები, ინფლუენსერ მარკეტინგი და ონლაინ რეპუტაციის მართვა.",
+        "intro": "პიარ (PR) მენეჯმენტი – ეს არის თქვენი კომპანიის რეპუტაციის, სანდოობისა და იმიჯის მართვის სტრატეგიული პროცესი.",
+        "body": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ონლაინ PR მომსახურებას, რომელიც დაგეხმარებათ მყარი და დადებითი ურთიერთობის ჩამოყალიბებაში თქვენს აუდიტორიასთან და პარტნიორებთან. ჩვენი ციფრული PR სერვისი მიზნად ისახავს, რომ თქვენი ბიზნესი გახდეს არა მხოლოდ ცნობილი, არამედ სანდო და ღირებული ბრენდი, რომლის ხმაც ისმის და რომელსაც ენდობიან.\n\nრატომ არის მნიშვნელოვანი ციფრული PR? მომხმარებელი გენდობა დადებითი საზოგადოებრივი აზრის საფუძველზე; იზრდება თქვენი ავტორიტეტი; ეფექტურად იმართება კომუნიკაცია კრიზისის დროს; მიიღწევა ორგანული ზრდა და SEO პოზიციების გაუმჯობესება; და საბოლოოდ იზრდება ცნობადობა და გაყიდვები.",
+        "included": [
+          "PR სტრატეგია",
+          "მედიასთან ურთიერთობა",
+          "საკომუნიკაციო გეგმა",
+          "რეპუტაციის მართვა"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "PR Services",
+        "metaTitle": "PR Services — Online PR Management | Grapevine",
+        "metaDescription": "Grapevine's digital PR — strategy, content, media relations, influencer marketing and online reputation management to make your brand trusted.",
+        "intro": "PR management is the strategic process of managing your company's reputation, credibility and image.",
+        "body": "Grapevine offers complete online PR that helps you build solid, positive relationships with your audience and partners. Our digital PR aims to make your business not just well-known but a trusted, valuable brand — one whose voice is heard and whose word is believed.\n\nWhy does digital PR matter? Customers trust you through positive public opinion; your authority grows; communication is handled effectively during a crisis; you achieve organic growth and better SEO positions; and ultimately awareness and sales increase.",
+        "included": [
+          "PR strategy",
+          "Media relations",
+          "Communications plan",
+          "Reputation management"
+        ],
+        "price": ""
+      }
+    },
+    "crm-systems": {
+      "sourceUrl": "",
+      "ka": {
+        "title": "CRM სისტემები",
+        "metaTitle": "CRM სისტემები — დანერგვა და ავტომატიზაცია | Grapevine",
+        "metaDescription": "CRM სისტემები Grapevine-ისგან — შერჩევა და დანერგვა, მონაცემების სტრუქტურირება, ავტომატიზაცია და ანალიტიკა.",
+        "intro": "CRM სისტემა აქცევს მიმოფანტულ მონაცემებს მართვად, ზრდაზე ორიენტირებულ სტრუქტურად.",
+        "body": "ვეხმარებით ბრენდებს, შეარჩიონ და დანერგონ სწორი CRM, დაასტრუქტურონ მონაცემები და გაამარტივონ პროცესები ავტომატიზაციით. შედეგად მარკეტინგი, გაყიდვები და მომსახურება ერთ სისტემაში მუშაობს — გამჭვირვალედ და გაზომვადად.",
+        "included": [
+          "CRM-ის შერჩევა და დანერგვა",
+          "მონაცემების სტრუქტურირება",
+          "ავტომატიზაცია",
+          "ანალიტიკა"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "CRM Systems",
+        "metaTitle": "CRM Systems — Setup & Automation | Grapevine",
+        "metaDescription": "CRM systems from Grapevine — selection and implementation, data structuring, automation and analytics.",
+        "intro": "A CRM system turns scattered data into a manageable, growth-focused structure.",
+        "body": "We help brands select and implement the right CRM, structure their data and simplify processes through automation. The result: marketing, sales and service work in one system — transparently and measurably.",
+        "included": [
+          "CRM selection and implementation",
+          "Data structuring",
+          "Automation",
+          "Analytics"
+        ],
+        "price": ""
+      }
+    },
+    "branding": {
+      "sourceUrl": "https://grapevine.ge/branding/",
+      "ka": {
+        "title": "ბრენდინგი",
+        "metaTitle": "ბრენდინგი — ბრენდის შექმნა | Grapevine",
+        "metaDescription": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ბრენდინგ სერვისებს — ბრენდის აუდიტი, პოზიციონირება, ლოგოს დიზაინი და ბრენდბუქი.",
+        "intro": "ბრენდინგი არის პროცესი, რომლის დროსაც იქმნება უნიკალური იდენტობა კომპანიისთვის, პროდუქტისთვის ან სერვისისთვის.",
+        "body": "ეს მოიცავს არა მხოლოდ ვიზუალურ ელემენტებს (როგორიცაა ლოგო და ფერები), არამედ კომპანიის ღირებულებების, ხედვისა და დაპირების ჩამოყალიბებას. ეფექტური ბრენდინგი ეხმარება ბიზნესს, გამორჩეული გახდეს კონკურენტებისგან, მოიზიდოს სამიზნე აუდიტორია და შექმნას ძლიერი ემოციური კავშირი მომხმარებლებთან.\n\nმარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ბრენდინგ სერვისებს, რომელიც დაგეხმარებათ შექმნათ მყარი და დასამახსოვრებელი ბრენდი.\n\nრატომ არის მნიშვნელოვანი ძლიერი ბრენდინგი? ის განასხვავებს თქვენს ბიზნესს, ზრდის ცნობადობასა და ნდობას, ამყარებს მომხმარებელთა ლოიალობას, ხელს უწყობს გაყიდვებს და იზიდავს საუკეთესო კადრებს.",
+        "included": [
+          "ბრენდის იდენტობა",
+          "ვიზუალური და ვერბალური ჩარჩო",
+          "ტონი და ხმა",
+          "გაიდლაინები"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Branding",
+        "metaTitle": "Branding — Brand Identity | Grapevine",
+        "metaDescription": "Grapevine builds complete brand identities — brand audit, positioning, logo and visual design, and brand guidelines that make you memorable.",
+        "intro": "Branding is the process of creating a unique identity for a company, product or service.",
+        "body": "It covers not only visual elements (such as the logo and colours) but the shaping of the company's values, vision and promise. Effective branding helps a business stand out from competitors, attract its target audience and build a strong emotional connection with customers.\n\nGrapevine offers complete branding services that help you create a solid, memorable brand.\n\nWhy does strong branding matter? It sets your business apart, grows recognition and trust, deepens customer loyalty, drives sales, and attracts the best talent.",
+        "included": [
+          "Brand identity",
+          "Visual & verbal framework",
+          "Tone & voice",
+          "Guidelines"
+        ],
+        "price": ""
+      }
+    },
+    "mobile-app": {
+      "sourceUrl": "",
+      "ka": {
+        "title": "მობილური აპლიკაცია",
+        "metaTitle": "მობილური აპლიკაცია — iOS და Android | Grapevine",
+        "metaDescription": "მობილური აპლიკაციები Grapevine-ისგან — პროდუქტის ლოგიკა, UX/UI დიზაინი, iOS და Android დეველოპმენტი და ინტეგრაციები.",
+        "intro": "მობილური აპლიკაცია ბრენდს პირდაპირ მომხმარებლის ჯიბეში ამყოფებს.",
+        "body": "პროდუქტის ლოგიკიდან გამოშვებამდე — ვგეგმავთ, ვაპროექტებთ და ვამუშავებთ iOS და Android აპლიკაციებს, რომლებიც მოსახერხებელია და თქვენს არსებულ სისტემებთან ინტეგრირებული. UX/UI დიზაინი და დეველოპმენტი ერთ პროცესად მიდის.",
+        "included": [
+          "პროდუქტის ლოგიკა",
+          "UX/UI დიზაინი",
+          "iOS და Android დეველოპმენტი",
+          "ინტეგრაციები"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Mobile App",
+        "metaTitle": "Mobile App — iOS & Android | Grapevine",
+        "metaDescription": "Mobile apps from Grapevine — product logic, UX/UI design, iOS and Android development and integrations.",
+        "intro": "A mobile app puts your brand directly in the customer's pocket.",
+        "body": "From product logic to release, we plan, design and build iOS and Android apps that are easy to use and integrated with your existing systems. UX/UI design and development move as one process.",
+        "included": [
+          "Product logic",
+          "UX/UI design",
+          "iOS and Android development",
+          "Integrations"
+        ],
+        "price": ""
+      }
+    },
+    "digital-advertising": {
+      "sourceUrl": "https://grapevine.ge/cifruli-reklama/ (merged with /reklamis-gashveba/)",
+      "ka": {
+        "title": "ციფრული რეკლამა",
+        "metaTitle": "ციფრული რეკლამა — Facebook, Google, TikTok | Grapevine",
+        "metaDescription": "ციფრული რეკლამა Grapevine-ისგან — Facebook/Instagram, TikTok, LinkedIn და Google Ads კამპანიები, სტრატეგიით, ვიზუალითა და რეპორტინგით.",
+        "intro": "ადამიანები სულ უფრო მეტ დროს ატარებენ ციფრულ სივრცეში — ციფრული რეკლამა საშუალებას გაძლევთ მიაღწიოთ ზუსტად იმ ადამიანებამდე, ვინც დაინტერესებულია თქვენი პროდუქტით ან მომსახურებით.",
+        "body": "იმისათვის, რომ თქვენი ბრენდი მხოლოდ ერთ მარკეტინგულ არხში არ იყოს წარმოდგენილი, გრეიფვაინი გთავაზობთ ციფრული რეკლამირების მომსახურებას სხვადასხვა პლატფორმაზე: Facebook/Instagram რეკლამა, TikTok Ads, LinkedIn რეკლამა და Google Ads.\n\nრატომ არის მნიშვნელოვანი ციფრული რეკლამა? მომხმარებელი თავად გეძებთ; შესაძლებელია რეკლამის ზუსტი დამიზნება დემოგრაფიის, ინტერესებისა და ქცევის მიხედვით; იზრდება ბრენდის ცნობადობა და გაყიდვები; მიიღწევა სწრაფი შედეგები ორგანული ზრდისგან განსხვავებით; და ყველა შედეგი გაზომვადი და ხელშესახებია.",
+        "included": [
+          "Meta, Google, TikTok, YouTube",
+          "აუდიტორიის სტრუქტურირება",
+          "კრეატივების ტესტირება",
+          "ბიუჯეტის ოპტიმიზაცია",
+          "ანალიტიკა"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Digital Advertising",
+        "metaTitle": "Digital Advertising — Facebook, Google, TikTok | Grapevine",
+        "metaDescription": "Digital advertising from Grapevine — Facebook/Instagram, TikTok, LinkedIn and Google Ads campaigns with strategy, creative and reporting.",
+        "intro": "People spend more and more time in the digital space — digital advertising lets you reach exactly the people interested in your product or service.",
+        "body": "So your brand isn't represented in just one marketing channel, Grapevine offers digital advertising across multiple platforms: Facebook/Instagram ads, TikTok Ads, LinkedIn ads and Google Ads.\n\nWhy does digital advertising matter? Customers search for you; ads can be targeted precisely by demographics, interests and behaviour; brand awareness and sales grow; results come faster than organic growth; and every outcome is measurable and tangible.",
+        "included": [
+          "Meta, Google, TikTok, YouTube",
+          "Audience structuring",
+          "Creative testing",
+          "Budget optimisation",
+          "Analytics"
+        ],
+        "price": ""
+      }
+    },
+    "web-development": {
+      "sourceUrl": "https://grapevine.ge/saitebis-damzadeba/",
+      "ka": {
+        "title": "ვებ დეველოპმენტი",
+        "metaTitle": "ვებსაიტის დამზადება — ვებ დეველოპმენტი | Grapevine",
+        "metaDescription": "ვებსაიტის დამზადება Grapevine-ისგან — თქვენს ბრენდზე მორგებული, SEO-მეგობრული და მარტივად სამართავი ვებსაიტი WordPress-ზე.",
+        "intro": "წარმატებული ბრენდის ჩამოყალიბება თითქმის შეუძლებელია ციფრული სამყაროს ათვისების გარეშე — ვებსაიტის დამზადება კი პირველი მნიშვნელოვანი ნაბიჯია ამ გზაზე.",
+        "body": "„გრეიფვაინის“ ვებ დეველოპმენტის სერვისი დაგეხმარებათ შექმნათ თქვენს ბრენდზე ზუსტად მორგებული ვებსაიტი და მყარად დაიმკვიდროთ თავი სწრაფად ცვალებად კონკურენტულ გარემოში. თქვენი ჩართულობა მხოლოდ მოთხოვნებისა და ზოგადი ინფორმაციის მოწოდებით შემოიფარგლება — დანარჩენს უზრუნველყოფს ვებ-დეველოპერი, ექაუნთ მენეჯერი, კონტენტ მენეჯერი და UI/UX დიზაინერი.\n\nვებსაიტის შექმნის ფასი დამოკიდებულია გვერდების რაოდენობაზე, ფოტო-ვიდეო მასალის მოცულობაზე, ფუნქციონალზე, ვებსაიტის ტიპსა (ონლაინ მაღაზია, სავიზიტო საიტი და ა.შ.) და დამატებით მოთხოვნებზე.\n\nჩვენ ვამზადებთ ვებსაიტებს WordPress-ზე: დაბალი საწყისი ხარჯი ხარისხზე უარის თქმის გარეშე, სისწრაფე და მოქნილობა, მართვის სიმარტივე კოდის ცოდნის გარეშე და SEO-მეგობრული სტრუქტურა.",
+        "included": [
+          "UX/UI დიზაინი",
+          "დეველოპმენტი",
+          "ოპტიმიზაცია",
+          "ტექნიკური მხარდაჭერა"
+        ],
+        "price": ""
+      },
+      "en": {
+        "title": "Web Development",
+        "metaTitle": "Website Development — Web Development | Grapevine",
+        "metaDescription": "Website development from Grapevine — a brand-tailored, SEO-friendly and easy-to-manage website built on WordPress.",
+        "intro": "Building a successful brand is almost impossible without a digital presence — and a website is the first important step on that path.",
+        "body": "Grapevine's web development service helps you create a website tailored precisely to your brand and firmly establish yourself in a fast-changing, competitive environment. Your involvement is limited to providing requirements and general information — the rest is handled by a web developer, account manager, content manager and UI/UX designer.\n\nThe price of a website depends on the number of pages, the volume of photo and video material, functionality, the type of site (online store, business-card site, etc.) and any additional requirements.\n\nWe build websites on WordPress: a low starting cost without compromising quality, speed and flexibility, easy management with no coding knowledge, and an SEO-friendly structure.",
+        "included": [
+          "UX/UI design",
+          "Development",
+          "Optimisation",
+          "Technical support"
+        ],
+        "price": ""
+      }
+    }
+  }
+}
