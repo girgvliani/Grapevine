@@ -5,6 +5,7 @@ import "../globals.css";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
+import SupportWidget from "@/components/SupportWidget";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
 import { SITE_URL, isLocale, pageAlternates } from "@/lib/routing";
@@ -74,6 +75,7 @@ export default async function RootLayout({
           <Cursor />
           <Nav />
           {children}
+          <SupportWidget />
         </LanguageProvider>
       </body>
     </html>
