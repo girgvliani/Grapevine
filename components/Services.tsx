@@ -7,34 +7,7 @@ import { getServiceDetail } from "@/lib/serviceContent";
 import { localizedHref } from "@/lib/routing";
 import type { ServiceSlug } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
-import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
-import iconSeo         from "./assets/servicesIcons/seo.png";
-import iconSocial      from "./assets/servicesIcons/social.png";
-import iconStrategy    from "./assets/servicesIcons/strategy.png";
-import iconCampaigns   from "./assets/servicesIcons/campaigns.png";
-import iconProduction  from "./assets/servicesIcons/production.png";
-import iconPrServices  from "./assets/servicesIcons/Prservices.png";
-import iconCrm         from "./assets/servicesIcons/CRM.png";
-import iconBranding    from "./assets/servicesIcons/branding.png";
-import iconMobileApp   from "./assets/servicesIcons/mobileapp.png";
-import iconDigital     from "./assets/servicesIcons/digital.png";
-import iconWeb         from "./assets/servicesIcons/web.png";
-
-// Order + icons live here; the names/subtitles come from the i18n file.
-const SERVICE_ASSETS = [
-  { id: "social-media-audit",  icon: iconSocMedia   },
-  { id: "seo",                 icon: iconSeo        },
-  { id: "social-media",        icon: iconSocial     },
-  { id: "strategy",            icon: iconStrategy   },
-  { id: "campaigns",           icon: iconCampaigns  },
-  { id: "production",          icon: iconProduction },
-  { id: "pr-services",         icon: iconPrServices },
-  { id: "crm-systems",         icon: iconCrm        },
-  { id: "branding",            icon: iconBranding   },
-  { id: "mobile-app",          icon: iconMobileApp  },
-  { id: "digital-advertising", icon: iconDigital    },
-  { id: "web-development",      icon: iconWeb        },
-] as const;
+import { SERVICE_ASSETS } from "./servicesConfig";
 
 // Loop / repeat mark — the "turn" indicator shown on each service card.
 function RepeatIcon({ size = 22 }: { size?: number }) {

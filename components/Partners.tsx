@@ -9,6 +9,7 @@ import { CLIENT_LOGOS } from "./assets/clientLogos";
 type LogoEntry = {
   src: StaticImageData;
   alt: string;
+  bg: string;    // tile background colour
   col: number;   // 1-based grid column
   row: number;   // 1-based grid row (1=top, 2=mid, 3=bottom)
   w: number;     // logo render width in px
@@ -22,10 +23,11 @@ const COL_W      = 225;  // px per grid column
 const ROW_H      = 160;  // px per row — extra breathing room between logos
 const GRID_LEFT  = 280;  // px from track left where logo grid starts (heading lives here)
 const GRID_COLS  = 8;    // 5 visible + 3 scrollable cols (all filled with logos)
+const LOGO_BOOST = 1.15; // enlarge each logo tile ~15%
 
 // Scattered placements (col/row set the grid cell; dx/dy nudge within the cell).
 // The 18 client logos are zipped onto these slots in order.
-const POSITIONS: Omit<LogoEntry, "src" | "alt">[] = [
+const POSITIONS: Omit<LogoEntry, "src" | "alt" | "bg">[] = [
   { col: 2, row: 1, w: 125, dx:  20, dy: -25 },
   { col: 1, row: 2, w: 115, dx: -10, dy:   5 },
   { col: 2, row: 3, w: 110, dx:  35, dy:  15 },
@@ -50,6 +52,7 @@ const LOGOS: LogoEntry[] = POSITIONS.map((pos, i) => ({
   ...pos,
   src: CLIENT_LOGOS[i].src,
   alt: CLIENT_LOGOS[i].alt,
+  bg: CLIENT_LOGOS[i].bg,
 }));
 
 export default function Partners() {
@@ -148,21 +151,21 @@ export default function Partners() {
             <div
               key={i}
               style={{
+                background: logo.bg,
+                borderRadius: "0.9rem",
+                padding: "0.7rem 0.9rem",
+                width: `${logo.w * logoScaleStatic * LOGO_BOOST}px`,
+                height: `${(logo.maxH ?? 92) * logoScaleStatic * LOGO_BOOST}px`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                width: `${logo.w * logoScaleStatic}px`,
+                boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
               }}
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  objectFit: "contain",
-                  maxHeight: logo.maxH ? `${logo.maxH * logoScaleStatic}px` : undefined,
-                }}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </div>
           ))}
@@ -236,16 +239,25 @@ export default function Partners() {
                     transform: `translate(${(logo.dx ?? 0) * gridScale}px, ${(logo.dy ?? 0) * gridScale}px)`,
                   }}
                 >
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
+                  <div
                     style={{
-                      width: `${logo.w * logoScale}px`,
-                      height: "auto",
-                      objectFit: "contain",
-                      maxHeight: logo.maxH ? `${logo.maxH * logoScale}px` : undefined,
+                      background: logo.bg,
+                      borderRadius: "0.9rem",
+                      padding: `${8 * logoScale}px ${12 * logoScale}px`,
+                      width: `${logo.w * logoScale * LOGO_BOOST}px`,
+                      height: `${(logo.maxH ?? 92) * logoScale * LOGO_BOOST}px`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
                     }}
-                  />
+                  >
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>

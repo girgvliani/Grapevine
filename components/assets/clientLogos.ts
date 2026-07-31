@@ -22,25 +22,28 @@ import l16 from "./partnerlogos/image00016-Photoroom.png";
 import l17 from "./partnerlogos/image00017-Photoroom.png";
 import l18 from "./partnerlogos/IMG_5695-Photoroom.png";
 
-export type ClientLogo = { src: StaticImageData; alt: string };
+export type ClientLogo = { src: StaticImageData; alt: string; bg: string };
 
+// `bg` = the tile colour behind each (transparent) logo. Brand-aligned soft
+// pastels for dark/colourful logos; deeper tones for the white/light logos
+// (Blits, Smart Store, Fermino, l17) so they stay legible.
 export const CLIENT_LOGOS: ClientLogo[] = [
-  { src: l01, alt: "ICF Sakartvelo Chapter" },
-  { src: l02, alt: "GEO GPS" },
-  { src: l03, alt: "Family Kids Kindergarten" },
-  { src: l04, alt: "Blits Dental" },
-  { src: l05, alt: "Client logo" },
-  { src: l06, alt: "Client logo" },
-  { src: l07, alt: "Hera XXI" },
-  { src: l08, alt: "Smart Store" },
-  { src: l09, alt: "FINO Audit & Accounting" },
-  { src: l10, alt: "Bariatric & Metabolic Medicine Center" },
-  { src: l11, alt: "European Language Institute Georgia" },
-  { src: l12, alt: "Fermino" },
-  { src: l13, alt: "American Hospital Tbilisi" },
-  { src: l14, alt: "Komuna" },
-  { src: l15, alt: "DAC Components" },
-  { src: l16, alt: "Client logo" },
-  { src: l17, alt: "Client logo" },
-  { src: l18, alt: "4Hospitals Medical Company" },
+  { src: l01, alt: "ICF Sakartvelo Chapter", bg: "#D8D4FF" },
+  { src: l02, alt: "GEO GPS", bg: "#FFF0BD" },
+  { src: l03, alt: "Family Kids Kindergarten", bg: "#CDEBDA" },
+  { src: l04, alt: "Blits Dental", bg: "#7C4DBE" },
+  { src: l05, alt: "Client logo", bg: "#FFD8C7" },
+  { src: l06, alt: "Client logo", bg: "#D2E3F7" },
+  { src: l07, alt: "Hera XXI", bg: "#D8D4FF" },
+  { src: l08, alt: "Smart Store", bg: "#2E3A6E" },
+  { src: l09, alt: "FINO Audit & Accounting", bg: "#FFF0BD" },
+  { src: l10, alt: "Bariatric & Metabolic Medicine Center", bg: "#CDEBDA" },
+  { src: l11, alt: "European Language Institute Georgia", bg: "#FFD8C7" },
+  { src: l12, alt: "Fermino", bg: "#2E6B4A" },
+  { src: l13, alt: "American Hospital Tbilisi", bg: "#D8D4FF" },
+  { src: l14, alt: "Komuna", bg: "#FFF0BD" },
+  { src: l15, alt: "DAC Components", bg: "#D2E3F7" },
+  { src: l16, alt: "Client logo", bg: "#D8D4FF" },
+  { src: l17, alt: "Client logo", bg: "#3E5AA8" },
+  { src: l18, alt: "4Hospitals Medical Company", bg: "#FFD8C7" },
 ];

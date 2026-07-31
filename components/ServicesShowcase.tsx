@@ -8,36 +8,7 @@ import { localizedHref, stripLocale } from "@/lib/routing";
 import { getServiceDetail } from "@/lib/serviceContent";
 import type { ServiceSlug } from "@/lib/i18n";
 import BehanceLink from "./BehanceLink";
-import iconSocMedia    from "./assets/servicesIcons/socmedia.png";
-import iconSeo         from "./assets/servicesIcons/seo.png";
-import iconSocial      from "./assets/servicesIcons/social.png";
-import iconStrategy    from "./assets/servicesIcons/strategy.png";
-import iconCampaigns   from "./assets/servicesIcons/campaigns.png";
-import iconProduction  from "./assets/servicesIcons/production.png";
-import iconPrServices  from "./assets/servicesIcons/Prservices.png";
-import iconCrm         from "./assets/servicesIcons/CRM.png";
-import iconBranding    from "./assets/servicesIcons/branding.png";
-import iconMobileApp   from "./assets/servicesIcons/mobileapp.png";
-import iconDigital     from "./assets/servicesIcons/digital.png";
-import iconWeb         from "./assets/servicesIcons/web.png";
-
-// Order + icons live here; the names/subtitles come from the i18n file and the
-// expanded copy comes from content/services.json (via getServiceDetail). The
-// `id` is also the URL slug of the matching /services/<id> detail page.
-const SERVICE_ASSETS = [
-  { id: "social-media-audit",  icon: iconSocMedia   },
-  { id: "seo",                 icon: iconSeo        },
-  { id: "social-media",        icon: iconSocial     },
-  { id: "strategy",            icon: iconStrategy   },
-  { id: "campaigns",           icon: iconCampaigns  },
-  { id: "production",          icon: iconProduction },
-  { id: "pr-services",         icon: iconPrServices },
-  { id: "crm-systems",         icon: iconCrm        },
-  { id: "branding",            icon: iconBranding   },
-  { id: "mobile-app",          icon: iconMobileApp  },
-  { id: "digital-advertising", icon: iconDigital    },
-  { id: "web-development",      icon: iconWeb        },
-] as const;
+import { SERVICE_ASSETS } from "./servicesConfig";
 
 // Cards stack vertically (icon over detail) below this width.
 const STACK_QUERY = "(max-width: 820px)";
@@ -294,9 +265,14 @@ function ServiceCard({
         </div>
       )}
 
-      {/* Arrow badge — top-right (also collapses an open card) */}
+      {/* Arrow badge — top-right. Always toggles: opens a closed card and
+          closes an open one. stopPropagation prevents the card's own onClick
+          from also firing (which would immediately re-toggle). */}
       <div
-        onClick={open ? onToggle : undefined}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggle();
+        }}
         style={{
           position: "absolute",
           top: "1.25rem",

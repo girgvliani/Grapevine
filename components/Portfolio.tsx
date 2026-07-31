@@ -1,40 +1,23 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
-import { CLIENT_LOGOS } from "./assets/clientLogos";
-
-type Project = {
-  id: number;
-  bg: string;
-  image: StaticImageData;
-};
-
-// Dummy project data: titles/description come from the i18n file, colours are
-// fixed, and the images are (temporarily) the client logos until real project
-// visuals are available.
-const BGS = [
-  "#E8541A", "#2B6CB0", "#111111", "#902793", "#1A5C3A", "#C0392B",
-  "#2C3E50", "#E67E22", "#AFA9FF", "#16A085", "#8E44AD", "#D35400",
-];
-const PROJECTS: Project[] = BGS.map((bg, i) => ({
-  id: i + 1,
-  bg,
-  image: CLIENT_LOGOS[i].src,
-}));
+import { PORTFOLIO_PROJECTS, type PortfolioProject } from "./portfolioConfig";
 
 function ProjectCard({
   project,
   title,
   desc,
+  tag,
   delay,
   variant,
 }: {
-  project: Project;
+  project: PortfolioProject;
   title: string;
   desc: string;
+  tag: string;
   delay: number;
   variant: "desktop" | "tablet";
 }) {
@@ -42,8 +25,9 @@ function ProjectCard({
   const visible = true;
   const isWide = useMediaQuery(WIDE_QUERY);
   const isHuge = useMediaQuery(HUGE_QUERY);
+  const hasImage = Boolean(project.image);
 
-  // Tablet: horizontal card — image on the left, cream text panel on the right.
+  // Tablet: horizontal card — visual on the left, cream text panel on the right.
   if (variant === "tablet") {
     return (
       <div
@@ -60,34 +44,18 @@ function ProjectCard({
           transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
         }}
       >
-        {/* Image side */}
-        <div style={{ flex: "0 0 45%", position: "relative", background: "#fff" }}>
-          <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 45vw, 180px" style={{ objectFit: "contain", padding: "0.75rem" }} />
+        {/* Visual side: logo on white, or the name on the brand colour */}
+        <div style={{ flex: "0 0 45%", position: "relative", background: hasImage ? "#fff" : project.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: "0.6rem" }}>
+          {hasImage ? (
+            <Image src={project.image!} alt={title} fill sizes="180px" style={{ objectFit: "contain", padding: "0.6rem" }} />
+          ) : (
+            <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "0.8125rem", textTransform: "uppercase", textAlign: "center", lineHeight: 1.1 }}>{title}</span>
+          )}
         </div>
 
         {/* Text side */}
-        <div
-          style={{
-            flex: 1,
-            minWidth: 0,
-            background: "var(--cream)",
-            padding: "0.75rem 0.875rem",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              fontStyle: "italic",
-              color: "var(--dark)",
-              fontFamily: "var(--font-primary)",
-              lineHeight: 1.2,
-              marginBottom: "0.5rem",
-            }}
-          >
+        <div style={{ flex: 1, minWidth: 0, background: "var(--cream)", padding: "0.75rem 0.875rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--dark)", fontFamily: "var(--font-primary)", lineHeight: 1.2, marginBottom: "0.4rem" }}>
             {title}
           </div>
           <div
@@ -102,7 +70,7 @@ function ProjectCard({
               overflow: "hidden",
             } as React.CSSProperties}
           >
-            &ldquo;{desc}&rdquo;
+            {desc}
           </div>
         </div>
       </div>
@@ -134,42 +102,24 @@ function ProjectCard({
         (e.currentTarget as HTMLDivElement).style.transition = "transform 0.3s ease";
       }}
     >
-      {/* Visual area — white so the logo placeholders read cleanly */}
-      <div style={{ height: isHuge ? "clamp(23rem, 40vh, 32rem)" : isWide ? "20rem" : "16.9375rem", position: "relative", background: "#fff" }}>
-        <Image src={project.image} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "contain", padding: "2.5rem" }} />
+      {/* Visual area — logo on white, or the name centred on the brand colour */}
+      <div style={{ height: isHuge ? "clamp(23rem, 40vh, 32rem)" : isWide ? "20rem" : "16.9375rem", position: "relative", background: hasImage ? "#fff" : project.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {hasImage ? (
+          <Image src={project.image!} alt={title} fill sizes="(max-width: 640px) 90vw, 480px" style={{ objectFit: "contain", padding: "2.5rem" }} />
+        ) : (
+          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05 }}>{title}</span>
+        )}
       </div>
 
       {/* Text overlay */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: "1.25rem",
-          background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "13px",
-            fontWeight: 700,
-            color: "#fff",
-            fontFamily: "var(--font-primary)",
-            marginBottom: "6px",
-            letterSpacing: "0.02em",
-          }}
-        >
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1.25rem", background: "linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 100%)" }}>
+        <div style={{ fontSize: "0.5625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem", fontFamily: "var(--font-primary)" }}>
+          {tag}
+        </div>
+        <div style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", fontFamily: "var(--font-primary)", marginBottom: "0.35rem", letterSpacing: "0.02em" }}>
           {title}
         </div>
-        <div
-          style={{
-            fontSize: "11px",
-            color: "rgba(255,255,255,0.65)",
-            fontFamily: "var(--font-primary)",
-            lineHeight: 1.6,
-          }}
-        >
+        <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.72)", fontFamily: "var(--font-primary)", lineHeight: 1.55, maxWidth: "24rem" }}>
           {desc}
         </div>
       </div>
@@ -185,6 +135,10 @@ export default function Portfolio() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [outerHeight, setOuterHeight] = useState("350vh");
 
+  const projText = (p: PortfolioProject) =>
+    t.portfolio.projects[p.id as keyof typeof t.portfolio.projects];
+  const catLabel = (p: PortfolioProject) => t.portfolioPage.categories[p.category];
+
   useEffect(() => {
     if (isTablet) return;
     const outer = outerRef.current;
@@ -192,34 +146,25 @@ export default function Portfolio() {
     if (!outer || !track) return;
 
     const getMaxShift = () => {
-      const containerStyle = getComputedStyle(track.parentElement!);
-      const paddingLeft = parseFloat(containerStyle.paddingLeft) || 0;
-      const paddingRight = parseFloat(containerStyle.paddingRight) || 0;
-      return Math.max(0, track.scrollWidth - window.innerWidth + paddingLeft + paddingRight);
+      const cs = getComputedStyle(track.parentElement!);
+      const pl = parseFloat(cs.paddingLeft) || 0;
+      const pr = parseFloat(cs.paddingRight) || 0;
+      return Math.max(0, track.scrollWidth - window.innerWidth + pl + pr);
     };
-
-    const computeHeight = () => {
-      const maxShift = getMaxShift();
-      setOuterHeight(`${maxShift + window.innerHeight + 200}px`);
-    };
-
+    const computeHeight = () => setOuterHeight(`${getMaxShift() + window.innerHeight + 200}px`);
     const update = () => {
       const rect = outer.getBoundingClientRect();
-      const scrollRange = rect.height - window.innerHeight;
-      if (scrollRange <= 0) return;
-      const maxShift = getMaxShift();
-      const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
-      track.style.transform = `translateX(-${progress * maxShift}px)`;
+      const range = rect.height - window.innerHeight;
+      if (range <= 0) return;
+      const progress = Math.max(0, Math.min(1, -rect.top / range));
+      track.style.transform = `translateX(-${progress * getMaxShift()}px)`;
     };
-
     const raf = requestAnimationFrame(() => {
       computeHeight();
       update();
     });
-
     window.addEventListener("resize", computeHeight);
     window.addEventListener("scroll", update, { passive: true });
-
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", computeHeight);
@@ -229,61 +174,20 @@ export default function Portfolio() {
 
   const heading = (
     <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
-      <h2
-        style={{
-          fontSize: "clamp(2rem, 4.44vw, 4rem)",
-          fontWeight: 900,
-          textTransform: "uppercase",
-          letterSpacing: "0",
-          color: "var(--orange)",
-          fontFamily: "var(--font-heading)",
-        }}
-      >
+      <h2 style={{ fontSize: "clamp(2rem, 4.44vw, 4rem)", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0", color: "var(--orange)", fontFamily: "var(--font-heading)" }}>
         {t.portfolio.heading}
       </h2>
     </div>
   );
 
-  // Tablet / mobile: same horizontal card layout, but natively swipeable.
   if (isTablet) {
     return (
-      <section
-        id="work"
-        style={{
-          background: "var(--dark)",
-          overflow: "hidden",
-          paddingBottom: "3rem",
-        }}
-      >
+      <section id="work" style={{ background: "var(--dark)", overflow: "hidden", paddingBottom: "3rem" }}>
         {heading}
-        <div
-          className="hide-scrollbar"
-          style={{
-            overflowX: "auto",
-            overflowY: "hidden",
-            WebkitOverflowScrolling: "touch",
-            padding: "0 clamp(1.5rem, 5vw, 3rem)",
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateRows: "repeat(3, 7.75rem)",
-              gridAutoFlow: "column",
-              gridAutoColumns: "17rem",
-              gap: "1rem",
-              width: "max-content",
-            }}
-          >
-            {PROJECTS.map((p, i) => (
-              <ProjectCard
-                key={p.id}
-                project={p}
-                title={t.portfolio.projects[p.id as keyof typeof t.portfolio.projects]}
-                desc={t.portfolio.desc}
-                delay={i * 0.08}
-                variant="tablet"
-              />
+        <div className="hide-scrollbar" style={{ overflowX: "auto", overflowY: "hidden", WebkitOverflowScrolling: "touch", padding: "0 clamp(1.5rem, 5vw, 3rem)" }}>
+          <div style={{ display: "grid", gridTemplateRows: "repeat(3, 7.75rem)", gridAutoFlow: "column", gridAutoColumns: "17rem", gap: "1rem", width: "max-content" }}>
+            {PORTFOLIO_PROJECTS.map((p, i) => (
+              <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={i * 0.05} variant="tablet" />
             ))}
           </div>
         </div>
@@ -293,43 +197,12 @@ export default function Portfolio() {
 
   return (
     <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
-      <section
-        id="work"
-        style={{
-          background: "var(--dark)",
-          overflow: "hidden",
-          position: "sticky",
-          top: 0,
-          height: isHuge ? "clamp(48.625rem, 92vh, 66rem)" : "48.625rem",
-        }}
-      >
+      <section id="work" style={{ background: "var(--dark)", overflow: "hidden", position: "sticky", top: 0, height: isHuge ? "clamp(48.625rem, 92vh, 66rem)" : "48.625rem" }}>
         {heading}
-
-        {/* Cards track */}
-        <div
-          style={{
-            padding: "0 clamp(3rem, 7.6vw, 6.875rem)",
-            overflow: "visible",
-          }}
-        >
-          <div
-            ref={trackRef}
-            style={{
-              display: "flex",
-              gap: "1rem",
-              willChange: "transform",
-              transition: "transform 0.05s linear",
-            }}
-          >
-            {PROJECTS.map((p, i) => (
-              <ProjectCard
-                key={p.id}
-                project={p}
-                title={t.portfolio.projects[p.id as keyof typeof t.portfolio.projects]}
-                desc={t.portfolio.desc}
-                delay={i * 0.08}
-                variant="desktop"
-              />
+        <div style={{ padding: "0 clamp(3rem, 7.6vw, 6.875rem)", overflow: "visible" }}>
+          <div ref={trackRef} style={{ display: "flex", gap: "1rem", willChange: "transform", transition: "transform 0.05s linear" }}>
+            {PORTFOLIO_PROJECTS.map((p, i) => (
+              <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={i * 0.08} variant="desktop" />
             ))}
           </div>
         </div>

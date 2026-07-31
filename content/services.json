@@ -16,12 +16,14 @@
     "social-media-audit": {
       "sourceUrl": "https://grapevine.ge/social-media-audit/",
       "ka": {
-        "title": "სოციალური მედია აუდიტი",
-        "metaTitle": "სოციალური მედია აუდიტი — უფასო | Grapevine",
-        "metaDescription": "მიიღეთ უფასო სოციალური მედია აუდიტი Grapevine-ისგან — პროფილების, კონტენტის, აუდიტორიისა და კონკურენტების ანალიზი და კონკრეტული რეკომენდაციები.",
-        "intro": "სოციალური მედია აუდიტი – ეს არის პროცესი, რომელიც მოიცავს თქვენი ბიზნესის სოციალური მედიის არსებული აქტივობების დეტალურ ანალიზს.",
-        "body": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ სოციალური მედიის აუდიტს, რათა გაიგოთ, რამდენად ეფექტურია თქვენი ამჟამინდელი სტრატეგიები და სად არის გაუმჯობესების შესაძლებლობები. ეს გულისხმობს თქვენი სოციალური მედიის პროფილების, კონტენტის, აუდიტორიის და კონკურენტების შესწავლას, რათა მიიღოთ ხელშესახები ინსაითები და გაზარდოთ თქვენი ბრენდის წარმატება ციფრულ სივრცეში.\n\nრატომ არის მნიშვნელოვანი სოციალური მედია აუდიტის გაკეთება? სწორად ოპტიმიზებული სოციალური მედია გვერდები გეხმარებათ მიიპყროთ დაინტერესებული მომხმარებლების ყურადღება, სწორად შეარჩიოთ სამიზნე აუდიტორია, მიიღოთ სწრაფი შედეგები, გაზარდოთ ბრენდის ცნობადობა და გაყიდვები, და მიიღოთ გაზომვადი, ხელშესახები შედეგები.",
+        "title": "SEO და სოციალური მედია აუდიტი",
+        "metaTitle": "SEO და სოციალური მედია აუდიტი | Grapevine",
+        "metaDescription": "უფასო SEO და სოციალური მედია აუდიტი Grapevine-ისგან — ვებსაიტის, კონტენტის, არხებისა და კონკურენტების ანალიზი და კონკრეტული რეკომენდაციები.",
+        "intro": "აუდიტი აჩვენებს, სად დგახართ დღეს — თქვენი ვებსაიტისა და სოციალური მედიის არსებული აქტივობების დეტალური ანალიზით.",
+        "body": "SEO აუდიტი აფასებს თქვენი ვებსაიტის ტექნიკურ მდგომარეობას, საკვანძო სიტყვებსა და საძიებო სისტემებში ხილვადობას, ხოლო სოციალური მედიის აუდიტი სწავლობს თქვენს პროფილებს, კონტენტს, აუდიტორიასა და კონკურენტებს.\n\nორივე ერთად გაძლევთ სრულ სურათს, თუ სად არის გაუმჯობესების შესაძლებლობები — ხელშესახები, გაზომვადი რეკომენდაციებით, რომლითაც სტრატეგიას გავამართავთ.",
         "included": [
+          "ვებსაიტის ტექნიკური SEO ანალიზი",
+          "საკვანძო სიტყვების კვლევა",
           "კონტენტის შეფასება",
           "არხების ანალიზი",
           "მეტრიკების განხილვა",
@@ -30,12 +32,14 @@
         "price": ""
       },
       "en": {
-        "title": "Social Media Audit",
-        "metaTitle": "Social Media Audit — Free | Grapevine",
-        "metaDescription": "Get a free social media audit from Grapevine — analysis of your profiles, content, audience and competitors, plus concrete recommendations.",
-        "intro": "A social media audit is a detailed analysis of your business's existing social media activity.",
-        "body": "Grapevine provides a complete social media audit so you can see how effective your current strategies are and where the opportunities to improve lie. It examines your profiles, content, audience and competitors to give you tangible insights and grow your brand's success in the digital space.\n\nWhy does a social media audit matter? Well-optimised social pages help you capture the attention of already-interested customers, choose the right target audience, get fast results, grow brand awareness and sales, and deliver measurable, tangible outcomes.",
+        "title": "SEO & Social Media Audit",
+        "metaTitle": "SEO & Social Media Audit | Grapevine",
+        "metaDescription": "Free SEO and social media audit from Grapevine — analysis of your website, content, channels and competitors, with concrete recommendations.",
+        "intro": "An audit shows where you stand today — a detailed analysis of your website and existing social media activity.",
+        "body": "The SEO audit assesses your website's technical health, keywords and visibility in search engines, while the social media audit examines your profiles, content, audience and competitors.\n\nTogether they give you a full picture of where the opportunities to improve are — with tangible, measurable recommendations to sharpen your strategy.",
         "included": [
+          "Technical SEO analysis",
+          "Keyword research",
           "Content assessment",
           "Channel analysis",
           "Metrics review",
@@ -73,37 +77,6 @@
           "On-page optimisation",
           "Content structure",
           "Analytics and monitoring"
-        ],
-        "price": ""
-      }
-    },
-    "social-media": {
-      "sourceUrl": "https://grapevine.ge/social-media/",
-      "ka": {
-        "title": "სოციალური მედია მენეჯმენტი",
-        "metaTitle": "სოციალური მედია მენეჯმენტი | Grapevine",
-        "metaDescription": "სოციალური მედია მენეჯმენტი Grapevine-ისგან — სტრატეგია, დიზაინი, ქოფირაითინგი, კომუნიკაცია და ყოველთვიური რეპორტინგი Facebook, Instagram, TikTok-ისთვის.",
-        "intro": "მომხმარებელთა ერთგული ბაზის შესაქმნელად მხოლოდ კარგი პროდუქტი საკმარისი არაა — სწორ აუდიტორიას მუდმივად უნდა ხვდებოდეთ თვალში და მათ გონებაში მოწინავე პოზიცია დაიკავოთ.",
-        "body": "პაკეტი აერთიანებს 360°-იან მომსახურებას სოციალური მედიის პოტენციალის სრულად ასათვისებლად. მასში შესულია მარკეტინგული პროცესების ყველა რგოლი: სამიზნე აუდიტორიის სწორად განსაზღვრიდან პროდუქტის გაყიდვამდე.\n\nსოციალური მედია მენეჯმენტი გულისხმობს კონტენტის დაგეგმვას, შექმნას, გამოქვეყნებასა და ანალიზს ისეთი პლატფორმებისთვის, როგორიცაა Facebook, Instagram, TikTok, X და სხვა. ის მოიცავს მომხმარებლებთან ეფექტური და გრძელვადიანი ურთიერთობის ჩამოყალიბებას.\n\nსოციალური მედია პლატფორმები დღეს ერთ-ერთ ყველაზე ეფექტურ ინსტრუმენტს წარმოადგენს გაყიდვების სტიმულირებისთვის: Facebook — მრავალრიცხოვანი აუდიტორია და ძლიერი სარეკლამო სისტემა; Instagram — ვიზუალურ კონტენტზე ორიენტირებული; TikTok — ვირუსული კონტენტისა და სწრაფი ცნობადობის ეპიცენტრი; LinkedIn — B2B გაყიდვებისთვის.",
-        "included": [
-          "კონტენტ სტრატეგია",
-          "დაგეგმვა",
-          "კონტენტის შექმნა",
-          "ანგარიშების მართვა და ოპტიმიზაცია"
-        ],
-        "price": ""
-      },
-      "en": {
-        "title": "Social Media Management",
-        "metaTitle": "Social Media Management | Grapevine",
-        "metaDescription": "Social media management from Grapevine — strategy, design, copywriting, community and monthly reporting across Facebook, Instagram and TikTok.",
-        "intro": "A loyal customer base takes more than a good product — you have to stay in front of the right audience and hold a leading position in their minds.",
-        "body": "The package brings together 360° service to unlock the full potential of social media. It includes every link in the marketing chain: from correctly defining the target audience to selling the product.\n\nSocial media management covers planning, creating, publishing and analysing content for platforms such as Facebook, Instagram, TikTok, X and others, building effective, long-term relationships with customers.\n\nSocial platforms are among today's most effective tools for driving sales: Facebook — a large audience and a powerful ad system; Instagram — visual-content focused; TikTok — the epicentre of viral content and fast awareness; LinkedIn — built for B2B sales.",
-        "included": [
-          "Content strategy",
-          "Planning",
-          "Content creation",
-          "Account management & optimisation"
         ],
         "price": ""
       }
@@ -175,8 +148,8 @@
     "production": {
       "sourceUrl": "",
       "ka": {
-        "title": "პროდაქშენი",
-        "metaTitle": "პროდაქშენი — ვიდეო და ფოტო | Grapevine",
+        "title": "ვიდეო პროდაქშენი",
+        "metaTitle": "ვიდეო პროდაქშენი — ვიდეო და ფოტო | Grapevine",
         "metaDescription": "პროდაქშენი Grapevine-ისგან — ვიდეო, ფოტო და კამპანიის მასალები ბრენდის ერთიან ვიზუალურ ენაზე.",
         "intro": "პროდაქშენი აქცევს სტრატეგიასა და იდეას ხელშესახებ ვიზუალურ მასალად.",
         "body": "კრეატიული მიმართულებიდან საბოლოო შედეგამდე — ვქმნით ვიდეო, ფოტო და კამპანიის მასალებს, რომლებიც ბრენდის ერთიან ვიზუალურ ენას მისდევს. თითოეული კადრი ემსახურება უფრო დიდ სისტემას და არა ცალკე აქტივობას.",
@@ -188,8 +161,8 @@
         "price": ""
       },
       "en": {
-        "title": "Production",
-        "metaTitle": "Production — Video & Photo | Grapevine",
+        "title": "Video Production",
+        "metaTitle": "Video Production — Video & Photo | Grapevine",
         "metaDescription": "Production from Grapevine — video, photo and campaign materials in one consistent brand visual language.",
         "intro": "Production turns strategy and ideas into tangible visual material.",
         "body": "From creative direction to the final result, we produce video, photo and campaign materials that follow one consistent brand visual language. Every frame serves the larger system, not an isolated activity.",
@@ -235,8 +208,8 @@
     "crm-systems": {
       "sourceUrl": "",
       "ka": {
-        "title": "CRM სისტემები",
-        "metaTitle": "CRM სისტემები — დანერგვა და ავტომატიზაცია | Grapevine",
+        "title": "CRM სერვისები",
+        "metaTitle": "CRM სერვისები — დანერგვა და ავტომატიზაცია | Grapevine",
         "metaDescription": "CRM სისტემები Grapevine-ისგან — შერჩევა და დანერგვა, მონაცემების სტრუქტურირება, ავტომატიზაცია და ანალიტიკა.",
         "intro": "CRM სისტემა აქცევს მიმოფანტულ მონაცემებს მართვად, ზრდაზე ორიენტირებულ სტრუქტურად.",
         "body": "ვეხმარებით ბრენდებს, შეარჩიონ და დანერგონ სწორი CRM, დაასტრუქტურონ მონაცემები და გაამარტივონ პროცესები ავტომატიზაციით. შედეგად მარკეტინგი, გაყიდვები და მომსახურება ერთ სისტემაში მუშაობს — გამჭვირვალედ და გაზომვადად.",
@@ -249,8 +222,8 @@
         "price": ""
       },
       "en": {
-        "title": "CRM Systems",
-        "metaTitle": "CRM Systems — Setup & Automation | Grapevine",
+        "title": "CRM Services",
+        "metaTitle": "CRM Services — Setup & Automation | Grapevine",
         "metaDescription": "CRM systems from Grapevine — selection and implementation, data structuring, automation and analytics.",
         "intro": "A CRM system turns scattered data into a manageable, growth-focused structure.",
         "body": "We help brands select and implement the right CRM, structure their data and simplify processes through automation. The result: marketing, sales and service work in one system — transparently and measurably.",
