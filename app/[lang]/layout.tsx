@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "../globals.css";
+import { GoogleTagManager } from "@next/third-parties/google";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import { LanguageProvider } from "@/components/LanguageProvider";
@@ -60,8 +61,13 @@ export default async function RootLayout({
   // valid locales here, but a hand-typed /fr/... would fall through to this).
   if (lang !== "en" && lang !== "ka") notFound();
 
+  // Google Tag Manager — only loads when NEXT_PUBLIC_GTM_ID is set, so no
+  // tracking fires until you add the real container ID to the environment.
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body>
         <LanguageProvider lang={lang as Lang}>
           <div id="progress" />
