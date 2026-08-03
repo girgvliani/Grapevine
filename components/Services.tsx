@@ -154,27 +154,29 @@ function ServiceCard({
               textTransform: "uppercase",
               fontFamily: "var(--font-primary)",
               lineHeight: 1.15,
-              marginBottom: sub ? "0.35rem" : "0",
+              marginBottom: "0.35rem",
             }}
           >
             {name}
           </div>
 
-          {/* Subtitle */}
-          {sub && (
-            <div
-              style={{
-                color: "var(--orange)",
-                fontSize: isMobile ? "0.6875rem" : isHuge ? "0.875rem" : "0.75rem",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                fontFamily: "var(--font-primary)",
-                opacity: 0.85,
-              }}
-            >
-              {sub}
-            </div>
-          )}
+          {/* Subtitle — always rendered so every card reserves the same height
+              here. Services with no sub get a blank line instead of collapsing,
+              which would otherwise drop their name a line lower than the rest
+              (the icon above is flex:1, so this block is bottom-anchored). */}
+          <div
+            aria-hidden={sub ? undefined : true}
+            style={{
+              color: "var(--orange)",
+              fontSize: isMobile ? "0.6875rem" : isHuge ? "0.875rem" : "0.75rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontFamily: "var(--font-primary)",
+              opacity: 0.85,
+            }}
+          >
+            {sub || "\u00A0"}
+          </div>
 
           {/* Turn / flip logo — bottom centre */}
           <div style={{ marginTop: isMobile ? "0.85rem" : "1.35rem", display: "flex", justifyContent: "center" }}>

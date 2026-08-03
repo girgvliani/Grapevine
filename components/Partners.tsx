@@ -1,22 +1,22 @@
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
-import { CLIENT_LOGOS } from "./assets/clientLogos";
+import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
 
-type LogoEntry = {
-  src: StaticImageData;
-  alt: string;
-  bg: string;    // tile background colour
+// Where a tile sits in the grid. Purely positional — a slot knows nothing about
+// which logo lands in it, so reordering CLIENT_LOGOS leaves the composition intact.
+type Slot = {
   col: number;   // 1-based grid column
   row: number;   // 1-based grid row (1=top, 2=mid, 3=bottom)
-  w: number;     // logo render width in px
   dx?: number;   // horizontal nudge for asymmetry
   dy?: number;   // vertical nudge for asymmetry
-  maxH?: number; // max height cap in px (for tall/narrow logos)
 };
+
+type LogoEntry = ClientLogo & Slot;
 
 // Grid constants
 const COL_W      = 225;  // px per grid column
@@ -27,32 +27,30 @@ const LOGO_BOOST = 1.15; // enlarge each logo tile ~15%
 
 // Scattered placements (col/row set the grid cell; dx/dy nudge within the cell).
 // The 18 client logos are zipped onto these slots in order.
-const POSITIONS: Omit<LogoEntry, "src" | "alt" | "bg">[] = [
-  { col: 2, row: 1, w: 125, dx:  20, dy: -25 },
-  { col: 1, row: 2, w: 115, dx: -10, dy:   5 },
-  { col: 2, row: 3, w: 110, dx:  35, dy:  15 },
-  { col: 2, row: 2, w: 90,  dx:  25, dy: -15 },
-  { col: 3, row: 1, w: 125, dx: -25, dy: -20 },
-  { col: 3, row: 2, w: 150, dx:  10, dy:  10 },
-  { col: 3, row: 3, w: 150, dx: -15, dy:  10 },
-  { col: 4, row: 1, w: 150, dx:  20, dy: -20 },
-  { col: 4, row: 2, w: 125, dx: -15, dy:  15 },
-  { col: 5, row: 1, w: 160, dx: -20, dy: -25 },
-  { col: 5, row: 2, w: 145, dx:  15, dy:  20 },
-  { col: 6, row: 1, w: 120, dx: -15, dy: -20 },
-  { col: 6, row: 2, w: 135, dx:  20, dy:  10 },
-  { col: 6, row: 3, w: 110, dx: -10, dy:  15 },
-  { col: 7, row: 1, w: 125, dx:  15, dy: -15 },
-  { col: 7, row: 2, w: 120, dx: -20, dy:   5 },
-  { col: 7, row: 3, w: 110, dx:  10, dy:  10 },
-  { col: 8, row: 2, w: 120, dx: -10, dy:  -5 },
+const POSITIONS: Slot[] = [
+  { col: 2, row: 1, dx:  20, dy: -25 },
+  { col: 1, row: 2, dx: -10, dy:   5 },
+  { col: 2, row: 3, dx:  35, dy:  15 },
+  { col: 2, row: 2, dx:  25, dy: -15 },
+  { col: 3, row: 1, dx: -25, dy: -20 },
+  { col: 3, row: 2, dx:  10, dy:  10 },
+  { col: 3, row: 3, dx: -15, dy:  10 },
+  { col: 4, row: 1, dx:  20, dy: -20 },
+  { col: 4, row: 2, dx: -15, dy:  15 },
+  { col: 5, row: 1, dx: -20, dy: -25 },
+  { col: 5, row: 2, dx:  15, dy:  20 },
+  { col: 6, row: 1, dx: -15, dy: -20 },
+  { col: 6, row: 2, dx:  20, dy:  10 },
+  { col: 6, row: 3, dx: -10, dy:  15 },
+  { col: 7, row: 1, dx:  15, dy: -15 },
+  { col: 7, row: 2, dx: -20, dy:   5 },
+  { col: 7, row: 3, dx:  10, dy:  10 },
+  { col: 8, row: 2, dx: -10, dy:  -5 },
 ];
 
 const LOGOS: LogoEntry[] = POSITIONS.map((pos, i) => ({
+  ...CLIENT_LOGOS[i],
   ...pos,
-  src: CLIENT_LOGOS[i].src,
-  alt: CLIENT_LOGOS[i].alt,
-  bg: CLIENT_LOGOS[i].bg,
 }));
 
 export default function Partners() {

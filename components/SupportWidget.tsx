@@ -109,6 +109,10 @@ export default function SupportWidget() {
         flexDirection: "column",
         alignItems: "flex-end",
         gap: isMobile ? 12 : 14,
+        // The panel keeps its (tall) footprint even while closed, so without this
+        // the container would swallow taps across most of the screen once the chat
+        // has been opened. Children opt back in individually.
+        pointerEvents: "none",
       }}
     >
       {mounted && (
@@ -118,11 +122,13 @@ export default function SupportWidget() {
           aria-hidden={!open}
           style={{
             // On phones the panel becomes a tall sheet (full width minus a small
-            // gutter, dvh so browser chrome is handled). The 176px offset leaves
-            // room below for the bubble and, above, clears the fixed nav (~82px)
-            // so the panel never overlaps the header.
+            // gutter, dvh so browser chrome is handled). The bubble is hidden while
+            // the sheet is open, so the sheet runs down to the bottom gutter and
+            // only needs to reserve 112px — which keeps its top edge at 96px, still
+            // clearing the fixed nav (~82px) exactly as the old 176px offset did.
+            position: "relative",
             width: isMobile ? "calc(100vw - 24px)" : "min(384px, calc(100vw - 32px))",
-            height: isMobile ? "calc(100dvh - 176px)" : "min(600px, calc(100vh - 140px))",
+            height: isMobile ? "calc(100dvh - 112px)" : "min(600px, calc(100vh - 140px))",
             borderRadius: isMobile ? 20 : 18,
             overflow: "hidden",
             background: "var(--dark)",
@@ -135,6 +141,43 @@ export default function SupportWidget() {
             pointerEvents: open ? "auto" : "none",
           }}
         >
+          {/* Mobile closes from inside the sheet — the bubble is hidden while it's
+              open, so this is the only affordance besides Escape. Sits above the
+              iframe; desktop still closes via the bubble. */}
+          {isMobile && (
+            <button
+              type="button"
+              onClick={closePanel}
+              aria-label={label.close}
+              style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+                zIndex: 1,
+                width: 40,
+                height: 40,
+                padding: 0,
+                borderRadius: "50%",
+                border: "1px solid rgba(255, 239, 171, 0.22)",
+                background: "rgba(16, 3, 10, 0.72)",
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                color: "#FFEFAB",
+                display: "grid",
+                placeItems: "center",
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          )}
+
           <iframe
             ref={iframeRef}
             title="Grapevine Support"
@@ -148,46 +191,51 @@ export default function SupportWidget() {
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={toggle}
-        aria-expanded={open}
-        aria-label={open ? label.close : label.open}
-        style={{
-          width: isMobile ? 52 : 58,
-          height: isMobile ? 52 : 58,
-          borderRadius: "50%",
-          border: 0,
-          background: "var(--orange)",
-          color: "var(--dark)",
-          boxShadow: "0 10px 30px -6px rgba(239, 88, 58, 0.55)",
-          display: "grid",
-          placeItems: "center",
-          transition: "transform .15s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
-      >
-        {open ? (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M6 6l12 12M18 6L6 18"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-            />
-          </svg>
-        ) : (
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9A1.5 1.5 0 0 1 18.5 16H9l-4 4V5.5z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
-      </button>
+      {/* On mobile the open sheet owns its own close button, so the bubble would be
+          a redundant second control competing for space — hide it while open. */}
+      {!(isMobile && open) && (
+        <button
+          type="button"
+          onClick={toggle}
+          aria-expanded={open}
+          aria-label={open ? label.close : label.open}
+          style={{
+            pointerEvents: "auto",
+            width: isMobile ? 52 : 58,
+            height: isMobile ? 52 : 58,
+            borderRadius: "50%",
+            border: 0,
+            background: "var(--orange)",
+            color: "var(--dark)",
+            boxShadow: "0 10px 30px -6px rgba(239, 88, 58, 0.55)",
+            display: "grid",
+            placeItems: "center",
+            transition: "transform .15s ease",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
+        >
+          {open ? (
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M4 5.5A1.5 1.5 0 0 1 5.5 4h13A1.5 1.5 0 0 1 20 5.5v9A1.5 1.5 0 0 1 18.5 16H9l-4 4V5.5z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </button>
+      )}
     </div>
   );
 }
