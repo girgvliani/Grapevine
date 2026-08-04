@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 function Dot({ active }: { active: boolean }) {
@@ -104,9 +105,9 @@ export default function Process() {
               textAlign: "center",
             }}
           >
-            <span style={{ color: "var(--orange)" }}>{t.process.titleLine1}</span>
+            <span style={{ color: "var(--orange)" }}>{caps(t.process.titleLine1)}</span>
             <br />
-            <span style={{ color: "var(--dark)" }}>{t.process.titleLine2}</span>
+            <span style={{ color: "var(--dark)" }}>{caps(t.process.titleLine2)}</span>
           </div>
         </div>
       </section>
@@ -138,9 +139,9 @@ export default function Process() {
             letterSpacing: "-0.02em",
             paddingBottom: "1rem",
           }}>
-            <span style={{ color: "var(--orange)" }}>{t.process.titleLine1}</span>
+            <span style={{ color: "var(--orange)" }}>{caps(t.process.titleLine1)}</span>
             <br />
-            <span style={{ color: "var(--dark)" }}>{t.process.titleLine2}</span>
+            <span style={{ color: "var(--dark)" }}>{caps(t.process.titleLine2)}</span>
           </div>
         </div>
 
@@ -167,10 +168,10 @@ export default function Process() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: isTablet ? "1.375rem" : "clamp(1.625rem, 3vw, 2.375rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1, marginBottom: "0.375rem" }}>
-                        {step.title}
+                        {caps(step.title)}
                       </div>
                       <div style={{ fontSize: "0.6875rem", color: "var(--orange)", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-primary)", marginBottom: "0.625rem" }}>
-                        {step.sub}
+                        {caps(step.sub)}
                       </div>
                       <div style={{ fontSize: "0.75rem", lineHeight: 1.75, color: "#1A0512", opacity: 0.65, fontFamily: "var(--font-primary)", maxWidth: "21.25rem" }}>
                         {step.desc}
@@ -193,7 +194,7 @@ export default function Process() {
                   fontFamily: "var(--font-heading)",
                   marginBottom: "2.5rem",
                 }}>
-                  {t.process.benefitsHeading}
+                  {caps(t.process.benefitsHeading)}
                 </h3>
 
                 {t.process.benefits.map((group) => (
@@ -204,7 +205,7 @@ export default function Process() {
                       </span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "clamp(1.25rem, 2.5vw, 2rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1 }}>
-                          {group.title}
+                          {caps(group.title)}
                         </div>
                         <div style={{ height: "2px", background: "var(--orange)", marginTop: "0.375rem" }} />
                       </div>

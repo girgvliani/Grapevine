@@ -5,6 +5,7 @@ import Image from "next/image";
 import vectorImg from "./assets/Vector.png";
 import logoOrange from "./assets/logo_orange.png";
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 export default function About() {
@@ -60,7 +61,7 @@ export default function About() {
         }}
       >
         <span style={{ display: "block", width: "12px", height: "2px", background: "rgba(239, 88, 58, 0.5)", flexShrink: 0 }} />
-        <span>{t.about.eyebrow}</span>
+        <span>{caps(t.about.eyebrow)}</span>
       </div>
 
       {/* Heading */}
@@ -78,7 +79,7 @@ export default function About() {
           transition: "all 0.8s ease 0.1s",
         }}
       >
-        {t.about.heading}
+        {caps(t.about.heading)}
       </h2>
 
       {/* Body */}
@@ -162,7 +163,7 @@ export default function About() {
             cursor: "pointer",
           }}
         >
-          {expanded ? t.about.seeLess : t.about.seeMore}
+          {caps(expanded ? t.about.seeLess : t.about.seeMore)}
           <svg
             width="20.67"
             height="11.33"

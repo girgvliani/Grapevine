@@ -39,7 +39,7 @@ const ka = {
     cta: "ერთად გავიზარდოთ",
   },
   hero: {
-    label: "მარკეტინგ სააგენტო — 2014 წლიდან",
+    label: "მარკეტინგული სააგენტო — 2014 წლიდან",
     description:
       "Grapevine პოულობს თქვენი ბრენდის მთავარ ძაფს და გეხმარებათ მის ზრდაში — ქაოსის გარეშე, მიმართულებით სავსე.",
     scroll: "გადაახვიეთ ქვემოთ",
@@ -49,7 +49,7 @@ const ka = {
     "ბრენდინგი",
     "სოციალური მედია",
     "სოციალური მედიის აუდიტი",
-    "ციფრული რეკლამა",
+    "ციფრული მარკეტინგი",
     "ვებ დეველოპმენტი",
     "მობილური აპლიკაცია",
   ],
@@ -80,7 +80,7 @@ const ka = {
       "crm-systems": { name: "CRM სერვისები", sub: "" },
       branding: { name: "ბრენდინგი", sub: "" },
       "mobile-app": { name: "მობილური აპი", sub: "" },
-      "digital-advertising": { name: "ციფრული", sub: "რეკლამა" },
+      "digital-advertising": { name: "ციფრული", sub: "მარკეტინგი" },
       "web-development": { name: "ვები", sub: "დეველოპმენტი" },
     },
   },
@@ -405,3 +405,22 @@ const en: typeof ka = {
 export const translations: Record<Lang, typeof ka> = { ka, en };
 
 export type Translation = typeof ka;
+
+// All-caps heading text, for both locales.
+//
+// Georgian is unicameral in everyday writing, but it does have Mtavruli
+// (U+1C90–U+1CBA): the all-caps form where every letter sits between the same
+// two baselines, with no ascenders or descenders. Unicode 11 defined the
+// Mkhedruli→Mtavruli uppercase mapping and JS engines implement it — but
+// `text-transform: uppercase` will NOT produce it. Chrome and Firefox
+// deliberately suppressed that mapping in 2018 (only WebKit applies it), which
+// is why headings render uppercase in English and unchanged in Georgian.
+//
+// The usual workaround, `font-feature-settings: "case"`, is unavailable here:
+// Mersad ships no GSUB table at all. So the conversion happens in JS, where the
+// mapping is guaranteed, and Mersad does carry all 43 Mtavruli glyphs.
+//
+// English is unaffected — this does exactly what text-transform already did.
+export function caps(text: string): string {
+  return text.toUpperCase();
+}

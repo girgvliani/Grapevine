@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { getServiceDetail } from "@/lib/serviceContent";
-import type { ServiceSlug } from "@/lib/i18n";
+import { caps, type ServiceSlug } from "@/lib/i18n";
 import BehanceLink from "./BehanceLink";
 import { SERVICE_ASSETS } from "./servicesConfig";
 
@@ -369,7 +370,7 @@ export default function ServicesShowcase({
             color: "var(--orange)",
           }}
         >
-          {t.services.heading}
+          {caps(t.services.heading)}
           <span
             style={{
               display: "block",
@@ -441,8 +442,8 @@ export default function ServicesShowcase({
             marginBottom: "1.5rem",
           }}
         >
-          {p.bandPre}
-          <span style={{ color: "var(--orange)" }}>{p.bandAccent}</span>
+          {caps(p.bandPre)}
+          <span style={{ color: "var(--orange)" }}>{caps(p.bandAccent)}</span>
         </h2>
         <p
           style={{
@@ -456,7 +457,7 @@ export default function ServicesShowcase({
         >
           {p.bandDesc}
         </p>
-        <a
+        <Link
           href={localizedHref("/contact", lang)}
           style={{
             display: "inline-block",
@@ -473,7 +474,7 @@ export default function ServicesShowcase({
           }}
         >
           {p.bandCta}
-        </a>
+        </Link>
       </section>
     </>
   );

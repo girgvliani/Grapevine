@@ -4,6 +4,7 @@ import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import BehanceLink from "./BehanceLink";
 
@@ -29,9 +30,9 @@ export default function Footer() {
         textAlign: isMobile ? "right" : "left",
       }}
     >
-      {t.footer.taglineLine1}
+      {caps(t.footer.taglineLine1)}
       <br />
-      {t.footer.taglineLine2}
+      {caps(t.footer.taglineLine2)}
     </h3>
   );
 
@@ -47,7 +48,7 @@ export default function Footer() {
           marginBottom: "1rem",
         }}
       >
-        {t.footer.quickLinks}
+        {caps(t.footer.quickLinks)}
       </div>
       <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
         {[
@@ -69,7 +70,7 @@ export default function Footer() {
               onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
               onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.7")}
             >
-              {label}
+              {caps(label)}
             </a>
           </li>
         ))}

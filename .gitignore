@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Source GIFs for the hero animations — working files, not shipped. They are
+# huge (knot0last is 289 MB) and git cannot shrink a repo once they are in its
+# history. What actually gets served is the converted H.264/WebM in public/hero,
+# which stays tracked. Keep new sources here and convert with, e.g.:
+#   ffmpeg -i "in.gif" -c:v libx264 -crf 30 -preset slow -pix_fmt yuv420p \
+#          -movflags +faststart -an public/hero/out.mp4
+components/assets/GIF/

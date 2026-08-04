@@ -1,13 +1,23 @@
 @import "tailwindcss";
 
 /* ── Brand fonts ──────────────────────────────────────────────────────────────
-   Body / UI (--font-primary) uses Space Mono, loaded via next/font/google in
-   layout.tsx and exposed as --font-mono (OFL, free for commercial use).
-   Headings (--font-heading) use self-hosted Mersad below.
+   Mersad is the site font — headings AND body/UI, both scripts.
+
+   It must come FIRST in both stacks: Space Mono and Space Grotesk contain zero
+   Georgian glyphs (0/43 Mkhedruli, 0/43 Mtavruli — verified against the files
+   next/font downloads). With them in front, every Georgian character fell all
+   the way through to bare `monospace`, i.e. whatever the visitor's OS happened
+   to pick. That is why uppercase looked broken: `caps()` emits Mtavruli
+   (U+1C90–U+1CBA, a Unicode 11 addition), and many system Georgian fonts ship
+   Mkhedruli but no Mtavruli at all, so the one thing caps() produces was the
+   one thing the fallback font could not draw.
+
+   Space Mono is kept behind Mersad on purpose — font fallback is per-character,
+   so it still supplies the two glyphs Mersad lacks (U+2192 '→' and U+00A0).
    TTF for now; converting Mersad to .woff2 (Transfonter) would cut ~40% off the
    file size — just swap the url + format('woff2') per face when you do. */
 
-/* Mersad — headings (--font-heading); ships Latin + Georgian glyphs */
+/* Mersad — ships Latin, digits, punctuation, Mkhedruli AND Mtavruli */
 @font-face {
   font-family: 'Mersad';
   src: url('/fonts/Mersad%20Regular.ttf') format('truetype');
@@ -38,7 +48,7 @@
   --dark: #1A0512;
   --white: #FFFFFF;
 
-  --font-primary: var(--font-mono), 'Courier New', monospace;
+  --font-primary: 'Mersad', var(--font-mono), 'Courier New', monospace;
   --font-heading: 'Mersad', var(--font-space), 'Arial Black', Arial, sans-serif;
 }
 
@@ -190,6 +200,20 @@ body.cursor-hover #cursor-ring {
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none;                  /* WebKit/Blink */
+}
+
+.support-widget {
+  transition: opacity 0.2s ease;   /* fades back in when the menu closes */
+}
+
+/* Support widget yields to the open mobile menu. The widget is a fixed sibling
+   of the menu at z-index 9990 — far above the panel (200) — so it would sit on
+   top of it. Nav sets data-menu-open on <body> while the menu is open.
+   `visibility` (not just opacity) so the bubble can't be tapped through. */
+body[data-menu-open] .support-widget {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
 
 /* Cap content width on large screens and centre it (backgrounds stay full-bleed). */

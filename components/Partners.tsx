@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
 
@@ -134,7 +135,7 @@ export default function Partners() {
             marginBottom: "2.5rem",
           }}
         >
-          {t.partners.heading}
+          {caps(t.partners.heading)}
         </h2>
         <div
           style={{
@@ -211,7 +212,7 @@ export default function Partners() {
                 lineHeight: 1,
               }}
             >
-              {t.partners.heading}
+              {caps(t.partners.heading)}
             </h2>
 
             {/* Logo grid — CSS grid for placement, transform for asymmetry */}

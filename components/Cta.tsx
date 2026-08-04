@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 function FloatingField({
@@ -109,7 +110,7 @@ export default function Cta({
             marginBottom: "1rem",
           }}
         >
-          {eyebrow}
+          {caps(eyebrow)}
         </div>
       )}
       <h2
@@ -124,7 +125,7 @@ export default function Cta({
           marginBottom: isMobile ? 0 : "2.5rem",
         }}
       >
-        {t.cta.heading}
+        {caps(t.cta.heading)}
       </h2>
     </>
   );
@@ -218,7 +219,7 @@ export default function Cta({
                   <path d="M1 5L9 10L17 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.email}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{caps(t.cta.contact.email)}</div>
                   <a href="mailto:info@grapevine.ge" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
                     info@grapevine.ge
                   </a>
@@ -231,7 +232,7 @@ export default function Cta({
                   <path d="M3 2h4l1.5 4-2 1.5a10 10 0 004 4L12 9.5l4 1.5v4a1 1 0 01-1 1C6 16 2 10 2 3a1 1 0 011-1z" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.phone}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{caps(t.cta.contact.phone)}</div>
                   <a href="tel:+995599495574" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
                     +995 599 495 574
                   </a>
@@ -245,7 +246,7 @@ export default function Cta({
                   <path d="M2 16c0-3 3-5 7-5s7 2 7 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{caps(t.cta.contact.social)}</div>
                   <div style={{ display: "flex", gap: "0.375rem" }}>
                     {["f", "in", "ig"].map((s) => (
                       <div

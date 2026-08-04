@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import logo from "./assets/logo.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
-import { LANGUAGES } from "@/lib/i18n";
+import { LANGUAGES, caps } from "@/lib/i18n";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
@@ -24,6 +25,7 @@ export default function Nav() {
   const { lang, setLang, t } = useLang();
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const pathname = usePathname();
+  const router = useRouter();
   // Path without its leading locale segment, so route checks are locale-agnostic.
   const routePath = stripLocale(pathname);
   const light = LIGHT_ROUTES.includes(routePath);
@@ -41,14 +43,43 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Freeze page scroll while the mobile menu is open.
+  // Freeze the page behind the open mobile menu.
+  //
+  // `overflow: hidden` on body/html is not enough — iOS Safari keeps touch-
+  // scrolling the page regardless. Pinning the body with `position: fixed` at a
+  // negative top offset is what actually holds it, and we restore the exact
+  // scroll position on close so the page doesn't jump back to the top.
+  //
+  // The same effect flags <body>, which is how SupportWidget knows to get out of
+  // the way (see the `[data-menu-open]` rule in globals.css) — it renders as a
+  // sibling of the menu at a much higher z-index, so it would otherwise float
+  // on top of the panel.
   useEffect(() => {
-    const value = menuOpen ? "hidden" : "";
-    document.body.style.overflow = value;
-    document.documentElement.style.overflow = value;
+    if (!menuOpen) return;
+
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    body.dataset.menuOpen = "true";
+
     return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.width = previous.width;
+      body.style.overflow = previous.overflow;
+      delete body.dataset.menuOpen;
+      // Instant, not smooth — the scroll-jacked sections read window.scrollY.
+      window.scrollTo(0, scrollY);
     };
   }, [menuOpen]);
 
@@ -59,9 +90,11 @@ export default function Nav() {
 
   const goTo = (href: string) => {
     setMenuOpen(false);
-    // Route paths navigate; in-page anchors smooth-scroll.
+    // Route paths navigate client-side, which keeps the layout — and the support
+    // chat iframe living in it — mounted across the navigation. In-page anchors
+    // smooth-scroll instead.
     if (href.startsWith("/")) {
-      window.location.href = href;
+      router.push(href);
       return;
     }
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
@@ -100,7 +133,7 @@ export default function Nav() {
               transition: "background 0.2s, color 0.2s, opacity 0.2s",
             }}
           >
-            {label}
+            {caps(label)}
           </button>
         );
       })}
@@ -130,9 +163,9 @@ export default function Nav() {
         }}
       >
         {/* Logo — returns to the home page */}
-        <a href={withLocale("/")} aria-label="Grapevine — home" style={{ display: "inline-flex" }}>
+        <Link href={withLocale("/")} aria-label="Grapevine — home" style={{ display: "inline-flex" }}>
           <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} loading="eager" />
-        </a>
+        </Link>
 
         {isMobile ? (
           /* Burger */
@@ -159,7 +192,7 @@ export default function Nav() {
             <ul className="nav-links">
               {LINKS.map(({ href, key }) => (
                 <li key={href}>
-                  <a
+                  <Link
                     href={withLocale(href)}
                     style={{
                       color: fg,
@@ -174,8 +207,8 @@ export default function Nav() {
                     onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
                     onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.75")}
                   >
-                    {t.nav[key]}
-                  </a>
+                    {caps(t.nav[key])}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -209,7 +242,7 @@ export default function Nav() {
                 }}
                 onClick={() => goTo(withLocale("/contact"))}
               >
-                {t.nav.cta}
+                {caps(t.nav.cta)}
               </button>
             </div>
           </>
@@ -300,7 +333,7 @@ export default function Nav() {
                   fontFamily: "var(--font-primary)",
                 }}
               >
-                {t.nav[key]}
+                {caps(t.nav[key])}
               </button>
             ))}
           </nav>
@@ -328,7 +361,7 @@ export default function Nav() {
               fontWeight: 700,
             }}
           >
-            {t.nav.cta}
+            {caps(t.nav.cta)}
           </button>
           </div>
         </>

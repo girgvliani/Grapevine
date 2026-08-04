@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import { useLang } from "./LanguageProvider";
 import { getServiceDetail } from "@/lib/serviceContent";
 import { localizedHref } from "@/lib/routing";
-import type { ServiceSlug } from "@/lib/i18n";
+import { caps, type ServiceSlug } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { SERVICE_ASSETS } from "./servicesConfig";
 
@@ -157,7 +158,7 @@ function ServiceCard({
               marginBottom: "0.35rem",
             }}
           >
-            {name}
+            {caps(name)}
           </div>
 
           {/* Subtitle — always rendered so every card reserves the same height
@@ -175,7 +176,7 @@ function ServiceCard({
               opacity: 0.85,
             }}
           >
-            {sub || "\u00A0"}
+            {caps(sub || "\u00A0")}
           </div>
 
           {/* Turn / flip logo — bottom centre */}
@@ -200,7 +201,7 @@ function ServiceCard({
                 marginBottom: "0.75rem",
               }}
             >
-              {name}{sub ? " " + sub : ""}
+              {caps(name)}{sub ? " " + caps(sub) : ""}
             </div>
 
             {/* Description */}
@@ -234,14 +235,14 @@ function ServiceCard({
                       marginBottom: "0.25rem",
                     }}
                   >
-                    {p.startingFrom}
+                    {caps(p.startingFrom)}
                   </div>
                   <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: isMobile ? "1.25rem" : "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
                     {price}
                   </div>
                 </div>
               )}
-              <a
+              <Link
                 href={localizedHref(`/services/${slug}`, lang)}
                 onClick={(e) => e.stopPropagation()}
                 style={{
@@ -260,8 +261,8 @@ function ServiceCard({
                   textDecoration: "none",
                 }}
               >
-                {p.seeMore} →
-              </a>
+                {caps(p.seeMore)} →
+              </Link>
             </div>
           </div>
 
@@ -336,7 +337,7 @@ export default function Services() {
             margin: "0 clamp(1.5rem, 5vw, 3rem) 2.5rem",
           }}
         >
-          {t.services.heading}
+          {caps(t.services.heading)}
         </h2>
         <div
           className="hide-scrollbar"
@@ -379,7 +380,7 @@ export default function Services() {
               fontFamily: "var(--font-heading)",
             }}
           >
-            {t.services.heading}
+            {caps(t.services.heading)}
           </h2>
         </div>
 

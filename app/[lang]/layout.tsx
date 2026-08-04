@@ -6,9 +6,12 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import SupportWidget from "@/components/SupportWidget";
+import JsonLd from "@/components/JsonLd";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
-import { SITE_URL, isLocale, pageAlternates } from "@/lib/routing";
+import { isLocale } from "@/lib/routing";
+import { pageMetadata } from "@/lib/seo";
+import { siteSchema } from "@/lib/structuredData";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -34,15 +37,15 @@ export async function generateMetadata({
   const locale = isLocale(lang) ? lang : "ka";
   const t = translations[locale];
 
-  return {
-    metadataBase: new URL(SITE_URL),
+  return pageMetadata({
+    internalPath: "/",
+    locale,
     title:
       locale === "ka"
         ? "Grapevine — მარკეტინგ სააგენტო"
         : "Grapevine — We Untangle The Mess",
     description: t.hero.description,
-    alternates: pageAlternates("/", locale),
-  };
+  });
 }
 
 // Pre-render both locales at build time.
@@ -70,6 +73,9 @@ export default async function RootLayout({
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body>
+        {/* Site-wide identity graph (Organization + WebSite). Service pages add
+            their own Service/BreadcrumbList nodes on top of this. */}
+        <JsonLd data={siteSchema(lang)} />
         <LanguageProvider lang={lang as Lang}>
           <div id="progress" />
           <Cursor />

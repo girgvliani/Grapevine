@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "./LanguageProvider";
+import { caps } from "@/lib/i18n";
 
 export default function Marquee() {
   const { t } = useLang();
@@ -34,7 +35,7 @@ export default function Marquee() {
               fontFamily: "var(--font-primary)",
             }}
           >
-            {item}
+            {caps(item)}
             <span
               style={{
                 width: "5px",

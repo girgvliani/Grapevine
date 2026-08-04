@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useLang } from "@/components/LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref } from "@/lib/routing";
@@ -21,10 +22,11 @@ const LABELS = {
 
 export default function SupportWidget() {
   const { lang } = useLang();
+  const router = useRouter();
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const [open, setOpen] = useState(false);
   // Mount the iframe on first open, then keep it mounted so the conversation
-  // survives closing/reopening and language switches.
+  // survives closing/reopening, language switches, and page navigation.
   const [mounted, setMounted] = useState(false);
   const [entered, setEntered] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -92,14 +94,17 @@ export default function SupportWidget() {
       const slug = String(data.slug || "");
       if (!/^[a-z][a-z0-9-]{0,40}$/.test(slug)) return;
       const loc = data.lang === "en" ? "en" : "ka";
-      window.location.assign(localizedHref(`/services/${slug}`, loc));
+      // Client-side push, not a full load: a hard navigation here would tear down
+      // this very iframe and wipe the conversation the chip came from.
+      router.push(localizedHref(`/services/${slug}`, loc));
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, []);
+  }, [router]);
 
   return (
     <div
+      className="support-widget"
       style={{
         position: "fixed",
         right: isMobile ? 12 : 24,

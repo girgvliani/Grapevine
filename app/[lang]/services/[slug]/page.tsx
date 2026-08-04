@@ -8,8 +8,11 @@ import {
   type Lang,
   type ServiceSlug,
 } from "@/lib/i18n";
-import { isLocale, pageAlternates, type Locale } from "@/lib/routing";
+import { isLocale, type Locale } from "@/lib/routing";
+import { pageMetadata } from "@/lib/seo";
+import { serviceSchema } from "@/lib/structuredData";
 import { getServiceDetail } from "@/lib/serviceContent";
+import JsonLd from "@/components/JsonLd";
 
 // Pre-render every service page for both locales at build time (12 slugs × 2).
 export function generateStaticParams() {
@@ -22,6 +25,20 @@ function resolve(lang: string, slug: string): { locale: Locale; slug: ServiceSlu
   return { locale: lang, slug: slug as ServiceSlug };
 }
 
+// The service's display name + description, falling back to the card copy for
+// services that have no detail entry yet. Shared by the metadata and the JSON-LD
+// so the two can't drift apart.
+function serviceCopy({ locale, slug }: { locale: Locale; slug: ServiceSlug }) {
+  const t = translations[locale];
+  const card = t.services.cards[slug];
+  const detail = getServiceDetail(slug, locale as Lang);
+
+  return {
+    name: detail?.title || [card.name, card.sub].filter(Boolean).join(" "),
+    description: detail?.metaDescription || t.servicesPage.tagline,
+  };
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,16 +48,14 @@ export async function generateMetadata({
   const r = resolve(lang, slug);
   if (!r) return {};
 
-  const t = translations[r.locale];
-  const card = t.services.cards[r.slug];
-  const detail = getServiceDetail(r.slug, r.locale as Lang);
-  const name = detail?.title || [card.name, card.sub].filter(Boolean).join(" ");
+  const { name, description } = serviceCopy(r);
 
-  return {
-    title: detail?.metaTitle || `${name} — Grapevine`,
-    description: detail?.metaDescription || t.servicesPage.tagline,
-    alternates: pageAlternates(`/services/${r.slug}`, r.locale),
-  };
+  return pageMetadata({
+    internalPath: `/services/${r.slug}`,
+    locale: r.locale,
+    title: getServiceDetail(r.slug, r.locale as Lang)?.metaTitle || `${name} — Grapevine`,
+    description,
+  });
 }
 
 // A service URL renders the services page with that card already expanded
@@ -55,8 +70,15 @@ export default async function ServicePage({
   const r = resolve(lang, slug);
   if (!r) notFound();
 
+  const { name, description } = serviceCopy(r);
+
   return (
     <main>
+      {/* Service + BreadcrumbList, layered on the Organization/WebSite graph
+          the root layout already emits. */}
+      <JsonLd
+        data={serviceSchema({ slug: r.slug, locale: r.locale, name, description })}
+      />
       <ServicesShowcase initialOpen={r.slug} />
       <Footer />
     </main>
