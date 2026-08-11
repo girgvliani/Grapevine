@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import vectorImg from "./assets/Vector.png";
-import logoOrange from "./assets/logo_orange.png";
+import logoOrange from "./assets/logoorange.svg";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
@@ -129,8 +129,8 @@ export default function About() {
                 {t.about.para3}
               </p>
             </div>
-            <div style={{ flexShrink: 0, width: stacked ? "9rem" : "clamp(9rem, 14vw, 13.75rem)" }}>
-              <Image src={logoOrange} alt="Grapevine" style={{ width: "100%", height: "auto" }} />
+            <div style={{ flexShrink: 0, width: stacked ? "9rem" : "clamp(9rem, 14vw, 13.75rem)", marginBottom: "1.5rem" }}>
+              <Image src={logoOrange} alt="Grapevine" style={{ width: "100%", height: "auto", transform: "rotate(15deg)" }} />
             </div>
           </div>
         </div>

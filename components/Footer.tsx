@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
-import logoBlack from "./assets/logoblack.png";
+import logoBlack from "./assets/logoblack.svg";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import BehanceLink from "./BehanceLink";
@@ -13,7 +13,7 @@ export default function Footer() {
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const logo = (
-    <Image src={logoBlack} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} />
+    <Image src={logoBlack} alt="Grapevine" style={{ width: "7.5rem", height: "auto" }} />
   );
 
   const tagline = (

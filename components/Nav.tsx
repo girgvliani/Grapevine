@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "./assets/logo.png";
-import logoBlack from "./assets/logoblack.png";
+import logo from "./assets/logopurple.svg";
+import logoBlack from "./assets/logoblack.svg";
 import { useLang } from "./LanguageProvider";
 import { LANGUAGES } from "@/lib/i18n";
 import { localizedHref, stripLocale } from "@/lib/routing";
@@ -164,7 +164,7 @@ export default function Nav() {
       >
         {/* Logo — returns to the home page */}
         <Link href={withLocale("/")} aria-label="Grapevine — home" style={{ display: "inline-flex" }}>
-          <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "5.625rem", height: "auto" }} loading="eager" />
+          <Image src={light ? logoBlack : logo} alt="Grapevine" style={{ width: "7.5rem", height: "auto" }} loading="eager" />
         </Link>
 
         {isMobile ? (

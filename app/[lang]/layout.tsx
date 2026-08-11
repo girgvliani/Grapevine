@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "../globals.css";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import SupportWidget from "@/components/SupportWidget";
@@ -68,10 +68,13 @@ export default async function RootLayout({
   // Google Tag Manager — only loads when NEXT_PUBLIC_GTM_ID is set, so no
   // tracking fires until you add the real container ID to the environment.
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+  // Google Analytics (GA4, gtag.js) — same opt-in-via-env pattern as GTM above.
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
       {gtmId && <GoogleTagManager gtmId={gtmId} />}
+      {gaId && <GoogleAnalytics gaId={gaId} />}
       <body>
         {/* Site-wide identity graph (Organization + WebSite). Service pages add
             their own Service/BreadcrumbList nodes on top of this. */}

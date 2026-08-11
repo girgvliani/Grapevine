@@ -167,34 +167,37 @@ export default function Hero() {
       </p>
 
       {/* Scroll hint — bottom right, lifted so it clears the floating support
-          bubble (fixed at bottom:24px, ~58px tall) that shares this corner. */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "clamp(5.75rem, calc(4vh + 4rem), 6.75rem)",
-          right: "clamp(1.5rem, 5vw, 2.5rem)",
-          display: "flex",
-          alignItems: "center",
-          gap: "0.75rem",
-          fontSize: "0.5625rem",
-          letterSpacing: "0.25em",
-          textTransform: "uppercase",
-          fontFamily: "var(--font-primary)",
-          zIndex: 1,
-          animation: `heroFadeInDim 1s ease 1.6s both`,
-        }}
-      >
+          bubble (fixed at bottom:24px, ~58px tall) that shares this corner.
+          Hidden on mobile — cramped down there next to the support bubble. */}
+      {!isMobile && (
         <div
-          className="scroll-line"
           style={{
-            width: "2.25rem",
-            height: "1px",
-            background: "var(--white)",
-            transformOrigin: "left",
+            position: "absolute",
+            bottom: "clamp(5.75rem, calc(4vh + 4rem), 6.75rem)",
+            right: "clamp(1.5rem, 5vw, 2.5rem)",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            fontSize: "0.5625rem",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            fontFamily: "var(--font-primary)",
+            zIndex: 1,
+            animation: `heroFadeInDim 1s ease 1.6s both`,
           }}
-        />
-        <span>{t.hero.scroll}</span>
-      </div>
+        >
+          <div
+            className="scroll-line"
+            style={{
+              width: "2.25rem",
+              height: "1px",
+              background: "var(--white)",
+              transformOrigin: "left",
+            }}
+          />
+          <span>{t.hero.scroll}</span>
+        </div>
+      )}
     </section>
   );
 }
