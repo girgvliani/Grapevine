@@ -71,14 +71,8 @@ export default function Hero() {
           /* Plays in its natural landscape orientation — `contain` centres the
              full animation as a horizontal band, with the section's own --dark
              background filling above and below (so it doesn't read as
-             letterboxing). Same fit as desktop.
-
-             Converted from the 289 MB knot0last GIF to H.264 (45 KB) — see
-             /public/hero. Only its first 3 s animate; the remaining 114 were a
-             frozen duplicate frame, so it's trimmed to the motion and loops.
-             MP4 only: VP9 came out heavier than H.264 on this flat-colour
-             artwork, and H.264 is universal on mobile. Shares the desktop
-             poster — same artwork, one fewer asset.
+             letterboxing). Same fit and same clip as desktop, title card
+             included — see the desktop branch below for the source notes.
 
              The `key` is load-bearing, not decoration: both branches render a
              <video> in the same tree position, so without distinct keys React
@@ -102,7 +96,8 @@ export default function Hero() {
               objectFit: "contain",
             }}
           >
-            <source src="/hero/knot-mobile.mp4" type="video/mp4" />
+            <source src="/hero/knot.webm" type="video/webm" />
+            <source src="/hero/knot.mp4" type="video/mp4" />
           </video>
         ) : (
           // Full-bleed hero animation. Converted from a 13 MB GIF to WebM/MP4
