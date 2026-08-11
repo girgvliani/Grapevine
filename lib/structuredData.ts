@@ -32,9 +32,10 @@ function organization(locale: Locale) {
     foundingDate: "2014",
     logo: { "@type": "ImageObject", url: absoluteUrl("/icon.png") },
     sameAs: SOCIAL_PROFILES,
-    // Deliberately no address/telephone: a guessed NAP is worse than none, since
-    // inconsistent details actively hurt local ranking. Once the real ones are
-    // known, add `address` + `telephone` and change @type to "ProfessionalService"
+    telephone: "+995599495574",
+    // Address still deliberately omitted: a guessed NAP is worse than none,
+    // since inconsistent details actively hurt local ranking. Once the real
+    // one is known, add `address` and change @type to "ProfessionalService"
     // to become eligible for local results.
   };
 }

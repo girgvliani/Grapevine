@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useLang } from "./LanguageProvider";
 import { getServiceDetail } from "@/lib/serviceContent";
 import { localizedHref } from "@/lib/routing";
-import { caps, type ServiceSlug } from "@/lib/i18n";
+import { type ServiceSlug, mtavruli } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { SERVICE_ASSETS } from "./servicesConfig";
 
@@ -158,7 +158,7 @@ function ServiceCard({
               marginBottom: "0.35rem",
             }}
           >
-            {caps(name)}
+            {name}
           </div>
 
           {/* Subtitle — always rendered so every card reserves the same height
@@ -176,7 +176,7 @@ function ServiceCard({
               opacity: 0.85,
             }}
           >
-            {caps(sub || "\u00A0")}
+            {sub || "\u00A0"}
           </div>
 
           {/* Turn / flip logo — bottom centre */}
@@ -201,7 +201,7 @@ function ServiceCard({
                 marginBottom: "0.75rem",
               }}
             >
-              {caps(name)}{sub ? " " + caps(sub) : ""}
+              {name}{sub ? " " + sub : ""}
             </div>
 
             {/* Description */}
@@ -235,7 +235,7 @@ function ServiceCard({
                       marginBottom: "0.25rem",
                     }}
                   >
-                    {caps(p.startingFrom)}
+                    {p.startingFrom}
                   </div>
                   <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: isMobile ? "1.25rem" : "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
                     {price}
@@ -261,7 +261,7 @@ function ServiceCard({
                   textDecoration: "none",
                 }}
               >
-                {caps(p.seeMore)} →
+                {p.seeMore} →
               </Link>
             </div>
           </div>
@@ -330,14 +330,13 @@ export default function Services() {
           style={{
             fontSize: "clamp(2rem, 6vw, 3.5rem)",
             fontWeight: 900,
-            textTransform: "uppercase",
             letterSpacing: "-0.02em",
             color: "var(--orange)",
             fontFamily: "var(--font-heading)",
             margin: "0 clamp(1.5rem, 5vw, 3rem) 2.5rem",
           }}
         >
-          {caps(t.services.heading)}
+          {mtavruli(t.services.heading)}
         </h2>
         <div
           className="hide-scrollbar"
@@ -374,13 +373,12 @@ export default function Services() {
             style={{
               fontSize: "clamp(2rem, 4.44vw, 4rem)",
               fontWeight: 900,
-              textTransform: "uppercase",
               letterSpacing: "-0.02em",
               color: "var(--orange)",
               fontFamily: "var(--font-heading)",
             }}
           >
-            {caps(t.services.heading)}
+            {mtavruli(t.services.heading)}
           </h2>
         </div>
 

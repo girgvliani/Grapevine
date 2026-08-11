@@ -55,7 +55,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Run on everything except Next internals and files with an extension
-  // (favicon.ico, sitemap.xml, robots.txt, images), which must not be rewritten.
-  matcher: ["/((?!_next|.*\\..*).*)"],
+  // Run on everything except Next internals, API routes (not locale content —
+  // rewriting /api/contact to /ka/api/contact 404s it), and files with an
+  // extension (favicon.ico, sitemap.xml, robots.txt, images), which must not
+  // be rewritten.
+  matcher: ["/((?!_next|api|.*\\..*).*)"],
 };

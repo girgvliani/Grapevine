@@ -4,19 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
+import { mtavruli } from "@/lib/i18n";
 
-function Dot({ active }: { active: boolean }) {
+function StepButton({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
   return (
-    <div style={{
-      width: "0.625rem",
-      height: "0.625rem",
-      borderRadius: "50%",
-      background: active ? "var(--orange)" : "transparent",
-      border: active ? "none" : "1.5px solid var(--orange)",
-      transition: "background 0.4s ease",
-    }} />
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      aria-current={active}
+      style={{
+        width: active ? "0.625rem" : "2.75rem",
+        height: active ? "0.625rem" : "0.375rem",
+        borderRadius: active ? "50%" : "999px",
+        background: active ? "var(--orange)" : "transparent",
+        border: active ? "none" : "1.5px solid var(--orange)",
+        transition: "background 0.4s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease",
+        padding: 0,
+        cursor: "pointer",
+      }}
+    />
   );
 }
 
@@ -30,10 +38,7 @@ export default function Process() {
   const [panel, setPanel] = useState(0);
   const [fading, setFading] = useState(false);
   const [lockedHeight, setLockedHeight] = useState<number | undefined>(undefined);
-  const stepsRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef(0);
-  const cooldownRef = useRef(false);
 
   // Lock height to panel 0's natural height before first switch
   useEffect(() => {
@@ -42,43 +47,14 @@ export default function Process() {
     }
   }, [lockedHeight]);
 
-  useEffect(() => {
-    if (isMobile) return;
-    const el = stepsRef.current;
-    if (!el) return;
-
-    const onWheel = (e: WheelEvent) => {
-      if (cooldownRef.current) return;
-
-      const goingDown = e.deltaY > 30;
-      const goingUp = e.deltaY < -30;
-
-      if (goingDown && panelRef.current === 0) {
-        e.preventDefault();
-        cooldownRef.current = true;
-        setFading(true);
-        setTimeout(() => {
-          panelRef.current = 1;
-          setPanel(1);
-          setFading(false);
-          setTimeout(() => { cooldownRef.current = false; }, 400);
-        }, 300);
-      } else if (goingUp && panelRef.current === 1) {
-        e.preventDefault();
-        cooldownRef.current = true;
-        setFading(true);
-        setTimeout(() => {
-          panelRef.current = 0;
-          setPanel(0);
-          setFading(false);
-          setTimeout(() => { cooldownRef.current = false; }, 400);
-        }, 300);
-      }
-    };
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [isMobile]);
+  function switchPanel(target: number) {
+    if (target === panel || fading) return;
+    setFading(true);
+    setTimeout(() => {
+      setPanel(target);
+      setFading(false);
+    }, 300);
+  }
 
   // Mobile: only the bird + title, steps/benefits hidden (per the mobile design).
   if (isMobile) {
@@ -100,14 +76,13 @@ export default function Process() {
               fontWeight: 900,
               fontSize: "clamp(2rem, 9vw, 2.75rem)",
               lineHeight: 1.1,
-              textTransform: "uppercase",
               letterSpacing: "-0.02em",
               textAlign: "center",
             }}
           >
-            <span style={{ color: "var(--orange)" }}>{caps(t.process.titleLine1)}</span>
+            <span style={{ color: "var(--orange)" }}>{mtavruli(t.process.titleLine1)}</span>
             <br />
-            <span style={{ color: "var(--dark)" }}>{caps(t.process.titleLine2)}</span>
+            <span style={{ color: "var(--dark)" }}>{mtavruli(t.process.titleLine2)}</span>
           </div>
         </div>
       </section>
@@ -135,20 +110,18 @@ export default function Process() {
             fontWeight: 900,
             fontSize: isTablet ? "clamp(1.6rem, 3.6vw, 2.25rem)" : "clamp(2.5rem, 3.6vw, 3.25rem)",
             lineHeight: 1.1,
-            textTransform: "uppercase",
             letterSpacing: "-0.02em",
             paddingBottom: "1rem",
           }}>
-            <span style={{ color: "var(--orange)" }}>{caps(t.process.titleLine1)}</span>
+            <span style={{ color: "var(--orange)" }}>{mtavruli(t.process.titleLine1)}</span>
             <br />
-            <span style={{ color: "var(--dark)" }}>{caps(t.process.titleLine2)}</span>
+            <span style={{ color: "var(--dark)" }}>{mtavruli(t.process.titleLine2)}</span>
           </div>
         </div>
 
         {/* Right — interactive steps column */}
         <div
-          ref={stepsRef}
-          style={{ flex: 1, paddingTop: "0.5rem", paddingLeft: isTablet ? "1.25rem" : "clamp(1rem, 6vw, 6.25rem)", userSelect: "none" }}
+          style={{ flex: 1, paddingTop: "0.5rem", paddingLeft: isTablet ? "1.25rem" : "clamp(1rem, 6vw, 6.25rem)" }}
         >
           <div ref={contentRef} style={{ opacity: fading ? 0 : 1, transition: "opacity 0.3s ease", minHeight: lockedHeight }}>
 
@@ -168,10 +141,10 @@ export default function Process() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: isTablet ? "1.375rem" : "clamp(1.625rem, 3vw, 2.375rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1, marginBottom: "0.375rem" }}>
-                        {caps(step.title)}
+                        {step.title}
                       </div>
                       <div style={{ fontSize: "0.6875rem", color: "var(--orange)", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-primary)", marginBottom: "0.625rem" }}>
-                        {caps(step.sub)}
+                        {step.sub}
                       </div>
                       <div style={{ fontSize: "0.75rem", lineHeight: 1.75, color: "#1A0512", opacity: 0.65, fontFamily: "var(--font-primary)", maxWidth: "21.25rem" }}>
                         {step.desc}
@@ -188,13 +161,12 @@ export default function Process() {
                 <h3 style={{
                   fontSize: "clamp(1.5rem, 3.5vw, 3rem)",
                   fontWeight: 900,
-                  textTransform: "uppercase",
                   letterSpacing: "-0.02em",
                   color: "var(--orange)",
                   fontFamily: "var(--font-heading)",
                   marginBottom: "2.5rem",
                 }}>
-                  {caps(t.process.benefitsHeading)}
+                  {mtavruli(t.process.benefitsHeading)}
                 </h3>
 
                 {t.process.benefits.map((group) => (
@@ -205,7 +177,7 @@ export default function Process() {
                       </span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "clamp(1.25rem, 2.5vw, 2rem)", fontWeight: 900, color: "#1A0512", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1 }}>
-                          {caps(group.title)}
+                          {group.title}
                         </div>
                         <div style={{ height: "2px", background: "var(--orange)", marginTop: "0.375rem" }} />
                       </div>
@@ -230,10 +202,18 @@ export default function Process() {
 
           </div>
 
-          {/* Dots */}
+          {/* Step switcher */}
           <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
-            <Dot active={panel === 0} />
-            <Dot active={panel === 1} />
+            <StepButton
+              active={panel === 0}
+              onClick={() => switchPanel(0)}
+              label={`${t.process.titleLine1} ${t.process.titleLine2}`}
+            />
+            <StepButton
+              active={panel === 1}
+              onClick={() => switchPanel(1)}
+              label={t.process.benefitsHeading}
+            />
           </div>
         </div>
 

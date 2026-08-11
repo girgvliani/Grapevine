@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
 // Entrance easing, mirrors the old framer-motion curve. Animations themselves
@@ -147,7 +146,7 @@ export default function Hero() {
           animation: `heroFadeUp 0.8s ${EASE} 0.4s both`,
         }}
       >
-        {caps(t.hero.label)}
+        {t.hero.label}
       </div>
 
       {/* Description — bottom left */}
@@ -194,7 +193,7 @@ export default function Hero() {
             transformOrigin: "left",
           }}
         />
-        <span>{caps(t.hero.scroll)}</span>
+        <span>{t.hero.scroll}</span>
       </div>
     </section>
   );

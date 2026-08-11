@@ -14,27 +14,27 @@
 
    Space Mono is kept behind Mersad on purpose — font fallback is per-character,
    so it still supplies the two glyphs Mersad lacks (U+2192 '→' and U+00A0).
-   TTF for now; converting Mersad to .woff2 (Transfonter) would cut ~40% off the
-   file size — just swap the url + format('woff2') per face when you do. */
+   .woff2 (foundry-provided webfont kit, not re-subset) — cut file size by
+   ~76% over the original .ttf (e.g. Regular: 150KB → 35KB). */
 
 /* Mersad — ships Latin, digits, punctuation, Mkhedruli AND Mtavruli */
 @font-face {
   font-family: 'Mersad';
-  src: url('/fonts/Mersad%20Regular.ttf') format('truetype');
+  src: url('/fonts/Mersad%20Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Mersad';
-  src: url('/fonts/Mersad%20Bold.ttf') format('truetype');
+  src: url('/fonts/Mersad%20Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Mersad';
-  src: url('/fonts/Mersad%20Black.ttf') format('truetype');
+  src: url('/fonts/Mersad%20Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;

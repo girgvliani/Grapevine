@@ -33,6 +33,9 @@ export default async function Image({
 
   // Mersad is the site's heading face (--font-heading) and ships Latin +
   // Georgian glyphs, so both locales render in the real brand type.
+  // Must stay .ttf: Satori (ImageResponse's renderer) can't decode .woff2.
+  // The @font-face rules in globals.css use .woff2 for this weight instead —
+  // this is the one intentional exception, not a leftover.
   const mersad = await readFile(
     join(process.cwd(), "public/fonts/Mersad Black.ttf")
   );

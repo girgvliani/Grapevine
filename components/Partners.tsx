@@ -4,9 +4,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
+import { mtavruli } from "@/lib/i18n";
 
 // Where a tile sits in the grid. Purely positional — a slot knows nothing about
 // which logo lands in it, so reordering CLIENT_LOGOS leaves the composition intact.
@@ -127,7 +127,6 @@ export default function Partners() {
           style={{
             fontSize: "clamp(2.5rem, 7vw, 4rem)",
             fontWeight: 900,
-            textTransform: "uppercase",
             letterSpacing: "-0.02em",
             color: "var(--orange)",
             fontFamily: "var(--font-heading)",
@@ -135,7 +134,7 @@ export default function Partners() {
             marginBottom: "2.5rem",
           }}
         >
-          {caps(t.partners.heading)}
+          {mtavruli(t.partners.heading)}
         </h2>
         <div
           style={{
@@ -204,7 +203,6 @@ export default function Partners() {
                 top: "0.5rem",
                 fontSize: "clamp(2.5rem, 5.5vw, 5rem)",
                 fontWeight: 900,
-                textTransform: "uppercase",
                 letterSpacing: "-0.02em",
                 color: "var(--orange)",
                 fontFamily: "var(--font-heading)",
@@ -212,7 +210,7 @@ export default function Partners() {
                 lineHeight: 1,
               }}
             >
-              {caps(t.partners.heading)}
+              {mtavruli(t.partners.heading)}
             </h2>
 
             {/* Logo grid — CSS grid for placement, transform for asymmetry */}

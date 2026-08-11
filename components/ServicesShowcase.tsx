@@ -7,7 +7,7 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { getServiceDetail } from "@/lib/serviceContent";
-import { caps, type ServiceSlug } from "@/lib/i18n";
+import { type ServiceSlug } from "@/lib/i18n";
 import BehanceLink from "./BehanceLink";
 import { SERVICE_ASSETS } from "./servicesConfig";
 
@@ -370,7 +370,7 @@ export default function ServicesShowcase({
             color: "var(--orange)",
           }}
         >
-          {caps(t.services.heading)}
+          {t.services.heading}
           <span
             style={{
               display: "block",
@@ -442,8 +442,8 @@ export default function ServicesShowcase({
             marginBottom: "1.5rem",
           }}
         >
-          {caps(p.bandPre)}
-          <span style={{ color: "var(--orange)" }}>{caps(p.bandAccent)}</span>
+          {p.bandPre}
+          <span style={{ color: "var(--orange)" }}>{p.bandAccent}</span>
         </h2>
         <p
           style={{

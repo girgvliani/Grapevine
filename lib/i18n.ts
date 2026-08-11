@@ -203,6 +203,9 @@ const ka = {
       message: "დაწერეთ თქვენი შეტყობინება...",
     },
     send: "გაგზავნა",
+    sending: "იგზავნება...",
+    success: "მადლობა! თქვენი შეტყობინება გაიგზავნა.",
+    error: "დაფიქსირდა შეცდომა. გთხოვთ სცადოთ თავიდან, ან დაგვიკავშირდით პირდაპირ.",
     or: "ან",
     contact: { email: "ელ.ფოსტა", phone: "ტელეფონის ნომერი", social: "სოციალური მედია" },
     eyebrow: "Grapevine — კონტაქტი",
@@ -214,6 +217,12 @@ const ka = {
     links: { services: "სერვისები", portfolio: "პორტფოლიო", contact: "კონტაქტი" },
     button: "ამოხსენი ქაოსი",
     copyright: "საავტორო უფლებები © 2026 | ყველა უფლება დაცულია",
+  },
+  notFound: {
+    eyebrow: "შეცდომა 404",
+    heading: "ეს ძაფი არსად მიდის.",
+    description: "გვერდი, რომელსაც ეძებთ, აღარ არსებობს ან გადატანილია. დავუბრუნდეთ დასაწყისს.",
+    backHome: "მთავარ გვერდზე დაბრუნება",
   },
 };
 
@@ -388,6 +397,9 @@ const en: typeof ka = {
       message: "Write your message...",
     },
     send: "Send",
+    sending: "Sending...",
+    success: "Thanks! Your message has been sent.",
+    error: "Something went wrong. Please try again, or reach out directly.",
     or: "or",
     contact: { email: "Email", phone: "Phone Number", social: "Social Media" },
     eyebrow: "Grapevine — Contact",
@@ -400,27 +412,31 @@ const en: typeof ka = {
     button: "Untangle Your Mess",
     copyright: "Copyright © 2026 | All Rights Reserved",
   },
+  notFound: {
+    eyebrow: "Error 404",
+    heading: "This thread leads nowhere.",
+    description: "The page you're looking for doesn't exist anymore, or moved. Let's get you back on track.",
+    backHome: "Back to homepage",
+  },
 };
 
 export const translations: Record<Lang, typeof ka> = { ka, en };
 
 export type Translation = typeof ka;
 
-// All-caps heading text, for both locales.
+// Uppercases heading text for both locales. Chrome/Firefox don't apply the
+// Mkhedruli→Mtavruli case mapping — not via .toUpperCase(), not via CSS
+// text-transform — even though Mersad ships both glyph sets (confirmed
+// against its cmap table). So Georgian is converted by hand: the 43
+// Mkhedruli letters each sit exactly 0xBC0 below their Mtavruli counterpart
+// (U+10D0–U+10FA / U+10FD–U+10FF -> U+1C90–U+1CBA / U+1CBD–U+1CBF).
 //
-// Georgian is unicameral in everyday writing, but it does have Mtavruli
-// (U+1C90–U+1CBA): the all-caps form where every letter sits between the same
-// two baselines, with no ascenders or descenders. Unicode 11 defined the
-// Mkhedruli→Mtavruli uppercase mapping and JS engines implement it — but
-// `text-transform: uppercase` will NOT produce it. Chrome and Firefox
-// deliberately suppressed that mapping in 2018 (only WebKit applies it), which
-// is why headings render uppercase in English and unchanged in Georgian.
-//
-// The usual workaround, `font-feature-settings: "case"`, is unavailable here:
-// Mersad ships no GSUB table at all. So the conversion happens in JS, where the
-// mapping is guaranteed, and Mersad does carry all 43 Mtavruli glyphs.
-//
-// English is unaffected — this does exactly what text-transform already did.
-export function caps(text: string): string {
-  return text.toUpperCase();
+// Callers must NOT also set CSS `text-transform: uppercase` on the same
+// element — layered on top of already-Mtavruli text, it visually reverts
+// the glyphs back to Mkhedruli in at least one real browser engine (verified
+// via textContent vs. innerText disagreeing on the same node).
+export function mtavruli(text: string): string {
+  return text.toUpperCase().replace(/[ა-ჺჽ-ჿ]/g, (ch) =>
+    String.fromCodePoint(ch.codePointAt(0)! + 0xbc0)
+  );
 }

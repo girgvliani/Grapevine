@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 export default function Quote() {
@@ -109,7 +108,7 @@ export default function Quote() {
               opacity: 0.6,
             }}
           >
-            {caps(t.quote.cite)}
+            {t.quote.cite}
           </cite>
         </blockquote>
       </div>

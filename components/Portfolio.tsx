@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { PORTFOLIO_PROJECTS, type PortfolioProject } from "./portfolioConfig";
+import { mtavruli } from "@/lib/i18n";
 
 function ProjectCard({
   project,
@@ -52,7 +52,7 @@ function ProjectCard({
           {hasImage ? (
             <Image src={project.image!} alt={title} sizes="180px" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: "0.5rem" }} />
           ) : (
-            <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "0.8125rem", textTransform: "uppercase", textAlign: "center", lineHeight: 1.1 }}>{caps(title)}</span>
+            <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "0.8125rem", textTransform: "uppercase", textAlign: "center", lineHeight: 1.1 }}>{title}</span>
           )}
         </div>
 
@@ -112,14 +112,14 @@ function ProjectCard({
         {hasImage ? (
           <Image src={project.image!} alt={title} sizes="(max-width: 640px) 90vw, 480px" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: "1.25rem" }} />
         ) : (
-          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05 }}>{caps(title)}</span>
+          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05 }}>{title}</span>
         )}
       </div>
 
       {/* Text overlay */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1.25rem", background: "linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 100%)" }}>
         <div style={{ fontSize: "0.5625rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.7)", marginBottom: "0.4rem", fontFamily: "var(--font-primary)" }}>
-          {caps(tag)}
+          {tag}
         </div>
         <div style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", fontFamily: "var(--font-primary)", marginBottom: "0.35rem", letterSpacing: "0.02em" }}>
           {title}
@@ -179,8 +179,8 @@ export default function Portfolio() {
 
   const heading = (
     <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
-      <h2 style={{ fontSize: "clamp(2rem, 4.44vw, 4rem)", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0", color: "var(--orange)", fontFamily: "var(--font-heading)" }}>
-        {caps(t.portfolio.heading)}
+      <h2 style={{ fontSize: "clamp(2rem, 4.44vw, 4rem)", fontWeight: 900, letterSpacing: "0", color: "var(--orange)", fontFamily: "var(--font-heading)" }}>
+        {mtavruli(t.portfolio.heading)}
       </h2>
     </div>
   );

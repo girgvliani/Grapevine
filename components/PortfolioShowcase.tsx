@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { localizedHref } from "@/lib/routing";
 import {
   PORTFOLIO_PROJECTS,
@@ -132,7 +131,7 @@ export default function PortfolioShowcase() {
           {p.eyebrow}
         </div>
         <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(2.75rem,7vw,6rem)", lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.02em", color: "var(--orange)" }}>
-          {caps(t.portfolio.heading)}
+          {t.portfolio.heading}
         </h1>
         <p style={{ maxWidth: "34rem", marginTop: "1.5rem", fontSize: "0.95rem", lineHeight: 1.8, color: "rgba(255,250,236,0.72)", fontFamily: "var(--font-primary)" }}>
           {p.intro}
@@ -191,8 +190,8 @@ export default function PortfolioShowcase() {
       {/* CTA band */}
       <section style={{ padding: "4rem clamp(1.5rem,7.6vw,6.875rem) 5rem", textAlign: "center" }}>
         <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(2rem,5vw,3.75rem)", textTransform: "uppercase", letterSpacing: "-0.02em", lineHeight: 1, marginBottom: "1.5rem" }}>
-          {caps(p.bandPre)}
-          <span style={{ color: "var(--orange)" }}>{caps(p.bandAccent)}</span>
+          {p.bandPre}
+          <span style={{ color: "var(--orange)" }}>{p.bandAccent}</span>
         </h2>
         <p style={{ color: "rgba(255,250,236,0.65)", maxWidth: "30rem", margin: "0 auto 2rem", fontSize: "0.9rem", lineHeight: 1.8, fontFamily: "var(--font-primary)" }}>
           {p.bandDesc}

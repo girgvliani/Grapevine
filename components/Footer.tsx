@@ -4,9 +4,9 @@ import Image from "next/image";
 import birdImg from "./assets/Component 9.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
-import { caps } from "@/lib/i18n";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import BehanceLink from "./BehanceLink";
+import { mtavruli } from "@/lib/i18n";
 
 export default function Footer() {
   const { t } = useLang();
@@ -21,7 +21,6 @@ export default function Footer() {
       style={{
         fontSize: isMobile ? "1.125rem" : "clamp(1.125rem, 2.5vw, 1.75rem)",
         fontWeight: 900,
-        textTransform: "uppercase",
         letterSpacing: "-0.01em",
         color: "var(--dark)",
         fontFamily: "var(--font-heading)",
@@ -30,9 +29,9 @@ export default function Footer() {
         textAlign: isMobile ? "right" : "left",
       }}
     >
-      {caps(t.footer.taglineLine1)}
+      {mtavruli(t.footer.taglineLine1)}
       <br />
-      {caps(t.footer.taglineLine2)}
+      {mtavruli(t.footer.taglineLine2)}
     </h3>
   );
 
@@ -48,7 +47,7 @@ export default function Footer() {
           marginBottom: "1rem",
         }}
       >
-        {caps(t.footer.quickLinks)}
+        {t.footer.quickLinks}
       </div>
       <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
         {[
@@ -70,7 +69,7 @@ export default function Footer() {
               onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
               onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.7")}
             >
-              {caps(label)}
+              {label}
             </a>
           </li>
         ))}

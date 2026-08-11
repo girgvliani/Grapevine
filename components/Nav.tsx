@@ -7,7 +7,7 @@ import Image from "next/image";
 import logo from "./assets/logo.png";
 import logoBlack from "./assets/logoblack.png";
 import { useLang } from "./LanguageProvider";
-import { LANGUAGES, caps } from "@/lib/i18n";
+import { LANGUAGES } from "@/lib/i18n";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
@@ -133,7 +133,7 @@ export default function Nav() {
               transition: "background 0.2s, color 0.2s, opacity 0.2s",
             }}
           >
-            {caps(label)}
+            {label}
           </button>
         );
       })}
@@ -207,7 +207,7 @@ export default function Nav() {
                     onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
                     onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.75")}
                   >
-                    {caps(t.nav[key])}
+                    {t.nav[key]}
                   </Link>
                 </li>
               ))}
@@ -242,7 +242,7 @@ export default function Nav() {
                 }}
                 onClick={() => goTo(withLocale("/contact"))}
               >
-                {caps(t.nav.cta)}
+                {t.nav.cta}
               </button>
             </div>
           </>
@@ -333,7 +333,7 @@ export default function Nav() {
                   fontFamily: "var(--font-primary)",
                 }}
               >
-                {caps(t.nav[key])}
+                {t.nav[key]}
               </button>
             ))}
           </nav>
@@ -361,7 +361,7 @@ export default function Nav() {
               fontWeight: 700,
             }}
           >
-            {caps(t.nav.cta)}
+            {t.nav.cta}
           </button>
           </div>
         </>
