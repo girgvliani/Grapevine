@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useLang } from "./LanguageProvider";
-import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 
 export default function Quote() {
-  const { t } = useLang();
-  // Stack the video above the quote from tablet width down — side-by-side
-  // only has room on desktop.
-  const isMobile = useMediaQuery(TABLET_QUERY);
   const ref = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(true);
@@ -16,19 +10,35 @@ export default function Quote() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    let debounceId: ReturnType<typeof setTimeout> | undefined;
+    // Tracks the in-flight play() promise so a pause() never interrupts it —
+    // calling pause() before play() has resolved is a known source of visual
+    // glitches in some browsers.
+    let playPromise: Promise<void> | undefined;
+
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          videoRef.current?.play();
-        } else {
-          videoRef.current?.pause();
-        }
+        // Debounce: only act if the visibility state holds for 200ms.
+        if (debounceId) clearTimeout(debounceId);
+        debounceId = setTimeout(() => {
+          const video = videoRef.current;
+          if (!video) return;
+          if (entry.isIntersecting) {
+            setVisible(true);
+            playPromise = video.play().catch(() => {});
+          } else {
+            Promise.resolve(playPromise).finally(() => video.pause());
+          }
+        }, 200);
       },
       { threshold: 0.15 }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      if (debounceId) clearTimeout(debounceId);
+    };
   }, []);
 
   return (
@@ -40,77 +50,43 @@ export default function Quote() {
         marginTop: "-1px",
       }}
     >
-      <div
-        className="container-cap"
-        style={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: isMobile ? "stretch" : "center",
-          gap: isMobile ? "2rem" : "clamp(2rem, 5vw, 3.75rem)",
-        }}
-      >
-        {/* Video */}
+      <div className="container-cap">
         <div
           style={{
-            flex: isMobile ? "0 0 auto" : "0 0 46%",
-            width: isMobile ? "100%" : undefined,
             borderRadius: "1.75rem",
             overflow: "hidden",
+            aspectRatio: "16 / 9",
             opacity: visible ? 1 : 0,
-            transform: visible ? "none" : isMobile ? "translateY(1.5rem)" : "translateX(-1.5rem)",
+            transform: visible ? "none" : "translateY(1.5rem)",
             transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1)",
           }}
         >
           <video
             ref={videoRef}
-            src="/assets/videos/Comp1.mp4"
+            src="/assets/videos/Comp1-web.mp4"
             muted
             loop
             playsInline
+            preload="auto"
             style={{
               width: "100%",
-              height: isMobile ? "auto" : "100%",
+              height: "100%",
               objectFit: "cover",
               display: "block",
+              // Disqualifies the video from Chrome's hardware overlay plane
+              // (Direct Composition/MPO on Windows). Without this, Chrome can
+              // promote an on-screen <video> to a dedicated overlay plane —
+              // decoded via the GPU driver's video processor, a different
+              // YUV→RGB pipeline than normal compositing — and demote it back
+              // the instant it's partially scrolled off-screen. Same content,
+              // different pipeline, different color: exactly the "same frame,
+              // subtly different shade, right at the viewport edge" symptom.
+              // A non-identity filter forces it through normal compositing
+              // everywhere, so there's no pipeline to switch between.
+              filter: "brightness(1.0001)",
             }}
           />
         </div>
-
-        {/* Quote */}
-        <blockquote
-          style={{
-            flex: 1,
-            margin: 0,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "none" : isMobile ? "translateY(1.5rem)" : "translateX(1.5rem)",
-            transition: "opacity 0.7s ease 0.15s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "clamp(0.8125rem, 1.4vw, 1rem)",
-              lineHeight: 1.85,
-              color: "var(--orange)",
-              fontFamily: "var(--font-primary)",
-              marginBottom: "1.25rem",
-            }}
-          >
-            &ldquo;{t.quote.text}&rdquo;
-          </p>
-          <cite
-            style={{
-              fontSize: "0.6875rem",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: "var(--orange)",
-              fontFamily: "var(--font-primary)",
-              fontStyle: "normal",
-              opacity: 0.6,
-            }}
-          >
-            {t.quote.cite}
-          </cite>
-        </blockquote>
       </div>
     </section>
   );

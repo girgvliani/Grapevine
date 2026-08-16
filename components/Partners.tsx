@@ -1,15 +1,16 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import FastMarquee from "react-fast-marquee";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
 import { mtavruli } from "@/lib/i18n";
 
-// Where a tile sits in the grid. Purely positional — a slot knows nothing about
-// which logo lands in it, so reordering CLIENT_LOGOS leaves the composition intact.
+// Where a tile sits in the scattered grid. Purely positional — a slot knows
+// nothing about which logo lands in it, so reordering CLIENT_LOGOS leaves
+// the composition intact.
 type Slot = {
   col: number;   // 1-based grid column
   row: number;   // 1-based grid row (1=top, 2=mid, 3=bottom)
@@ -22,9 +23,9 @@ type LogoEntry = ClientLogo & Slot;
 // Grid constants
 const COL_W      = 225;  // px per grid column
 const ROW_H      = 160;  // px per row — extra breathing room between logos
-const GRID_LEFT  = 280;  // px from track left where logo grid starts (heading lives here)
-const GRID_COLS  = 8;    // 5 visible + 3 scrollable cols (all filled with logos)
+const GRID_COLS  = 8;
 const LOGO_BOOST = 1.15; // enlarge each logo tile ~15%
+const TRACK_GAP   = 96;  // px gap between repeated copies of the scattered block
 
 // Scattered placements (col/row set the grid cell; dx/dy nudge within the cell).
 // The 18 client logos are zipped onto these slots in order.
@@ -54,17 +55,39 @@ const LOGOS: LogoEntry[] = POSITIONS.map((pos, i) => ({
   ...pos,
 }));
 
+function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
+  return (
+    <div
+      style={{
+        background: logo.bg,
+        borderRadius: "0.9rem",
+        padding: `${8 * scale}px ${12 * scale}px`,
+        width: `${logo.w * scale * LOGO_BOOST}px`,
+        height: `${(logo.maxH ?? 92) * scale * LOGO_BOOST}px`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
+      }}
+    >
+      <Image
+        src={logo.src}
+        alt={logo.alt}
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+      />
+    </div>
+  );
+}
+
 export default function Partners() {
   const { t } = useLang();
-  // Scroll-jacked horizontal track is desktop-only. On tablet/mobile the logos
-  // flow in a normal centered wrap (see the early return below).
+  // Tablet/mobile: logos flow in a static centered wrap. Desktop: the
+  // original scattered-grid composition auto-scrolls as a single repeating
+  // block, heading stays put above it.
   const isTablet = useMediaQuery(TABLET_QUERY);
   const isMobile = useMediaQuery(MOBILE_QUERY);
   const isShort = useMediaQuery(SHORT_QUERY);
   const isWide = useMediaQuery(WIDE_QUERY);
-  const outerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [outerHeight, setOuterHeight] = useState("300vh");
 
   // On short viewports, shrink the logos + grid spacing so the section fits.
   // On wide screens, enlarge just the logos (keep the grid spacing) so nothing overflows.
@@ -72,46 +95,26 @@ export default function Partners() {
   const logoScale = isShort ? 0.68 : isWide ? 1.2 : 1;
   const colW = COL_W * gridScale;
   const rowH = ROW_H * gridScale;
-  const gridLeft = GRID_LEFT * gridScale;
-  const gridTop = 76 * gridScale; // 4.75rem ≈ 76px
-  const trackW = gridLeft + GRID_COLS * colW;
+  const trackW = GRID_COLS * colW;
+  const trackH = 3 * rowH;
 
-  useEffect(() => {
-    if (isTablet) return;
-    const outer = outerRef.current;
-    const track = trackRef.current;
-    if (!outer || !track) return;
+  const heading = (
+    <h2
+      style={{
+        fontSize: "clamp(2.5rem, 7vw, 4rem)",
+        fontWeight: 900,
+        letterSpacing: "-0.02em",
+        color: "var(--orange)",
+        fontFamily: "var(--font-heading)",
+        lineHeight: 1,
+        marginBottom: "2.5rem",
+      }}
+    >
+      {mtavruli(t.partners.heading)}
+    </h2>
+  );
 
-    const getMaxShift = () => Math.max(0, trackW - window.innerWidth);
-
-    const computeHeight = () => {
-      setOuterHeight(`${getMaxShift() + window.innerHeight + 200}px`);
-    };
-
-    const update = () => {
-      const rect = outer.getBoundingClientRect();
-      const scrollRange = rect.height - window.innerHeight;
-      if (scrollRange <= 0) return;
-      const progress = Math.max(0, Math.min(1, -rect.top / scrollRange));
-      track.style.transform = `translateX(-${progress * getMaxShift()}px)`;
-    };
-
-    const raf = requestAnimationFrame(() => {
-      computeHeight();
-      update();
-    });
-
-    window.addEventListener("resize", computeHeight);
-    window.addEventListener("scroll", update, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", computeHeight);
-      window.removeEventListener("scroll", update);
-    };
-  }, [trackW, isTablet]);
-
-  // Tablet / mobile: no scroll-jacking — heading on top, logos in a centered wrap.
+  // Tablet / mobile: static centered wrap, no scrolling.
   if (isTablet) {
     const logoScaleStatic = isMobile ? 0.7 : 0.85;
     return (
@@ -123,19 +126,7 @@ export default function Partners() {
           padding: "clamp(4rem, 8vh, 6rem) clamp(1.5rem, 5vw, 3rem)",
         }}
       >
-        <h2
-          style={{
-            fontSize: "clamp(2.5rem, 7vw, 4rem)",
-            fontWeight: 900,
-            letterSpacing: "-0.02em",
-            color: "var(--orange)",
-            fontFamily: "var(--font-heading)",
-            lineHeight: 1,
-            marginBottom: "2.5rem",
-          }}
-        >
-          {mtavruli(t.partners.heading)}
-        </h2>
+        {heading}
         <div
           style={{
             display: "flex",
@@ -145,122 +136,49 @@ export default function Partners() {
             gap: isMobile ? "1rem" : "1.25rem",
           }}
         >
-          {LOGOS.map((logo, i) => (
-            <div
-              key={i}
-              style={{
-                background: logo.bg,
-                borderRadius: "0.9rem",
-                padding: "0.7rem 0.9rem",
-                width: `${logo.w * logoScaleStatic * LOGO_BOOST}px`,
-                height: `${(logo.maxH ?? 92) * logoScaleStatic * LOGO_BOOST}px`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
-              }}
-            >
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              />
-            </div>
+          {CLIENT_LOGOS.map((logo, i) => (
+            <LogoTile key={i} logo={logo} scale={logoScaleStatic} />
           ))}
         </div>
       </section>
     );
   }
 
+  // Desktop: heading stays fixed on top; the whole scattered-grid block
+  // below auto-scrolls, repeating itself seamlessly (autoFill duplicates
+  // this single block as many times as needed to fill and loop).
   return (
-    <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
-      <section
-        id="partners"
-        style={{
-          background: "var(--dark)",
-          overflow: "hidden",
-          position: "sticky",
-          top: 0,
-          height: isShort ? "31rem" : isWide ? "54rem" : "41.0625rem",
-        }}
-      >
-        <div style={{ paddingTop: isShort ? "5rem" : "6.0625rem", paddingBottom: isShort ? "3rem" : "6.0625rem" }}>
-          <div
-            ref={trackRef}
-            style={{
-              position: "relative",
-              width: `${trackW}px`,
-              height: isShort ? "23rem" : isWide ? "42rem" : "34.75rem",
-              willChange: "transform",
-              transition: "transform 0.05s linear",
-            }}
-          >
-            {/* Heading — scrolls with logos */}
-            <h2
-              style={{
-                position: "absolute",
-                left: "3rem",
-                top: "0.5rem",
-                fontSize: "clamp(2.5rem, 5.5vw, 5rem)",
-                fontWeight: 900,
-                letterSpacing: "-0.02em",
-                color: "var(--orange)",
-                fontFamily: "var(--font-heading)",
-                whiteSpace: "nowrap",
-                lineHeight: 1,
-              }}
-            >
-              {mtavruli(t.partners.heading)}
-            </h2>
-
-            {/* Logo grid — CSS grid for placement, transform for asymmetry */}
+    <section
+      id="partners"
+      style={{
+        background: "var(--dark)",
+        overflow: "hidden",
+        padding: isShort ? "5rem 0 3rem" : "6.0625rem 0",
+      }}
+    >
+      <div style={{ padding: "0 3rem" }}>{heading}</div>
+      <FastMarquee autoFill pauseOnHover speed={50} gradient={false}>
+        <div style={{ position: "relative", width: `${trackW}px`, height: `${trackH}px`, marginRight: `${TRACK_GAP}px` }}>
+          {LOGOS.map((logo, i) => (
             <div
+              key={i}
               style={{
                 position: "absolute",
-                left: `${gridLeft}px`,
-                top: `${gridTop}px`,
-                display: "grid",
-                gridTemplateColumns: `repeat(${GRID_COLS}, ${colW}px)`,
-                gridTemplateRows: `repeat(3, ${rowH}px)`,
+                left: `${(logo.col - 1) * colW}px`,
+                top: `${(logo.row - 1) * rowH}px`,
+                width: `${colW}px`,
+                height: `${rowH}px`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transform: `translate(${(logo.dx ?? 0) * gridScale}px, ${(logo.dy ?? 0) * gridScale}px)`,
               }}
             >
-              {LOGOS.map((logo, i) => (
-                <div
-                  key={i}
-                  style={{
-                    gridColumn: `${logo.col}`,
-                    gridRow: `${logo.row}`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    transform: `translate(${(logo.dx ?? 0) * gridScale}px, ${(logo.dy ?? 0) * gridScale}px)`,
-                  }}
-                >
-                  <div
-                    style={{
-                      background: logo.bg,
-                      borderRadius: "0.9rem",
-                      padding: `${8 * logoScale}px ${12 * logoScale}px`,
-                      width: `${logo.w * logoScale * LOGO_BOOST}px`,
-                      height: `${(logo.maxH ?? 92) * logoScale * LOGO_BOOST}px`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
-                    }}
-                  >
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                    />
-                  </div>
-                </div>
-              ))}
+              <LogoTile logo={logo} scale={logoScale} />
             </div>
-          </div>
+          ))}
         </div>
-      </section>
-    </div>
+      </FastMarquee>
+    </section>
   );
 }

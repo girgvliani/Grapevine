@@ -9,6 +9,9 @@ import img07 from "./assets/portfolioProjects/image07.png";
 import img08 from "./assets/portfolioProjects/image08.png";
 import img09 from "./assets/portfolioProjects/image09.png";
 import img10 from "./assets/portfolioProjects/image10.png";
+import diplomatImg from "./assets/portfolio/diplomat.png";
+import bookImg from "./assets/portfolio/book.png";
+import sameriImg from "./assets/portfolio/sameri.jpg";
 
 export type PortfolioCategory =
   | "full"
@@ -33,12 +36,12 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   { id: "dac",                 category: "digital",  bg: "#C0392B", image: img03 },
   { id: "blits-dental",        category: "digital",  bg: "#2AA9B5", image: img04 },
   { id: "american-hospital",   category: "content",  bg: "#2C3E7A", image: img05 },
-  { id: "diplomat",            category: "content",  bg: "#8E44AD" },
-  { id: "tbilisi-book-capital", category: "campaign", bg: "#E8541A" },
+  { id: "diplomat",            category: "content",  bg: "#8E44AD", image: diplomatImg },
+  { id: "tbilisi-book-capital", category: "campaign", bg: "#E8541A", image: bookImg },
   { id: "fino",                category: "campaign", bg: "#16A085", image: img06 },
   { id: "chita",               category: "branding", bg: "#E67E22", image: img07 },
   { id: "smart-store",         category: "branding", bg: "#2C3E50", image: img08 },
-  { id: "samery",              category: "branding", bg: "#902793" },
+  { id: "samery",              category: "branding", bg: "#902793", image: sameriImg },
   { id: "eli",                 category: "web",      bg: "#2B6CB0", image: img09 },
   { id: "veronika",            category: "web",      bg: "#D35400" },
   { id: "geogps",              category: "web",      bg: "#111111", image: img10 },

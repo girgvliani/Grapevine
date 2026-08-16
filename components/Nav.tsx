@@ -149,7 +149,7 @@ export default function Nav() {
           left: 0,
           right: 0,
           zIndex: 100,
-          padding: "1.25rem clamp(1.5rem, 5vw, 2.5rem)",
+          padding: "0.84rem clamp(1.5rem, 5vw, 2.5rem)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -228,6 +228,9 @@ export default function Nav() {
                   fontFamily: "var(--font-primary)",
                   border: "none",
                   fontWeight: 700,
+                  whiteSpace: "pre-line",
+                  textAlign: "center",
+                  lineHeight: 1.3,
                   transition: "transform 0.2s, background 0.2s",
                 }}
                 onMouseEnter={(e) => {
@@ -359,6 +362,8 @@ export default function Nav() {
               fontFamily: "var(--font-primary)",
               border: "none",
               fontWeight: 700,
+              whiteSpace: "pre-line",
+              lineHeight: 1.3,
             }}
           >
             {t.nav.cta}

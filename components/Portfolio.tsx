@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
+import FastMarquee from "react-fast-marquee";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { PORTFOLIO_PROJECTS, type PortfolioProject } from "./portfolioConfig";
@@ -87,6 +88,7 @@ function ProjectCard({
         flexShrink: 0,
         width: isHuge ? "36rem" : isWide ? "30rem" : "25.5625rem",
         height: isHuge ? "clamp(33rem, 58vh, 46rem)" : isWide ? "30.75rem" : "26.3125rem",
+        marginRight: "1rem",
         borderRadius: "2.1rem",
         overflow: "hidden",
         position: "relative",
@@ -135,47 +137,10 @@ function ProjectCard({
 export default function Portfolio() {
   const { t } = useLang();
   const isTablet = useMediaQuery(TABLET_QUERY);
-  const isHuge = useMediaQuery(HUGE_QUERY);
-  const outerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [outerHeight, setOuterHeight] = useState("350vh");
 
   const projText = (p: PortfolioProject) =>
     t.portfolio.projects[p.id as keyof typeof t.portfolio.projects];
   const catLabel = (p: PortfolioProject) => t.portfolioPage.categories[p.category];
-
-  useEffect(() => {
-    if (isTablet) return;
-    const outer = outerRef.current;
-    const track = trackRef.current;
-    if (!outer || !track) return;
-
-    const getMaxShift = () => {
-      const cs = getComputedStyle(track.parentElement!);
-      const pl = parseFloat(cs.paddingLeft) || 0;
-      const pr = parseFloat(cs.paddingRight) || 0;
-      return Math.max(0, track.scrollWidth - window.innerWidth + pl + pr);
-    };
-    const computeHeight = () => setOuterHeight(`${getMaxShift() + window.innerHeight + 200}px`);
-    const update = () => {
-      const rect = outer.getBoundingClientRect();
-      const range = rect.height - window.innerHeight;
-      if (range <= 0) return;
-      const progress = Math.max(0, Math.min(1, -rect.top / range));
-      track.style.transform = `translateX(-${progress * getMaxShift()}px)`;
-    };
-    const raf = requestAnimationFrame(() => {
-      computeHeight();
-      update();
-    });
-    window.addEventListener("resize", computeHeight);
-    window.addEventListener("scroll", update, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", computeHeight);
-      window.removeEventListener("scroll", update);
-    };
-  }, [isTablet]);
 
   const heading = (
     <div style={{ padding: "5.25rem clamp(3rem, 7.6vw, 6.875rem) 2.5rem" }}>
@@ -201,17 +166,13 @@ export default function Portfolio() {
   }
 
   return (
-    <div ref={outerRef} style={{ height: outerHeight, position: "relative" }}>
-      <section id="work" style={{ background: "var(--dark)", overflow: "hidden", position: "sticky", top: 0, height: isHuge ? "clamp(48.625rem, 92vh, 66rem)" : "48.625rem" }}>
-        {heading}
-        <div style={{ padding: "0 clamp(3rem, 7.6vw, 6.875rem)", overflow: "visible" }}>
-          <div ref={trackRef} style={{ display: "flex", gap: "1rem", willChange: "transform", transition: "transform 0.05s linear" }}>
-            {PORTFOLIO_PROJECTS.map((p, i) => (
-              <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={i * 0.08} variant="desktop" />
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+    <section id="work" style={{ background: "var(--dark)", overflow: "hidden", paddingBottom: "5rem" }}>
+      {heading}
+      <FastMarquee autoFill pauseOnHover speed={50} gradient={false}>
+        {PORTFOLIO_PROJECTS.map((p) => (
+          <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={0} variant="desktop" />
+        ))}
+      </FastMarquee>
+    </section>
   );
 }

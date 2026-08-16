@@ -1,24 +1,15 @@
 "use client";
 
+import FastMarquee from "react-fast-marquee";
 import { useLang } from "./LanguageProvider";
 
 export default function Marquee() {
   const { t } = useLang();
-  const allItems = [...t.marquee, ...t.marquee];
 
   return (
-    <div
-      style={{
-        overflow: "hidden",
-        padding: "18px 0",
-        background: "var(--orange)",
-      }}
-    >
-      <div
-        className="marquee-track"
-        style={{ display: "flex", whiteSpace: "nowrap" }}
-      >
-        {allItems.map((item, i) => (
+    <div style={{ background: "var(--orange)", padding: "18px 0" }}>
+      <FastMarquee autoFill speed={60} pauseOnHover={false} gradient={false}>
+        {t.marquee.map((item, i) => (
           <div
             key={i}
             style={{
@@ -27,10 +18,10 @@ export default function Marquee() {
               textTransform: "uppercase",
               color: "var(--dark)",
               fontWeight: 700,
-              padding: "0 36px",
               display: "flex",
               alignItems: "center",
-              gap: "18px",
+              gap: "32px",
+              paddingRight: "32px",
               fontFamily: "var(--font-primary)",
             }}
           >
@@ -47,7 +38,7 @@ export default function Marquee() {
             />
           </div>
         ))}
-      </div>
+      </FastMarquee>
     </div>
   );
 }

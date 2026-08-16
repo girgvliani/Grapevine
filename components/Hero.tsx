@@ -68,11 +68,17 @@ export default function Hero() {
             }}
           />
         ) : isMobile ? (
-          /* Plays in its natural landscape orientation — `contain` centres the
-             full animation as a horizontal band, with the section's own --dark
-             background filling above and below (so it doesn't read as
-             letterboxing). Same fit and same clip as desktop, title card
-             included — see the desktop branch below for the source notes.
+          /* No-text motion-only clip (see /public/hero — trimmed from the 289 MB
+             knot0last GIF to H.264, 45 KB). The source footage is landscape,
+             so instead of cropping it into a portrait frame with `cover`, the
+             clip is rotated -90deg to actually read as vertical.
+
+             Rotating swaps which axis is visually "width" vs "height", so the
+             pre-rotation box is built pre-swapped: its width is set to the
+             portrait frame's target HEIGHT and vice versa, then the whole
+             thing spins into place around its own centre. `objectFit: cover`
+             fills that pre-rotation box regardless of the clip's exact native
+             aspect ratio.
 
              The `key` is load-bearing, not decoration: both branches render a
              <video> in the same tree position, so without distinct keys React
@@ -80,25 +86,33 @@ export default function Hero() {
              <source> on a video that has already loaded does nothing without an
              explicit .load() call — the old clip just keeps playing. Distinct
              keys force a real unmount/mount, so the new file actually loads. */
-          <video
-            key="hero-mobile"
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster="/hero/knot-poster.jpg"
-            aria-hidden="true"
+          <div
             style={{
               position: "absolute",
               inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <source src="/hero/knot.webm" type="video/webm" />
-            <source src="/hero/knot.mp4" type="video/mp4" />
-          </video>
+            <video
+              key="hero-mobile"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="/hero/knot-poster.jpg"
+              aria-hidden="true"
+              style={{
+                width: "calc(min(90vw, 24rem) * 16 / 9)",
+                height: "min(90vw, 24rem)",
+                objectFit: "cover",
+                transform: "rotate(-90deg)",
+              }}
+            >
+              <source src="/hero/knot-mobile.mp4" type="video/mp4" />
+            </video>
+          </div>
         ) : (
           // Full-bleed hero animation. Converted from a 13 MB GIF to WebM/MP4
           // (~250 KB) — see /public/hero. Poster paints instantly as the LCP.
