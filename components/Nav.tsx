@@ -14,6 +14,7 @@ import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 const LINKS = [
   { href: "/services", key: "services" as const },
   { href: "/portfolio", key: "portfolio" as const },
+  { href: "/blog", key: "blog" as const },
 ];
 
 // Routes with a light (cream) background need dark nav text + black logo.

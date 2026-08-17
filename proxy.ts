@@ -32,8 +32,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  // Old WordPress blog (/ბლოგი) — the new site has no blog by design, so send
-  // the indexed URL to home instead of 404. Handled here rather than in
+  // Old WordPress blog (/ბლოგი) — now that there's a real blog again, send the
+  // indexed URL there instead of home. Handled here rather than in
   // next.config because redirects() doesn't reliably match non-ASCII sources.
   let decoded = pathname;
   try {
@@ -43,7 +43,7 @@ export function proxy(request: NextRequest) {
   }
   if (decoded === "/ბლოგი" || decoded === "/ბლოგი/") {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/blog";
     return NextResponse.redirect(url, 308);
   }
 
@@ -55,9 +55,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Run on everything except Next internals, API routes (not locale content —
-  // rewriting /api/contact to /ka/api/contact 404s it), and files with an
-  // extension (favicon.ico, sitemap.xml, robots.txt, images), which must not
-  // be rewritten.
-  matcher: ["/((?!_next|api|.*\\..*).*)"],
+  // Run on everything except Next internals, API routes, the admin tool
+  // (not locale content — rewriting /admin to /ka/admin 404s it, since admin
+  // pages live outside app/[lang]), and files with an extension (favicon.ico,
+  // sitemap.xml, robots.txt, images), which must not be rewritten.
+  matcher: ["/((?!_next|api|admin|.*\\..*).*)"],
 };

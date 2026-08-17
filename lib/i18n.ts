@@ -36,6 +36,7 @@ const ka = {
 nav: {
     services: "სერვისები",
     portfolio: "პორტფოლიო",
+    blog: "ბლოგი",
     cta: "მიზნამდე\nერთი ნაბიჯია!",
   },
   hero: {
@@ -224,6 +225,14 @@ nav: {
     description: "გვერდი, რომელსაც ეძებთ, აღარ არსებობს ან გადატანილია. დავუბრუნდეთ დასაწყისს.",
     backHome: "მთავარ გვერდზე დაბრუნება",
   },
+  blog: {
+    eyebrow: "Grapevine — ბლოგი",
+    heading: "ბლოგი",
+    intro: "აზრები სტრატეგიაზე, ბრენდინგსა და იმაზე, თუ როგორ ვზრდით ბრენდებს.",
+    empty: "პოსტები მალე გამოქვეყნდება.",
+    readMore: "სრულად ნახვა",
+    backToBlog: "ბლოგში დაბრუნება",
+  },
 
 };
 
@@ -231,6 +240,7 @@ const en: typeof ka = {
   nav: {
     services: "Services",
     portfolio: "Portfolio",
+    blog: "Blog",
     cta: "Grow With Us",
   },
   hero: {
@@ -418,6 +428,14 @@ const en: typeof ka = {
     heading: "This thread leads nowhere.",
     description: "The page you're looking for doesn't exist anymore, or moved. Let's get you back on track.",
     backHome: "Back to homepage",
+  },
+  blog: {
+    eyebrow: "Grapevine — Blog",
+    heading: "Blog",
+    intro: "Thoughts on strategy, branding, and how we grow brands.",
+    empty: "Posts are coming soon.",
+    readMore: "Read more",
+    backToBlog: "Back to blog",
   },
 };
 

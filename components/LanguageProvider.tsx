@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { translations, type Lang, type Translation } from "@/lib/i18n";
 
 type LanguageContextValue = {
@@ -27,6 +28,7 @@ export function LanguageProvider({
   children: React.ReactNode;
 }) {
   const [lang, setLangState] = useState<Lang>(initialLang);
+  const router = useRouter();
 
   // Follow the route's locale if a real navigation lands on a different one.
   useEffect(() => {
@@ -36,11 +38,24 @@ export function LanguageProvider({
   const setLang = (next: Lang) => {
     if (next === lang) return;
 
+    const { pathname, search, hash } = window.location;
+    const bare = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+
+    // Blog content is fetched server-side per language from the database —
+    // unlike the rest of the site, it isn't pre-bundled in both languages,
+    // so a replaceState-only text swap leaves stale content on screen. This
+    // needs a real navigation so the server re-fetches in the target
+    // language. Individual posts also have no same-slug counterpart in the
+    // other language (posts are single-language), so switching from a post
+    // goes to the blog listing rather than a nonexistent translated post.
+    if (bare === "/blog" || bare.startsWith("/blog/")) {
+      router.push(next === "en" ? "/en/blog" : "/blog");
+      return;
+    }
+
     // Rewrite the URL bar to the target locale — no navigation, no reload, no
     // scroll reset. Next keeps usePathname in sync with this. Georgian is bare;
     // English carries an /en prefix.
-    const { pathname, search, hash } = window.location;
-    const bare = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
     const target = next === "en" ? (bare === "/" ? "/en" : `/en${bare}`) : bare;
     window.history.replaceState(null, "", `${target}${search}${hash}`);
 
