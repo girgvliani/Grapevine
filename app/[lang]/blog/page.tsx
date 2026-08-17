@@ -6,6 +6,12 @@ import { translations, mtavruli } from "@/lib/i18n";
 import { isLocale, localizedHref, type Locale } from "@/lib/routing";
 import { pageMetadata } from "@/lib/seo";
 
+// Blog content changes independently of deploys (new posts come from /admin,
+// backed by Railway Postgres) — must render per-request, not be frozen as
+// static HTML at build time. This also avoids needing DATABASE_URL reachable
+// during the Vercel build step, only at request time.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

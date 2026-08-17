@@ -8,6 +8,11 @@ import { translations } from "@/lib/i18n";
 import { isLocale, localizedHref, type Locale } from "@/lib/routing";
 import { pageMetadata } from "@/lib/seo";
 
+// Same reasoning as the blog listing page: posts come from a database that
+// changes independently of deploys, so this can't be frozen as static HTML
+// at build time.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {
