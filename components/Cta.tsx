@@ -1,11 +1,67 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Script from "next/script";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: HTMLElement,
+        options: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "error-callback"?: () => void;
+          "expired-callback"?: () => void;
+        }
+      ) => string;
+      reset: (widgetId: string) => void;
+    };
+  }
+}
+
+// Renders Cloudflare Turnstile invisibly and hands the verification token up
+// via onToken — kept separate so the widget only mounts/unmounts once, not
+// on every Cta re-render.
+function Turnstile({ onToken }: { onToken: (token: string) => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const widgetId = useRef<string | null>(null);
+
+  function renderWidget() {
+    if (!containerRef.current || !window.turnstile || !TURNSTILE_SITE_KEY) return;
+    widgetId.current = window.turnstile.render(containerRef.current, {
+      sitekey: TURNSTILE_SITE_KEY,
+      callback: onToken,
+      "error-callback": () => onToken(""),
+      "expired-callback": () => onToken(""),
+    });
+  }
+
+  useEffect(() => {
+    if (window.turnstile) renderWidget();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!TURNSTILE_SITE_KEY) return null;
+
+  return (
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+        onReady={renderWidget}
+      />
+      <div ref={containerRef} />
+    </>
+  );
+}
 
 function FloatingField({
   label,
@@ -115,22 +171,33 @@ export default function Cta({
 
   const [form, setForm] = useState({ email: "", subject: "", message: "" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  // Bumped after every submit attempt to force the Turnstile widget to
+  // remount — tokens are single-use, so a retry needs a fresh one.
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (status === "sending") return;
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setStatus("error");
+      return;
+    }
     setStatus("sending");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       });
       if (!res.ok) throw new Error("request_failed");
       setStatus("success");
       setForm({ email: "", subject: "", message: "" });
     } catch {
       setStatus("error");
+    } finally {
+      setTurnstileToken("");
+      setTurnstileKey((k) => k + 1);
     }
   }
 
@@ -218,6 +285,8 @@ export default function Cta({
               onChange={(v) => setForm((f) => ({ ...f, message: v }))}
               required
             />
+
+            <Turnstile key={turnstileKey} onToken={setTurnstileToken} />
 
             {/* Send button */}
             <button
@@ -322,9 +391,14 @@ export default function Cta({
                 <div>
                   <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
                   <div style={{ display: "flex", gap: "0.375rem" }}>
-                    {["f", "in", "ig"].map((s) => (
-                      <div
-                        key={s}
+                    {[
+                      { label: "f", href: "https://www.facebook.com/share/1EK3dwXeqv/?mibextid=wwXIfr" },
+                      { label: "in", href: "https://www.linkedin.com/company/grapevine-georgia/" },
+                      { label: "ig", href: "https://www.instagram.com/grapevine.agency?igsh=MTJxdnRhdjdrbXhrNA==" },
+                    ].map(({ label, href }) => (
+                      <a
+                        key={label}
+                        href={href}
                         style={{
                           width: "1.625rem",
                           height: "1.625rem",
@@ -337,11 +411,12 @@ export default function Cta({
                           fontWeight: 700,
                           color: "rgba(26,5,18,0.6)",
                           fontFamily: "var(--font-primary)",
+                          textDecoration: "none",
                           cursor: "none",
                         }}
                       >
-                        {s}
-                      </div>
+                        {label}
+                      </a>
                     ))}
                   </div>
                 </div>

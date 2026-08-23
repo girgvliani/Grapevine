@@ -8,6 +8,23 @@ const FROM_EMAIL =
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+async function verifyTurnstile(token: string, ip: string | null) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    console.error("Contact form: TURNSTILE_SECRET_KEY is not set");
+    return false;
+  }
+  const params = new URLSearchParams({ secret, response: token });
+  if (ip) params.set("remoteip", ip);
+  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: params,
+  });
+  const data = (await res.json()) as { success: boolean };
+  return data.success;
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -15,7 +32,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "server_misconfigured" }, { status: 500 });
   }
 
-  let body: { email?: string; subject?: string; message?: string };
+  let body: { email?: string; subject?: string; message?: string; turnstileToken?: string };
   try {
     body = await request.json();
   } catch {
@@ -25,9 +42,19 @@ export async function POST(request: Request) {
   const email = (body.email ?? "").trim();
   const subject = (body.subject ?? "").trim();
   const message = (body.message ?? "").trim();
+  const turnstileToken = (body.turnstileToken ?? "").trim();
 
   if (!EMAIL_PATTERN.test(email) || !message) {
     return NextResponse.json({ error: "invalid_input" }, { status: 400 });
+  }
+
+  if (!turnstileToken) {
+    return NextResponse.json({ error: "captcha_required" }, { status: 400 });
+  }
+  const ip = request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for");
+  const captchaOk = await verifyTurnstile(turnstileToken, ip);
+  if (!captchaOk) {
+    return NextResponse.json({ error: "captcha_failed" }, { status: 400 });
   }
 
   const resend = new Resend(apiKey);
