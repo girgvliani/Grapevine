@@ -94,9 +94,12 @@ export default function SupportWidget() {
       const slug = String(data.slug || "");
       if (!/^[a-z][a-z0-9-]{0,40}$/.test(slug)) return;
       const loc = data.lang === "en" ? "en" : "ka";
+      // "contact" is a reserved slug from the support backend (see
+      // grapevine-support/api/index.py) — it isn't a service page.
+      const path = slug === "contact" ? "/contact" : `/services/${slug}`;
       // Client-side push, not a full load: a hard navigation here would tear down
       // this very iframe and wipe the conversation the chip came from.
-      router.push(localizedHref(`/services/${slug}`, loc));
+      router.push(localizedHref(path, loc));
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
