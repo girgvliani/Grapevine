@@ -118,7 +118,6 @@ export default async function BlogPostPage({
                 fontSize: "clamp(2.25rem,5vw,3.75rem)",
                 lineHeight: 1.05,
                 letterSpacing: "-0.02em",
-                maxWidth: "44rem",
               }}
             >
               {post.title}
