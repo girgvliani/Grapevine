@@ -82,7 +82,7 @@ nav: {
       branding: { name: "ბრენდინგი", sub: "" },
       "mobile-app": { name: "მობილური აპი", sub: "" },
       "digital-advertising": { name: "ციფრული", sub: "მარკეტინგი" },
-      "web-development": { name: "ვები", sub: "დეველოპმენტი" },
+      "web-development": { name: "ვებ-დეველოპმენტი", sub: "" },
     },
   },
   servicesPage: {

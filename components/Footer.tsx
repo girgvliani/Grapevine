@@ -104,8 +104,8 @@ export default function Footer() {
   const socials = (
     <div style={{ display: "flex", gap: "0.5rem" }}>
       {[
-        { label: "f", href: "https://www.facebook.com/Grapevinegeo" },
-        { label: "ig", href: "https://www.instagram.com/grapevine.agency/" },
+        { label: "f", href: "https://www.facebook.com/share/1EK3dwXeqv/?mibextid=wwXIfr" },
+        { label: "ig", href: "https://www.instagram.com/grapevine.agency?igsh=MTJxdnRhdjdrbXhrNA==" },
         { label: "in", href: "https://www.linkedin.com/company/grapevine-georgia/" },
       ].map(({ label, href }) => (
         <a
