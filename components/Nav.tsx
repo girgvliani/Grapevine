@@ -7,7 +7,7 @@ import Image from "next/image";
 import logo from "./assets/logopurple.svg";
 import logoBlack from "./assets/logoblack.svg";
 import { useLang } from "./LanguageProvider";
-import { LANGUAGES } from "@/lib/i18n";
+import { LANGUAGES, mtavruli } from "@/lib/i18n";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 
@@ -128,13 +128,12 @@ export default function Nav() {
               fontSize: compact ? "0.5625rem" : "0.6875rem",
               fontWeight: 700,
               letterSpacing: "0.08em",
-              textTransform: "uppercase",
               fontFamily: "var(--font-primary)",
               opacity: active ? 1 : 0.7,
               transition: "background 0.2s, color 0.2s, opacity 0.2s",
             }}
           >
-            {label}
+            {mtavruli(label)}
           </button>
         );
       })}
@@ -200,7 +199,6 @@ export default function Nav() {
                       textDecoration: "none",
                       fontSize: "0.75rem",
                       letterSpacing: "0.12em",
-                      textTransform: "uppercase",
                       opacity: 0.75,
                       transition: "opacity 0.2s",
                       fontFamily: "var(--font-primary)",
@@ -208,7 +206,7 @@ export default function Nav() {
                     onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
                     onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.75")}
                   >
-                    {t.nav[key]}
+                    {mtavruli(t.nav[key])}
                   </Link>
                 </li>
               ))}
@@ -225,7 +223,6 @@ export default function Nav() {
                   borderRadius: "100px",
                   fontSize: "0.75rem",
                   letterSpacing: "0.08em",
-                  textTransform: "uppercase",
                   fontFamily: "var(--font-primary)",
                   border: "none",
                   fontWeight: 700,
@@ -246,7 +243,7 @@ export default function Nav() {
                 }}
                 onClick={() => goTo(withLocale("/contact"))}
               >
-                {t.nav.cta}
+                {mtavruli(t.nav.cta)}
               </button>
             </div>
           </>
@@ -359,7 +356,6 @@ export default function Nav() {
               borderRadius: "100px",
               fontSize: "0.875rem",
               letterSpacing: "0.08em",
-              textTransform: "uppercase",
               fontFamily: "var(--font-primary)",
               border: "none",
               fontWeight: 700,
@@ -367,7 +363,7 @@ export default function Nav() {
               lineHeight: 1.3,
             }}
           >
-            {t.nav.cta}
+            {mtavruli(t.nav.cta)}
           </button>
           </div>
         </>

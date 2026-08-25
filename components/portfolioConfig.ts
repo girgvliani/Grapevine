@@ -1,17 +1,17 @@
 import { type StaticImageData } from "next/image";
-import img01 from "./assets/portfolioProjects/image01.png";
-import img02 from "./assets/portfolioProjects/image02.png";
-import img03 from "./assets/portfolioProjects/image03.png";
-import img04 from "./assets/portfolioProjects/image04.png";
-import img05 from "./assets/portfolioProjects/image05.png";
-import img06 from "./assets/portfolioProjects/image06.png";
-import img07 from "./assets/portfolioProjects/image07.png";
-import img08 from "./assets/portfolioProjects/image08.png";
-import img09 from "./assets/portfolioProjects/image09.png";
-import img10 from "./assets/portfolioProjects/image10.png";
-import diplomatImg from "./assets/portfolio/diplomat.png";
-import bookImg from "./assets/portfolio/book.png";
-import sameriImg from "./assets/portfolio/sameri.jpg";
+import img01 from "./assets/portfolioProjects/image01-rounded.png";
+import img02 from "./assets/portfolioProjects/image02-rounded.png";
+import img03 from "./assets/portfolioProjects/image03-rounded.png";
+import img04 from "./assets/portfolioProjects/image04-rounded.png";
+import img05 from "./assets/portfolioProjects/image05-rounded.png";
+import img06 from "./assets/portfolioProjects/image06-rounded.png";
+import img07 from "./assets/portfolioProjects/image07-rounded.png";
+import img08 from "./assets/portfolioProjects/image08-rounded.png";
+import img09 from "./assets/portfolioProjects/image09-rounded.png";
+import img10 from "./assets/portfolioProjects/image10-rounded.png";
+import diplomatImg from "./assets/portfolio/diplomat-rounded.png";
+import bookImg from "./assets/portfolio/book-rounded.png";
+import sameriImg from "./assets/portfolio/sameri-rounded.png";
 
 export type PortfolioCategory =
   | "full"
