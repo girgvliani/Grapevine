@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -103,7 +104,9 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
                   key={post.id}
                   href={localizedHref(`/blog/${post.slug}`, locale)}
                   style={{
-                    display: "block",
+                    display: "flex",
+                    flexDirection: "column",
+                    aspectRatio: "1 / 1",
                     background: "var(--cream)",
                     borderRadius: "1.25rem",
                     padding: "1.75rem",
@@ -144,18 +147,30 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
                         color: "rgba(26,5,18,0.72)",
                         fontFamily: "var(--font-primary)",
                         marginBottom: "1rem",
-                      }}
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      } as CSSProperties}
                     >
                       {post.excerpt}
                     </p>
                   )}
                   <span
                     style={{
-                      fontSize: "0.75rem",
+                      marginTop: "auto",
+                      alignSelf: "flex-start",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.35rem",
+                      background: "var(--purple-dark)",
+                      color: "var(--white)",
+                      padding: "0.5rem 0.9rem",
+                      borderRadius: "100px",
+                      fontSize: "0.6875rem",
                       fontWeight: 700,
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#902793",
                       fontFamily: "var(--font-primary)",
                     }}
                   >

@@ -76,7 +76,7 @@ function ServiceCard({
         background: "#FFEFAB",
         borderRadius: "1.25rem",
         padding: open ? "clamp(1.75rem,3vw,2.75rem)" : "1.75rem 1.5rem 1.5rem",
-        minHeight: open ? "0" : "15rem",
+        height: open ? "auto" : "15rem",
         position: "relative",
         cursor: "none",
         display: "flex",
@@ -140,24 +140,8 @@ function ServiceCard({
             lineHeight: 1.2,
           }}
         >
-          {name}
+          {name}{sub ? " " + sub : ""}
         </div>
-
-        {sub && (
-          <div
-            style={{
-              color: "var(--dark)",
-              fontSize: "0.625rem",
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              fontFamily: "var(--font-primary)",
-              opacity: 0.6,
-              marginTop: "0.25rem",
-            }}
-          >
-            {sub}
-          </div>
-        )}
 
         {/* Collapsed hint */}
         {!open && (
