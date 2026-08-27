@@ -175,20 +175,18 @@ export default function Cta({
   // Bumped after every submit attempt to force the Turnstile widget to
   // remount — tokens are single-use, so a retry needs a fresh one.
   const [turnstileKey, setTurnstileKey] = useState(0);
+  // Turnstile doesn't mount at all until Submit is pressed — nothing is
+  // loaded/rendered up front. Pressing Submit mounts it and waits for the
+  // token via the effect below before the actual request goes out.
+  const [showTurnstile, setShowTurnstile] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (status === "sending") return;
-    if (TURNSTILE_SITE_KEY && !turnstileToken) {
-      setStatus("error");
-      return;
-    }
+  async function sendForm(token: string) {
     setStatus("sending");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, turnstileToken }),
+        body: JSON.stringify({ ...form, turnstileToken: token }),
       });
       if (!res.ok) throw new Error("request_failed");
       setStatus("success");
@@ -198,8 +196,27 @@ export default function Cta({
     } finally {
       setTurnstileToken("");
       setTurnstileKey((k) => k + 1);
+      setShowTurnstile(false);
     }
   }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (status === "sending") return;
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      // First press: mount Turnstile and wait — sendForm runs once the
+      // widget's callback delivers a token (see the effect below).
+      setStatus("sending");
+      setShowTurnstile(true);
+      return;
+    }
+    sendForm(turnstileToken);
+  }
+
+  useEffect(() => {
+    if (status === "sending" && turnstileToken) sendForm(turnstileToken);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [turnstileToken]);
 
   const heading = (
     <>
@@ -286,7 +303,7 @@ export default function Cta({
               required
             />
 
-            <Turnstile key={turnstileKey} onToken={setTurnstileToken} />
+            {showTurnstile && <Turnstile key={turnstileKey} onToken={setTurnstileToken} />}
 
             {/* Send button */}
             <button
