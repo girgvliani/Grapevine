@@ -7,24 +7,73 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
 
-function StepButton({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
+// A single oval track (orange border) with a ball that slides to whichever
+// segment is active. Each segment is its own invisible click target
+// overlaid on the shared track, so clicking either side jumps straight to
+// that panel — same interaction as the old separate dot/pill buttons, just
+// unified into one slider-style control.
+function StepSlider({
+  count,
+  active,
+  onSelect,
+  labels,
+}: {
+  count: number;
+  active: number;
+  onSelect: (i: number) => void;
+  labels: string[];
+}) {
+  const segment = "1rem";
+  const ball = "0.625rem";
+  const height = "0.875rem";
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      aria-current={active}
+    <div
+      role="group"
       style={{
-        width: active ? "0.625rem" : "2.75rem",
-        height: active ? "0.625rem" : "0.375rem",
-        borderRadius: active ? "50%" : "999px",
-        background: active ? "var(--orange)" : "transparent",
-        border: active ? "none" : "1.5px solid var(--orange)",
-        transition: "background 0.4s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease",
-        padding: 0,
-        cursor: "pointer",
+        position: "relative",
+        display: "inline-flex",
+        width: `calc(${segment} * ${count})`,
+        height,
+        border: "1px solid var(--orange)",
+        borderRadius: "999px",
       }}
-    />
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: 0,
+          top: "50%",
+          width: ball,
+          height: ball,
+          borderRadius: "50%",
+          background: "var(--orange)",
+          pointerEvents: "none",
+          transform: `translate(calc(${segment} * ${active} + (${segment} - ${ball}) / 2), -50%)`,
+          transition: "transform 0.35s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      />
+      {labels.map((label, i) => (
+        <button
+          key={i}
+          type="button"
+          onClick={() => onSelect(i)}
+          aria-label={label}
+          aria-current={active === i}
+          style={{
+            position: "relative",
+            zIndex: 1,
+            width: segment,
+            height: "100%",
+            background: "transparent",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+          }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -203,16 +252,12 @@ export default function Process() {
           </div>
 
           {/* Step switcher */}
-          <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
-            <StepButton
-              active={panel === 0}
-              onClick={() => switchPanel(0)}
-              label={`${t.process.titleLine1} ${t.process.titleLine2}`}
-            />
-            <StepButton
-              active={panel === 1}
-              onClick={() => switchPanel(1)}
-              label={t.process.benefitsHeading}
+          <div style={{ marginTop: "1rem" }}>
+            <StepSlider
+              count={2}
+              active={panel}
+              onSelect={switchPanel}
+              labels={[`${t.process.titleLine1} ${t.process.titleLine2}`, t.process.benefitsHeading]}
             />
           </div>
         </div>
