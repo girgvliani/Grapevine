@@ -129,11 +129,15 @@ export default function Nav() {
               fontWeight: 700,
               letterSpacing: "0.08em",
               fontFamily: "var(--font-primary)",
+              lineHeight: 1,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
               opacity: active ? 1 : 0.7,
               transition: "background 0.2s, color 0.2s, opacity 0.2s",
             }}
           >
-            {mtavruli(label)}
+            <span style={{ position: "relative", top: "0.1em" }}>{mtavruli(label)}</span>
           </button>
         );
       })}
@@ -190,26 +194,51 @@ export default function Nav() {
                 centre↔left switch lives in CSS (.nav-links) so it applies on the
                 first paint and doesn't jump on reload. */}
             <ul className="nav-links">
-              {LINKS.map(({ href, key }) => (
-                <li key={href}>
-                  <Link
-                    href={withLocale(href)}
-                    style={{
-                      color: fg,
-                      textDecoration: "none",
-                      fontSize: "0.75rem",
-                      letterSpacing: "0.12em",
-                      opacity: 0.75,
-                      transition: "opacity 0.2s",
-                      fontFamily: "var(--font-primary)",
-                    }}
-                    onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
-                    onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.75")}
-                  >
-                    {mtavruli(t.nav[key])}
-                  </Link>
-                </li>
-              ))}
+              {LINKS.map(({ href, key }, i) => {
+                const lastIdx = LINKS.length - 1;
+                // Edge links (Services, Blog) each carry a hidden copy of the
+                // *other* edge's word, stacked in the same grid cell. That
+                // makes both slots reserve exactly max(width(Services),
+                // width(Blog)) — identical on both sides, in either language,
+                // with no hand-guessed width — so Portfolio (the middle link)
+                // always lands at the true centre instead of drifting toward
+                // whichever word happens to be shorter.
+                const mirrorKey = i === 0 ? LINKS[lastIdx].key : i === lastIdx ? LINKS[0].key : null;
+                const textStyle = {
+                  fontSize: "0.75rem",
+                  letterSpacing: "0.12em",
+                  fontFamily: "var(--font-primary)",
+                } as const;
+                return (
+                  // Every item shares the same grid box model — mirror or not —
+                  // so Portfolio's text sits at exactly the same vertical
+                  // position as Services/Blog instead of following plain
+                  // inline-flow rules that render a hair off from the grid items.
+                  <li key={href} style={{ display: "grid", alignItems: "center" }}>
+                    <Link
+                      href={withLocale(href)}
+                      style={{
+                        ...textStyle,
+                        gridArea: "1 / 1",
+                        justifySelf: i === 0 ? "end" : i === lastIdx ? "start" : undefined,
+                        color: fg,
+                        textDecoration: "none",
+                        opacity: 0.75,
+                        transition: "opacity 0.2s",
+                      }}
+                      onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
+                      onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.75")}
+                    >
+                      {mtavruli(t.nav[key])}
+                    </Link>
+                    {mirrorKey && (
+                      <span aria-hidden="true" style={{ ...textStyle, gridArea: "1 / 1", visibility: "hidden" }}>
+                        {mtavruli(t.nav[mirrorKey])}
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
             {/* Right cluster — language toggle + CTA */}

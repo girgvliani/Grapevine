@@ -45,6 +45,7 @@ function ProjectCard({
   return (
     <div
       ref={ref}
+      id={project.id}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -53,6 +54,7 @@ function ProjectCard({
         position: "relative",
         height: "26rem",
         background: project.bg,
+        scrollMarginTop: "6rem",
         transform: hover ? "translateY(-0.5rem)" : "none",
         transition: `transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s, box-shadow 0.25s ease`,
         boxShadow: hover ? "0 1.75rem 3rem -1rem rgba(0,0,0,0.6)" : "0 0.75rem 1.5rem -0.75rem rgba(0,0,0,0.5)",
@@ -189,7 +191,7 @@ export default function PortfolioShowcase() {
 
       {/* CTA band */}
       <section style={{ padding: "4rem clamp(1.5rem,7.6vw,6.875rem) 5rem", textAlign: "center" }}>
-        <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(2rem,5vw,3.75rem)", textTransform: "uppercase", letterSpacing: "-0.02em", lineHeight: 1, marginBottom: "1.5rem" }}>
+        <h2 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(2rem,5vw,3.75rem)", textTransform: "uppercase", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: "1.5rem" }}>
           {p.bandPre}
           <span style={{ color: "var(--orange)" }}>{p.bandAccent}</span>
         </h2>

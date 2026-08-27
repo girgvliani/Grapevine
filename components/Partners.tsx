@@ -157,7 +157,7 @@ export default function Partners() {
       }}
     >
       <div style={{ padding: "0 3rem" }}>{heading}</div>
-      <FastMarquee autoFill pauseOnHover speed={50} gradient={false}>
+      <FastMarquee autoFill speed={50} gradient={false}>
         <div style={{ position: "relative", width: `${trackW}px`, height: `${trackH}px`, marginRight: `${TRACK_GAP}px` }}>
           {LOGOS.map((logo, i) => (
             <div

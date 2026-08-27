@@ -88,7 +88,7 @@ export default function BehanceLink({ variant = "pill" }: { variant?: "pill" | "
       }}
     >
       <BehanceIcon size={15} />
-      Behance
+      <span style={{ lineHeight: 1, position: "relative", top: "0.2em" }}>Behance</span>
     </a>
   );
 }

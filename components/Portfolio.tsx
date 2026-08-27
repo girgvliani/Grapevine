@@ -2,11 +2,13 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import FastMarquee from "react-fast-marquee";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { PORTFOLIO_PROJECTS, type PortfolioProject } from "./portfolioConfig";
 import { mtavruli } from "@/lib/i18n";
+import { localizedHref } from "@/lib/routing";
 
 function ProjectCard({
   project,
@@ -15,6 +17,7 @@ function ProjectCard({
   tag,
   delay,
   variant,
+  lang,
 }: {
   project: PortfolioProject;
   title: string;
@@ -22,24 +25,30 @@ function ProjectCard({
   tag: string;
   delay: number;
   variant: "desktop" | "tablet";
+  lang: "ka" | "en";
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
   const visible = true;
   const isWide = useMediaQuery(WIDE_QUERY);
   const isHuge = useMediaQuery(HUGE_QUERY);
   const hasImage = Boolean(project.image);
+  // Clicking a card takes you to its full write-up on the /portfolio page,
+  // scrolled straight to that project's card there.
+  const href = `${localizedHref("/portfolio", lang)}#${project.id}`;
 
   // Tablet: horizontal card — visual on the left, cream text panel on the right.
   if (variant === "tablet") {
     return (
-      <div
+      <Link
+        href={href}
         ref={ref}
         style={{
+          display: "flex",
           width: "17rem",
           height: "7.75rem",
           borderRadius: "1rem",
           overflow: "hidden",
-          display: "flex",
+          textDecoration: "none",
           background: "var(--cream)",
           opacity: visible ? 1 : 0,
           transform: visible ? "none" : "translateY(20px)",
@@ -77,14 +86,16 @@ function ProjectCard({
             {desc}
           </div>
         </div>
-      </div>
+      </Link>
     );
   }
 
   return (
-    <div
+    <Link
+      href={href}
       ref={ref}
       style={{
+        display: "block",
         flexShrink: 0,
         width: isHuge ? "36rem" : isWide ? "30rem" : "25.5625rem",
         height: isHuge ? "clamp(33rem, 58vh, 46rem)" : isWide ? "30.75rem" : "26.3125rem",
@@ -92,6 +103,7 @@ function ProjectCard({
         borderRadius: "2.1rem",
         overflow: "hidden",
         position: "relative",
+        textDecoration: "none",
         background: project.bg,
         opacity: visible ? 1 : 0,
         transform: visible ? "none" : "translateY(24px)",
@@ -99,12 +111,12 @@ function ProjectCard({
         cursor: "none",
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "translateY(-6px)";
-        (e.currentTarget as HTMLDivElement).style.transition = "transform 0.25s ease";
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-6px)";
+        (e.currentTarget as HTMLAnchorElement).style.transition = "transform 0.25s ease";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "none";
-        (e.currentTarget as HTMLDivElement).style.transition = "transform 0.3s ease";
+        (e.currentTarget as HTMLAnchorElement).style.transform = "none";
+        (e.currentTarget as HTMLAnchorElement).style.transition = "transform 0.3s ease";
       }}
     >
       {/* Visual area — logo on white, or the name centred on the brand colour.
@@ -130,12 +142,12 @@ function ProjectCard({
           {desc}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function Portfolio() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const isTablet = useMediaQuery(TABLET_QUERY);
 
   const projText = (p: PortfolioProject) =>
@@ -157,7 +169,7 @@ export default function Portfolio() {
         <div className="hide-scrollbar" style={{ overflowX: "auto", overflowY: "hidden", WebkitOverflowScrolling: "touch", padding: "0 clamp(1.5rem, 5vw, 3rem)" }}>
           <div style={{ display: "grid", gridTemplateRows: "repeat(3, 7.75rem)", gridAutoFlow: "column", gridAutoColumns: "17rem", gap: "1rem", width: "max-content" }}>
             {PORTFOLIO_PROJECTS.map((p, i) => (
-              <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={i * 0.05} variant="tablet" />
+              <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={i * 0.05} variant="tablet" lang={lang} />
             ))}
           </div>
         </div>
@@ -170,7 +182,7 @@ export default function Portfolio() {
       {heading}
       <FastMarquee autoFill pauseOnHover speed={50} gradient={false}>
         {PORTFOLIO_PROJECTS.map((p) => (
-          <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={0} variant="desktop" />
+          <ProjectCard key={p.id} project={p} title={projText(p).name} desc={projText(p).desc} tag={catLabel(p)} delay={0} variant="desktop" lang={lang} />
         ))}
       </FastMarquee>
     </section>

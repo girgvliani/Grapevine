@@ -232,12 +232,13 @@ body[data-menu-open] .support-widget {
    paint and doesn't jump on page load/reload. */
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 2.25rem;
   list-style: none;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(calc(-50% - 1rem), -50%);
 }
 @media (max-width: 888px) {
   .nav-links {
