@@ -24,7 +24,7 @@ type LogoEntry = ClientLogo & Slot;
 const COL_W      = 225;  // px per grid column
 const ROW_H      = 160;  // px per row — extra breathing room between logos
 const GRID_COLS  = 8;
-const LOGO_BOOST = 1.15; // enlarge each logo tile ~15%
+const LOGO_BOOST = 1.15; // enlarge each logo tile ~15% (box size — logo art itself is boosted via LOGO_PADDING below)
 const TRACK_GAP   = 96;  // px gap between repeated copies of the scattered block
 
 // Scattered placements (col/row set the grid cell; dx/dy nudge within the cell).
@@ -61,7 +61,7 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
       style={{
         background: logo.bg,
         borderRadius: "0.9rem",
-        padding: `${8 * scale}px ${12 * scale}px`,
+        padding: `${4 * scale}px ${6 * scale}px`,
         width: `${logo.w * scale * LOGO_BOOST}px`,
         height: `${(logo.maxH ?? 92) * scale * LOGO_BOOST}px`,
         display: "flex",
@@ -73,7 +73,12 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
       <Image
         src={logo.src}
         alt={logo.alt}
-        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          transform: logo.imageScale ? `scale(${logo.imageScale})` : undefined,
+        }}
       />
     </div>
   );

@@ -28,6 +28,8 @@ export type ClientLogo = {
   bg: string;    // tile background colour
   w: number;     // logo render width in px
   maxH?: number; // max height cap in px (for tall/narrow logos)
+  imageScale?: number; // visually enlarges the logo art within its tile without
+                        // resizing the tile itself (default 1 = no change)
 };
 
 // `bg` = the tile colour behind each (transparent) logo. Brand-aligned soft
@@ -46,7 +48,7 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { src: l16, alt: "Client logo", bg: "#D8D4FF", w: 120 },
   { src: l07, alt: "Hera XXI", bg: "#D8D4FF", w: 150 },
   { src: l09, alt: "FINO Audit & Accounting", bg: "#FFF0BD", w: 125 },
-  { src: l10, alt: "Bariatric & Metabolic Medicine Center", bg: "#CDEBDA", w: 160 },
+  { src: l10, alt: "Bariatric & Metabolic Medicine Center", bg: "#CDEBDA", w: 160, imageScale: 1.3 },
   { src: l06, alt: "Client logo", bg: "#D2E3F7", w: 150 },
   { src: l03, alt: "Family Kids Kindergarten", bg: "#CDEBDA", w: 110 },
   { src: l02, alt: "GEO GPS", bg: "#FFF0BD", w: 115 },
