@@ -47,6 +47,7 @@ export async function createPostAction(formData: FormData) {
     slug: String(formData.get("slug") ?? "").trim(),
     excerpt: String(formData.get("excerpt") ?? "").trim(),
     content: String(formData.get("content") ?? ""),
+    author: String(formData.get("author") ?? "").trim(),
     published: formData.get("published") === "on",
   });
   redirect("/admin");
@@ -58,6 +59,7 @@ export async function updatePostAction(id: number, formData: FormData) {
     title: String(formData.get("title") ?? "").trim(),
     excerpt: String(formData.get("excerpt") ?? "").trim(),
     content: String(formData.get("content") ?? ""),
+    author: String(formData.get("author") ?? "").trim(),
     published: formData.get("published") === "on",
     slug: String(formData.get("slug") ?? "").trim(),
   });

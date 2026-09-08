@@ -7,6 +7,8 @@ import { getPublishedPostBySlug } from "@/lib/blog";
 import { translations } from "@/lib/i18n";
 import { isLocale, localizedHref, type Locale } from "@/lib/routing";
 import { pageMetadata } from "@/lib/seo";
+import { articleSchema } from "@/lib/structuredData";
+import JsonLd from "@/components/JsonLd";
 
 // Same reasoning as the blog listing page: posts come from a database that
 // changes independently of deploys, so this can't be frozen as static HTML
@@ -27,6 +29,9 @@ export async function generateMetadata({
     locale,
     title: `${post.title} — Grapevine`,
     description: post.excerpt || post.title,
+    // Posts are independent rows per (lang, slug) — no matching translation
+    // exists at this slug in the other locale, so no hreflang alternate.
+    singleLocale: true,
   });
 }
 
@@ -81,6 +86,17 @@ export default async function BlogPostPage({
 
   return (
     <>
+      <JsonLd
+        data={articleSchema({
+          slug,
+          locale,
+          title: post.title,
+          description: post.excerpt || post.title,
+          author: post.author,
+          createdAt: post.createdAt,
+          updatedAt: post.updatedAt,
+        })}
+      />
       <main style={{ background: "var(--dark)", color: "var(--white)" }}>
         <header style={{ padding: "11rem clamp(1.5rem,7.6vw,6.875rem) 2.5rem" }}>
           <div className="container-cap">
@@ -101,6 +117,9 @@ export default async function BlogPostPage({
             </Link>
             <div
               style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
                 fontSize: "0.6875rem",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
@@ -109,7 +128,9 @@ export default async function BlogPostPage({
                 marginBottom: "1rem",
               }}
             >
-              {formatDate(post.createdAt, locale)}
+              <span>{post.author}</span>
+              <span aria-hidden="true" style={{ opacity: 0.5 }}>·</span>
+              <span>{formatDate(post.createdAt, locale)}</span>
             </div>
             <h1
               style={{

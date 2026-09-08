@@ -60,3 +60,12 @@ export function pageAlternates(internalPath: string, locale: Locale) {
     languages: { ka, en, "x-default": ka },
   };
 }
+
+// For content that only exists in one locale — blog posts are independent
+// rows per (lang, slug), not translations of each other, so there is no
+// real counterpart to hreflang-link to. Self-referencing canonical only; no
+// `languages` block, since claiming an alternate that doesn't exist is what
+// Search Console flags as a broken hreflang pair.
+export function singleLocaleAlternates(internalPath: string, locale: Locale) {
+  return { canonical: absoluteUrl(localizedHref(internalPath, locale)) };
+}

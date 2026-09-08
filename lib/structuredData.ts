@@ -6,6 +6,7 @@
 import { SITE_URL, absoluteUrl, localizedHref, type Locale } from "./routing";
 import { translations, type ServiceSlug } from "./i18n";
 import { SITE_NAME } from "./seo";
+import { DEFAULT_AUTHOR } from "./blog";
 
 // Stable node ids, so `provider`/`publisher` can point at the org by reference.
 const ORG_ID = `${SITE_URL}/#organization`;
@@ -100,6 +101,54 @@ export function serviceSchema({
         name: crumb.name,
         item: absoluteUrl(localizedHref(crumb.path, locale)),
       })),
+    },
+  ]);
+}
+
+// A blog post. `BlogPosting` (not the bare `Article`) is the more specific
+// schema.org type for exactly this kind of dated, single-author entry.
+export function articleSchema({
+  slug,
+  locale,
+  title,
+  description,
+  author,
+  createdAt,
+  updatedAt,
+}: {
+  slug: string;
+  locale: Locale;
+  title: string;
+  description: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+}) {
+  const path = `/blog/${slug}`;
+  const url = absoluteUrl(localizedHref(path, locale));
+
+  // Nobody's attributed this one to a real person yet — represent the byline
+  // as the organization itself rather than mislabeling a team credit as a
+  // schema.org Person, which is specifically what Google's authorship
+  // guidance says to avoid.
+  const authorNode =
+    author === DEFAULT_AUTHOR
+      ? { "@type": "Organization", "@id": ORG_ID }
+      : { "@type": "Person", name: author };
+
+  return graph([
+    {
+      "@type": "BlogPosting",
+      "@id": `${url}#article`,
+      mainEntityOfPage: url,
+      url,
+      headline: title,
+      description,
+      author: authorNode,
+      publisher: { "@id": ORG_ID },
+      datePublished: createdAt,
+      dateModified: updatedAt,
+      inLanguage: LANG_TAG[locale],
     },
   ]);
 }

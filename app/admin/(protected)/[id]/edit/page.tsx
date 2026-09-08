@@ -57,6 +57,11 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
         </div>
 
         <div>
+          <label style={labelStyle}>Author</label>
+          <input type="text" name="author" defaultValue={post.author} style={inputStyle} />
+        </div>
+
+        <div>
           <label style={labelStyle}>Content (Markdown)</label>
           <textarea
             name="content"

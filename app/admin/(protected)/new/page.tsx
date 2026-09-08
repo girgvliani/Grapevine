@@ -1,4 +1,5 @@
 import { createPostAction } from "@/lib/adminActions";
+import { DEFAULT_AUTHOR } from "@/lib/blog";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -52,6 +53,16 @@ export default function NewPostPage() {
           <textarea name="excerpt" rows={2} style={{ ...inputStyle, resize: "vertical" }} />
           <p style={{ fontSize: "0.75rem", color: "rgba(26,5,18,0.5)", marginTop: "0.375rem" }}>
             Short summary shown on the blog listing page.
+          </p>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Author</label>
+          <input type="text" name="author" defaultValue={DEFAULT_AUTHOR} style={inputStyle} />
+          <p style={{ fontSize: "0.75rem", color: "rgba(26,5,18,0.5)", marginTop: "0.375rem" }}>
+            Shown as the byline and used as the article's structured-data author. A real named
+            person (not the team default) helps the post rank — Google increasingly favors posts
+            with a credible, consistent author over anonymous ones.
           </p>
         </div>
 

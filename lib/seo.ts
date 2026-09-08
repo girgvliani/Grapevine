@@ -11,6 +11,7 @@ import {
   absoluteUrl,
   localizedHref,
   pageAlternates,
+  singleLocaleAlternates,
   type Locale,
 } from "./routing";
 
@@ -24,11 +25,16 @@ export function pageMetadata({
   locale,
   title,
   description,
+  singleLocale = false,
 }: {
   internalPath: string;
   locale: Locale;
   title: string;
   description: string;
+  // Set for content with no real counterpart in the other language (blog
+  // posts) — drops the hreflang `languages` block and the OG alternateLocale,
+  // both of which would otherwise claim a translation that doesn't exist.
+  singleLocale?: boolean;
 }): Metadata {
   const other: Locale = locale === "ka" ? "en" : "ka";
 
@@ -36,7 +42,9 @@ export function pageMetadata({
     metadataBase: new URL(SITE_URL),
     title,
     description,
-    alternates: pageAlternates(internalPath, locale),
+    alternates: singleLocale
+      ? singleLocaleAlternates(internalPath, locale)
+      : pageAlternates(internalPath, locale),
     openGraph: {
       type: "website",
       siteName: SITE_NAME,
@@ -44,7 +52,7 @@ export function pageMetadata({
       title,
       description,
       locale: OG_LOCALE[locale],
-      alternateLocale: OG_LOCALE[other],
+      alternateLocale: singleLocale ? undefined : OG_LOCALE[other],
     },
     twitter: {
       card: "summary_large_image",

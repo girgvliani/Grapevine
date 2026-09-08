@@ -43,27 +43,6 @@ export default function About() {
       </div>
 
       <div className="container-cap" style={{ position: "relative", zIndex: 1 }}>
-      {/* Eyebrow */}
-      <div
-        style={{
-          fontSize: "1rem",
-          textTransform: "uppercase",
-          color: "rgba(239, 88, 58, 0.5)",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "none" : "translateX(-1rem)",
-          transition: "all 0.6s ease",
-          marginBottom: "1.75rem",
-          fontFamily: "var(--font-primary)",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "1rem",
-          letterSpacing: "0.2em",
-        }}
-      >
-        <span style={{ display: "block", width: "12px", height: "2px", background: "rgba(239, 88, 58, 0.5)", flexShrink: 0 }} />
-        <span>{t.about.eyebrow}</span>
-      </div>
-
       {/* Heading */}
       <h2
         style={{

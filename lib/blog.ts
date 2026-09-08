@@ -1,6 +1,12 @@
 import { getDb } from "./db";
 import type { Locale } from "./routing";
 
+// Default byline for posts nobody has attributed to a named person yet.
+// Also the signal `articleSchema` uses to decide whether to represent the
+// author as a Person or fall back to the Organization itself — see
+// lib/structuredData.ts.
+export const DEFAULT_AUTHOR = "Grapevine Team";
+
 export type Post = {
   id: number;
   lang: Locale;
@@ -8,6 +14,7 @@ export type Post = {
   title: string;
   excerpt: string;
   content: string; // markdown
+  author: string;
   published: boolean;
   createdAt: string;
   updatedAt: string;
@@ -20,6 +27,7 @@ type PostRow = {
   title: string;
   excerpt: string;
   content: string;
+  author: string;
   published: boolean;
   created_at: Date;
   updated_at: Date;
@@ -33,6 +41,7 @@ function fromRow(row: PostRow): Post {
     title: row.title,
     excerpt: row.excerpt,
     content: row.content,
+    author: row.author,
     published: row.published,
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at.toISOString(),
@@ -49,7 +58,13 @@ function ensureSchema(): Promise<void> {
   if (!schemaReady) {
     schemaReady = (async () => {
       const sql = getDb();
-      await sql`
+      // Postgres can't infer a bound parameter's type in a DDL DEFAULT
+      // position (`could not determine data type of parameter $1`), so this
+      // constant — never user input — is inlined as a literal via
+      // `sql.unsafe` instead of the normal `sql\`...\`` parameter binding
+      // used everywhere else in this file.
+      const defaultAuthorLiteral = `'${DEFAULT_AUTHOR.replace(/'/g, "''")}'`;
+      await sql.unsafe(`
         CREATE TABLE IF NOT EXISTS posts (
           id SERIAL PRIMARY KEY,
           lang TEXT NOT NULL CHECK (lang IN ('ka','en')),
@@ -57,22 +72,31 @@ function ensureSchema(): Promise<void> {
           title TEXT NOT NULL,
           excerpt TEXT NOT NULL DEFAULT '',
           content TEXT NOT NULL DEFAULT '',
+          author TEXT NOT NULL DEFAULT ${defaultAuthorLiteral},
           published BOOLEAN NOT NULL DEFAULT false,
           created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
           updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
           UNIQUE (lang, slug)
         )
-      `;
+      `);
+      // CREATE TABLE IF NOT EXISTS is a no-op on a table that already exists
+      // in production, so the `author` column above never lands there without
+      // this — a one-time, idempotent backfill for every row created before
+      // this field existed.
+      await sql.unsafe(
+        `ALTER TABLE posts ADD COLUMN IF NOT EXISTS author TEXT NOT NULL DEFAULT ${defaultAuthorLiteral}`
+      );
       const [{ count }] = await sql<{ count: string }[]>`SELECT count(*)::text FROM posts`;
       if (count === "0") {
         await sql`
-          INSERT INTO posts (lang, slug, title, excerpt, content, published)
+          INSERT INTO posts (lang, slug, title, excerpt, content, author, published)
           VALUES (
             'en',
             'hello-world',
             'Hello, world',
             'A sample post so you can see the blog working end to end before writing anything real.',
             ${"This is a sample post created automatically the first time the blog's database connected.\n\nWrite in **Markdown** here — headings, *italics*, [links](https://grapevine.ge), and lists all work:\n\n- Write a real post from /admin\n- Delete this one once you do\n- Publishing is just a checkbox on the post form"},
+            ${DEFAULT_AUTHOR},
             true
           )
         `;
@@ -143,14 +167,16 @@ export async function createPost(data: {
   slug?: string;
   excerpt: string;
   content: string;
+  author: string;
   published: boolean;
 }): Promise<Post> {
   await ensureSchema();
   const sql = getDb();
   const slug = await uniqueSlug(data.lang, slugify(data.slug?.trim() || data.title));
+  const author = data.author.trim() || DEFAULT_AUTHOR;
   const rows = await sql<PostRow[]>`
-    INSERT INTO posts (lang, slug, title, excerpt, content, published)
-    VALUES (${data.lang}, ${slug}, ${data.title}, ${data.excerpt}, ${data.content}, ${data.published})
+    INSERT INTO posts (lang, slug, title, excerpt, content, author, published)
+    VALUES (${data.lang}, ${slug}, ${data.title}, ${data.excerpt}, ${data.content}, ${author}, ${data.published})
     RETURNING *
   `;
   return fromRow(rows[0]);
@@ -158,15 +184,17 @@ export async function createPost(data: {
 
 export async function updatePost(
   id: number,
-  data: { title: string; excerpt: string; content: string; published: boolean; slug: string }
+  data: { title: string; excerpt: string; content: string; author: string; published: boolean; slug: string }
 ): Promise<Post> {
   await ensureSchema();
   const sql = getDb();
+  const author = data.author.trim() || DEFAULT_AUTHOR;
   const rows = await sql<PostRow[]>`
     UPDATE posts
     SET title = ${data.title},
         excerpt = ${data.excerpt},
         content = ${data.content},
+        author = ${author},
         published = ${data.published},
         slug = ${slugify(data.slug)},
         updated_at = now()
