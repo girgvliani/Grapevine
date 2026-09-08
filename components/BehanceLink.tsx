@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 
-const BEHANCE_URL = "https://www.behance.net/grapevineagency";
+// The agency's Behance profile. Also the fallback target for portfolio cards
+// whose project has no case study published yet (see PortfolioShowcase).
+export const BEHANCE_URL = "https://www.behance.net/grapevineagency";
 
 function BehanceIcon({ size = 16 }: { size?: number }) {
   return (

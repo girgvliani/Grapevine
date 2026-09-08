@@ -14,7 +14,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/contact",
     locale,
-    title: locale === "ka" ? "კონტაქტი — Grapevine" : "Contact — Grapevine",
+    title: locale === "ka" ? "კონტაქტი - Grapevine" : "Contact - Grapevine",
     description:
       locale === "ka"
         ? "გვითხარით, სად არის თქვენი ბრენდი აღრეული. ჩვენ ვიპოვით ძაფს და გეგმას მის გასასწორებლად."

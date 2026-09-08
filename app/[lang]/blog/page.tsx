@@ -24,7 +24,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/blog",
     locale,
-    title: locale === "ka" ? "ბლოგი — Grapevine" : "Blog — Grapevine",
+    title: locale === "ka" ? "ბლოგი - Grapevine" : "Blog - Grapevine",
     description: t.blog.intro,
   });
 }

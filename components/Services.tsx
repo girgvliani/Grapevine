@@ -38,12 +38,16 @@ function ServiceCard({
   sub,
   icon,
   delay,
+  fillHeight = false,
 }: {
   slug: ServiceSlug;
   name: string;
   sub: string;
   icon: StaticImageData;
   delay: number;
+  // Set by the pinned desktop track, whose height is whatever the viewport
+  // leaves under the heading. See `height` below.
+  fillHeight?: boolean;
 }) {
   const { t, lang } = useLang();
   const p = t.servicesPage;
@@ -63,8 +67,16 @@ function ServiceCard({
   // tall it resolves to ~35rem (matching the previous wide size), growing taller
   // as the viewport does. isShort still wins on short screens.
   const width = isMobile ? "11.5rem" : isShort ? "18.3125rem" : isHuge ? "24rem" : isWide ? "22rem" : "18.3125rem";
-  const height = isMobile ? "17rem" : isShort ? "21rem" : isHuge ? "clamp(35rem, 57vh, 54rem)" : isWide ? "35rem" : "30rem";
+  const designHeight = isMobile ? "17rem" : isShort ? "21rem" : isHuge ? "clamp(35rem, 57vh, 54rem)" : isWide ? "35rem" : "30rem";
+  // In the pinned desktop section the design height alone isn't safe: a wide
+  // but short viewport (1536×768, 1920×720 …) leaves less room under the
+  // heading than the card wants, and the section's `overflow: hidden` then
+  // slices the bottom off. Capping at the track's own height makes the card
+  // shrink to whatever is actually free instead. Everywhere else the section
+  // scrolls normally, so the design height stands.
+  const height = fillHeight ? `min(${designHeight}, 100%)` : designHeight;
   const padding = isMobile ? "1.25rem 1rem 1rem" : isHuge ? "2.5rem 2rem 2rem" : isWide ? "2rem 1.75rem 1.75rem" : "1.5rem 1.25rem 1.25rem";
+  const iconCap = isMobile ? 78 : isShort ? 92 : isHuge ? 180 : isWide ? 150 : 120;
 
   // Shared styles for the two faces of the flip card.
   const face: React.CSSProperties = {
@@ -90,17 +102,11 @@ function ServiceCard({
         position: "relative",
         perspective: "1400px",
         opacity: visible ? 1 : 0,
+        // No hover movement — the card's only motion is the flip on press,
+        // handled by the rotating inner below.
         transform: visible ? "none" : "translateY(2rem)",
         transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
         cursor: "none",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "translateY(-0.375rem)";
-        (e.currentTarget as HTMLDivElement).style.transition = "transform 0.25s ease";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = "none";
-        (e.currentTarget as HTMLDivElement).style.transition = "transform 0.25s ease";
       }}
     >
       {/* Rotating inner — front + back live on opposite faces */}
@@ -128,7 +134,7 @@ function ServiceCard({
         {/* FRONT */}
         <div style={{ ...face, alignItems: "center", textAlign: "center" }}>
           {/* Icon */}
-          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Image
               src={icon}
               alt={name}
@@ -138,14 +144,20 @@ function ServiceCard({
               style={{
                 width: "auto",
                 height: "auto",
-                maxWidth: isMobile ? 78 : isShort ? 92 : isHuge ? 180 : isWide ? 150 : 120,
-                maxHeight: isMobile ? 78 : isShort ? 92 : isHuge ? 180 : isWide ? 150 : 120,
+                maxWidth: iconCap,
+                // `100%` keeps the icon inside its slot once the card shrinks on
+                // a short viewport — without it the fixed cap wins and the face's
+                // `overflow: hidden` clips the artwork.
+                maxHeight: `min(${iconCap}px, 100%)`,
                 objectFit: "contain",
               }}
             />
           </div>
 
-          {/* Service name */}
+          {/* Service name — name and sub are one label on one line, in one
+              weight and size. They used to be stacked, with the sub sitting
+              under the name smaller and faded, which read as a subtitle rather
+              than as part of the same name. */}
           <div
             style={{
               color: "var(--orange)",
@@ -155,28 +167,10 @@ function ServiceCard({
               textTransform: "uppercase",
               fontFamily: "var(--font-primary)",
               lineHeight: 1.15,
-              marginBottom: "0.35rem",
             }}
           >
             {name}
-          </div>
-
-          {/* Subtitle — always rendered so every card reserves the same height
-              here. Services with no sub get a blank line instead of collapsing,
-              which would otherwise drop their name a line lower than the rest
-              (the icon above is flex:1, so this block is bottom-anchored). */}
-          <div
-            aria-hidden={sub ? undefined : true}
-            style={{
-              color: "var(--orange)",
-              fontSize: isMobile ? "0.6875rem" : isHuge ? "0.875rem" : "0.75rem",
-              letterSpacing: "0.22em",
-              textTransform: "uppercase",
-              fontFamily: "var(--font-primary)",
-              opacity: 0.85,
-            }}
-          >
-            {sub || "\u00A0"}
+            {sub ? ` ${sub}` : ""}
           </div>
 
           {/* Turn / flip logo — bottom centre */}
@@ -309,10 +303,23 @@ export default function Services() {
     return () => window.removeEventListener("scroll", update);
   }, [isTablet]);
 
-  const cards = SERVICE_ASSETS.map((s, i) => {
-    const card = t.services.cards[s.id];
-    return <ServiceCard key={s.id} slug={s.id} name={card.name} sub={card.sub} icon={s.icon} delay={i * 0.05} />;
-  });
+  // `fillHeight` only applies to the pinned desktop track, where the available
+  // height is finite; the tablet/mobile section just scrolls.
+  const renderCards = (fillHeight: boolean) =>
+    SERVICE_ASSETS.map((s, i) => {
+      const card = t.services.cards[s.id];
+      return (
+        <ServiceCard
+          key={s.id}
+          slug={s.id}
+          name={card.name}
+          sub={card.sub}
+          icon={s.icon}
+          delay={i * 0.05}
+          fillHeight={fillHeight}
+        />
+      );
+    });
 
   // Tablet / mobile: same single-row layout, but natively swipeable left/right
   // instead of hijacking vertical scroll.
@@ -348,7 +355,7 @@ export default function Services() {
           }}
         >
           <div style={{ display: "flex", gap: "1rem", width: "max-content" }}>
-            {cards}
+            {renderCards(false)}
           </div>
         </div>
       </section>
@@ -365,10 +372,17 @@ export default function Services() {
           position: "sticky",
           top: 0,
           height: "100vh",
+          // Column flex so the track below gets exactly the height the heading
+          // leaves over, instead of both being laid out blind against 100vh.
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        {/* Heading */}
-        <div style={{ padding: "clamp(5rem, 9vh, 7.5rem) clamp(3rem, 7.6vw, 6.875rem) 3rem" }}>
+        {/* Heading. The min of the top padding has to clear the fixed 85px nav
+            that floats over this section — at 9vh it only does so above a
+            ~944px-tall viewport, which is why the heading used to sit sliced in
+            half behind the bar on ordinary laptop screens. */}
+        <div style={{ flex: "0 0 auto", padding: "clamp(7rem, 9vh, 7.5rem) clamp(3rem, 7.6vw, 6.875rem) 3rem" }}>
           <h2
             style={{
               fontSize: "clamp(2rem, 4.44vw, 4rem)",
@@ -382,18 +396,30 @@ export default function Services() {
           </h2>
         </div>
 
-        {/* Cards track */}
-        <div style={{ padding: "0 clamp(3rem, 7.6vw, 6.875rem)", overflow: "visible" }}>
+        {/* Cards track — takes the remaining height and pins the cards to the
+            top of it, so any spare room falls below them rather than pushing
+            them up under the heading. */}
+        <div
+          style={{
+            flex: "1 1 auto",
+            minHeight: 0,
+            padding: "0 clamp(3rem, 7.6vw, 6.875rem) clamp(1.5rem, 4vh, 3rem)",
+            display: "flex",
+            alignItems: "flex-start",
+          }}
+        >
           <div
             ref={trackRef}
             style={{
               display: "flex",
+              alignItems: "flex-start",
+              height: "100%",
               gap: isHuge ? "1.75rem" : "1rem",
               willChange: "transform",
               transition: "transform 0.05s linear",
             }}
           >
-            {cards}
+            {renderCards(true)}
           </div>
         </div>
       </section>

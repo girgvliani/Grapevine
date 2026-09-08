@@ -16,7 +16,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/portfolio",
     locale,
-    title: locale === "ka" ? "პორტფოლიო — Grapevine" : "Portfolio — Grapevine",
+    title: locale === "ka" ? "პორტფოლიო - Grapevine" : "Portfolio - Grapevine",
     description: t.portfolioPage.intro,
   });
 }

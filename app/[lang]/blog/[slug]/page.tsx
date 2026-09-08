@@ -27,7 +27,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: `/blog/${slug}`,
     locale,
-    title: `${post.title} — Grapevine`,
+    title: `${post.title} - Grapevine`,
     description: post.excerpt || post.title,
     // Posts are independent rows per (lang, slug) — no matching translation
     // exists at this slug in the other locale, so no hreflang alternate.

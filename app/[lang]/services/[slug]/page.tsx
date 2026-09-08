@@ -53,7 +53,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: `/services/${r.slug}`,
     locale: r.locale,
-    title: getServiceDetail(r.slug, r.locale as Lang)?.metaTitle || `${name} — Grapevine`,
+    title: getServiceDetail(r.slug, r.locale as Lang)?.metaTitle || `${name} - Grapevine`,
     description,
   });
 }

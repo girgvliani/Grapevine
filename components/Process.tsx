@@ -88,6 +88,39 @@ export default function Process() {
   const [fading, setFading] = useState(false);
   const [lockedHeight, setLockedHeight] = useState<number | undefined>(undefined);
   const contentRef = useRef<HTMLDivElement>(null);
+  // Mobile carousel: the desktop section's three parts — bird, steps, benefits
+  // — laid side by side and swiped between. Declared here rather than inside
+  // the mobile branch below, since that branch returns early and hooks can't
+  // live behind it.
+  const mobileTrackRef = useRef<HTMLDivElement>(null);
+  const [mobilePanel, setMobilePanel] = useState(0);
+
+  // Which panel is sitting at the left edge right now — drives the slider
+  // underneath and retires the "swipe" arrow on the last one.
+  function syncMobilePanel() {
+    const el = mobileTrackRef.current;
+    if (!el) return;
+    const left = el.getBoundingClientRect().left;
+    let nearest = 0;
+    let smallest = Infinity;
+    Array.from(el.children).forEach((child, i) => {
+      const distance = Math.abs(child.getBoundingClientRect().left - left);
+      if (distance < smallest) {
+        smallest = distance;
+        nearest = i;
+      }
+    });
+    setMobilePanel(nearest);
+  }
+
+  function scrollToMobilePanel(i: number) {
+    const el = mobileTrackRef.current;
+    const child = el?.children[i];
+    if (!el || !child) return;
+    const offset = child.getBoundingClientRect().left - el.getBoundingClientRect().left;
+    const padLeft = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+    el.scrollTo({ left: el.scrollLeft + offset - padLeft, behavior: "smooth" });
+  }
 
   // Lock height to panel 0's natural height before first switch
   useEffect(() => {
@@ -105,34 +138,166 @@ export default function Process() {
     }, 300);
   }
 
-  // Mobile: only the bird + title, steps/benefits hidden (per the mobile design).
+  // Mobile: the desktop section's three parts — bird, steps, benefits — become
+  // three full-width panels you swipe between. The two-column layout has
+  // nowhere to put the steps or the benefits at this width, and they used to
+  // simply be dropped, leaving the section with nothing to read.
   if (isMobile) {
+    const edge = "1.5rem";
+    const panelCount = 3;
+    const atEnd = mobilePanel >= panelCount - 1;
+    // Each panel is exactly one viewport wide and carries its own side padding,
+    // so the next one starts precisely at the right edge instead of bleeding a
+    // sliver of the following panel's text into view.
+    const panelStyle: React.CSSProperties = {
+      flex: "0 0 100%",
+      scrollSnapAlign: "start",
+      padding: `0 ${edge}`,
+    };
+
     return (
       <section
         id="process"
-        style={{
-          background: "var(--cream)",
-          padding: "4.5rem clamp(1.5rem, 5vw, 2.5rem) 4.5rem",
-        }}
+        style={{ background: "var(--cream)", padding: "4.5rem 0 4.5rem" }}
       >
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem" }}>
-          <div style={{ position: "relative", width: "55%", aspectRatio: "1 / 1.05" }}>
-            <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 640px) 55vw, 30vw" loading="eager" style={{ objectFit: "contain" }} />
+        <div
+          ref={mobileTrackRef}
+          className="hide-scrollbar"
+          onScroll={syncMobilePanel}
+          style={{
+            display: "flex",
+            // No gap or padding on the track itself: the panels butt up against
+            // each other and each fills the viewport exactly, so nothing of the
+            // next panel is ever visible beside the current one.
+            overflowX: "auto",
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {/* 1 — bird + title */}
+          <div style={{ ...panelStyle, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.5rem" }}>
+            <div style={{ position: "relative", width: "55%", aspectRatio: "1 / 1.05" }}>
+              <Image src={birdImg} alt="Grapevine bird" fill sizes="(max-width: 640px) 55vw, 30vw" loading="eager" style={{ objectFit: "contain" }} />
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-heading)",
+                fontWeight: 900,
+                fontSize: "clamp(2rem, 9vw, 2.75rem)",
+                lineHeight: 1.1,
+                letterSpacing: "-0.02em",
+                textAlign: "center",
+              }}
+            >
+              <span style={{ color: "var(--orange)" }}>{mtavruli(t.process.titleLine1)}</span>
+              <br />
+              <span style={{ color: "var(--dark)" }}>{mtavruli(t.process.titleLine2)}</span>
+            </div>
           </div>
-          <div
-            style={{
-              fontFamily: "var(--font-heading)",
-              fontWeight: 900,
-              fontSize: "clamp(2rem, 9vw, 2.75rem)",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              textAlign: "center",
-            }}
+
+          {/* 2 — the steps */}
+          <div style={panelStyle}>
+            {t.process.steps.map((step, i) => (
+              <div
+                key={step.num}
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  paddingBottom: "1.5rem",
+                  marginBottom: "1.5rem",
+                  borderBottom: i === t.process.steps.length - 1 ? "none" : "1px solid rgba(26,5,18,0.12)",
+                }}
+              >
+                <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", lineHeight: 1, minWidth: "2.25rem" }}>
+                  {step.num}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: "1.375rem", fontWeight: 900, color: "var(--dark)", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1.05, marginBottom: "0.25rem" }}>
+                    {step.title}
+                  </div>
+                  <div style={{ fontSize: "0.625rem", color: "var(--orange)", letterSpacing: "0.15em", textTransform: "uppercase", fontFamily: "var(--font-primary)", marginBottom: "0.5rem" }}>
+                    {step.sub}
+                  </div>
+                  <div style={{ fontSize: "0.8125rem", lineHeight: 1.7, color: "var(--dark)", opacity: 0.65, fontFamily: "var(--font-primary)" }}>
+                    {step.desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 3 — what the client gets */}
+          <div style={panelStyle}>
+            <h3
+              style={{
+                fontSize: "1.75rem",
+                fontWeight: 900,
+                letterSpacing: "-0.02em",
+                color: "var(--orange)",
+                fontFamily: "var(--font-heading)",
+                lineHeight: 1.1,
+                marginBottom: "1.75rem",
+              }}
+            >
+              {mtavruli(t.process.benefitsHeading)}
+            </h3>
+
+            {t.process.benefits.map((group) => (
+              <div key={group.num} style={{ marginBottom: "1.75rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.875rem" }}>
+                  <span style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--orange)", fontFamily: "var(--font-primary)", lineHeight: 1, flexShrink: 0 }}>
+                    {group.num}
+                  </span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: "1.125rem", fontWeight: 900, color: "var(--dark)", fontFamily: "var(--font-heading)", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1.1 }}>
+                      {group.title}
+                    </div>
+                    <div style={{ height: "2px", background: "var(--orange)", marginTop: "0.375rem" }} />
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", paddingLeft: "0.25rem" }}>
+                  {group.items.map((item) => (
+                    <div key={item} style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+                      <svg width="16" height="16" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0 }}>
+                        <circle cx="9" cy="9" r="8" stroke="var(--orange)" strokeWidth="1.5" fill="none" />
+                        <path d="M5.5 9L7.5 11L12.5 6.5" stroke="var(--orange)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span style={{ fontSize: "0.875rem", color: "var(--dark)", fontFamily: "var(--font-primary)", opacity: 0.8 }}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Position slider + a nudging arrow, so the row reads as swipeable
+            before anyone touches it. The arrow retires on the last panel,
+            where there is nothing further to reach. */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem", marginTop: "2rem", padding: `0 ${edge}` }}>
+          <StepSlider
+            count={panelCount}
+            active={mobilePanel}
+            onSelect={scrollToMobilePanel}
+            labels={[
+              `${t.process.titleLine1} ${t.process.titleLine2}`,
+              t.process.steps.map((step) => step.title).join(", "),
+              t.process.benefitsHeading,
+            ]}
+          />
+          <svg
+            className="scroll-hint-arrow"
+            width="24"
+            height="12"
+            viewBox="0 0 24 12"
+            fill="none"
+            aria-hidden="true"
+            style={{ opacity: atEnd ? 0 : 1, transition: "opacity 0.3s ease" }}
           >
-            <span style={{ color: "var(--orange)" }}>{mtavruli(t.process.titleLine1)}</span>
-            <br />
-            <span style={{ color: "var(--dark)" }}>{mtavruli(t.process.titleLine2)}</span>
-          </div>
+            <path d="M1 6h20M16.5 1.5 21.5 6l-5 4.5" stroke="var(--orange)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </div>
       </section>
     );

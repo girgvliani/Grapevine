@@ -6,6 +6,7 @@ import FastMarquee from "react-fast-marquee";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
+import { BEHANCE_URL } from "./BehanceLink";
 import { mtavruli } from "@/lib/i18n";
 
 // Where a tile sits in the scattered grid. Purely positional — a slot knows
@@ -56,8 +57,18 @@ const LOGOS: LogoEntry[] = POSITIONS.map((pos, i) => ({
 }));
 
 function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
+  // Every tile opens Behance: the client's own case study where one is
+  // published, the agency profile otherwise — same rule as the portfolio cards.
+  const href = logo.behanceUrl ?? BEHANCE_URL;
+
   return (
-    <div
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={
+        logo.behanceUrl ? `${logo.alt} — Behance` : `${logo.alt} — Grapevine on Behance`
+      }
       style={{
         background: logo.bg,
         borderRadius: "0.9rem",
@@ -68,6 +79,9 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
         alignItems: "center",
         justifyContent: "center",
         boxShadow: "0 0.5rem 1.25rem -0.75rem rgba(0,0,0,0.35)",
+        textDecoration: "none",
+        cursor: "none",
+        flexShrink: 0,
       }}
     >
       <Image
@@ -80,7 +94,7 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
           transform: logo.imageScale ? `scale(${logo.imageScale})` : undefined,
         }}
       />
-    </div>
+    </a>
   );
 }
 

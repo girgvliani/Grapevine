@@ -337,3 +337,18 @@ body[data-menu-open] .support-widget {
 .rfm-child {
   transform: var(--transform);
 }
+
+/* Horizontal-scroll hint for the "how we work" steps on mobile. The arrow
+   nudges right so the row reads as swipeable before anyone touches it. */
+@keyframes nudgeRight {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(0.25rem); }
+}
+
+.scroll-hint-arrow {
+  animation: nudgeRight 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint-arrow { animation: none; }
+}

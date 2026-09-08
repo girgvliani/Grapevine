@@ -16,7 +16,7 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/services",
     locale,
-    title: locale === "ka" ? "სერვისები — Grapevine" : "Services — Grapevine",
+    title: locale === "ka" ? "სერვისები - Grapevine" : "Services - Grapevine",
     description: t.servicesPage.tagline,
   });
 }

@@ -30,6 +30,10 @@ export type ClientLogo = {
   maxH?: number; // max height cap in px (for tall/narrow logos)
   imageScale?: number; // visually enlarges the logo art within its tile without
                         // resizing the tile itself (default 1 = no change)
+  // Case study for this client on the agency's Behance profile, where one is
+  // published. Tiles without it fall back to the profile itself, so every logo
+  // leads somewhere (see Partners.tsx).
+  behanceUrl?: string;
 };
 
 // `bg` = the tile colour behind each (transparent) logo. Brand-aligned soft
@@ -44,18 +48,18 @@ export const CLIENT_LOGOS: ClientLogo[] = [
   { src: l04, alt: "Blits Dental", bg: "#7C4DBE", w: 90 },
   { src: l17, alt: "Client logo", bg: "#3E5AA8", w: 110 },
   { src: l15, alt: "DAC Components", bg: "#D2E3F7", w: 125 },
-  { src: l14, alt: "Komuna", bg: "#FFF0BD", w: 110 },
+  { src: l14, alt: "Komuna", bg: "#FFF0BD", w: 110, behanceUrl: "https://www.behance.net/gallery/167859519/Komunn-Branding" },
   { src: l16, alt: "Client logo", bg: "#D8D4FF", w: 120 },
   { src: l07, alt: "Hera XXI", bg: "#D8D4FF", w: 150 },
-  { src: l09, alt: "FINO Audit & Accounting", bg: "#FFF0BD", w: 125 },
+  { src: l09, alt: "FINO Audit & Accounting", bg: "#FFF0BD", w: 125, behanceUrl: "https://www.behance.net/gallery/192827567/Fino-Branding" },
   { src: l10, alt: "Bariatric & Metabolic Medicine Center", bg: "#CDEBDA", w: 160, imageScale: 1.3 },
   { src: l06, alt: "Client logo", bg: "#D2E3F7", w: 150 },
   { src: l03, alt: "Family Kids Kindergarten", bg: "#CDEBDA", w: 110 },
   { src: l02, alt: "GEO GPS", bg: "#FFF0BD", w: 115 },
   { src: l05, alt: "Client logo", bg: "#FFD8C7", w: 125 },
-  { src: l12, alt: "Fermino", bg: "#2E6B4A", w: 120 },
+  { src: l12, alt: "Fermino", bg: "#2E6B4A", w: 120, behanceUrl: "https://www.behance.net/gallery/168202819/Fermino-Branding" },
   { src: l13, alt: "European Language Institute Georgia", bg: "#D8D4FF", w: 135 },
   { src: l18, alt: "4Hospitals Medical Company", bg: "#FFD8C7", w: 120 },
   { src: l01, alt: "ICF Sakartvelo Chapter", bg: "#D8D4FF", w: 125 },
-  { src: l08, alt: "Smart Store", bg: "#2E3A6E", w: 150 },
+  { src: l08, alt: "Smart Store", bg: "#2E3A6E", w: 150, behanceUrl: "https://www.behance.net/gallery/250534073/Smart-Store-Branding" },
 ];

@@ -42,8 +42,8 @@ export async function generateMetadata({
     locale,
     title:
       locale === "ka"
-        ? "Grapevine — მარკეტინგ სააგენტო"
-        : "Grapevine — We Untangle The Mess",
+        ? "Grapevine - კრეატიული სააგენტო"
+        : "Grapevine - We Untangle The Mess",
     description: t.hero.description,
   });
 }

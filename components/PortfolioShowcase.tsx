@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLang } from "./LanguageProvider";
@@ -11,7 +11,7 @@ import {
   type PortfolioCategory,
   type PortfolioProject,
 } from "./portfolioConfig";
-import BehanceLink from "./BehanceLink";
+import BehanceLink, { BEHANCE_URL } from "./BehanceLink";
 
 function ExpandArrow() {
   return (
@@ -36,19 +36,28 @@ function ProjectCard({
   hidden: boolean;
   delay: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
   const hasImage = Boolean(project.image);
+  // Every card leads to Behance: to its own case study where one is published,
+  // otherwise to the agency profile, so no card is ever a dead end.
+  const hasCaseStudy = Boolean(project.behanceUrl);
+  const href = project.behanceUrl ?? BEHANCE_URL;
 
   if (hidden) return null;
 
   return (
-    <div
-      ref={ref}
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={hasCaseStudy ? `${title} — Behance` : `${title} — Grapevine on Behance`}
       id={project.id}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
+        display: "block",
+        textDecoration: "none",
+        cursor: "none",
         borderRadius: "2rem",
         overflow: "hidden",
         position: "relative",
@@ -109,7 +118,7 @@ function ProjectCard({
           {desc}
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
