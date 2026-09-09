@@ -339,14 +339,41 @@ export default function Cta({
             {(status === "success" || status === "error") && (
               <div
                 role="status"
+                aria-live="polite"
                 style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
                   textAlign: "center",
-                  fontSize: "0.8125rem",
-                  color: status === "success" ? "var(--purple-dark)" : "#c0392b",
+                  fontSize: "0.875rem",
+                  fontWeight: 700,
+                  lineHeight: 1.45,
+                  padding: "0.875rem 1rem",
+                  borderRadius: "0.75rem",
                   fontFamily: "var(--font-primary)",
+                  color: status === "success" ? "var(--purple-dark)" : "#C0392B",
+                  background:
+                    status === "success" ? "rgba(144,39,147,0.10)" : "rgba(192,57,43,0.10)",
+                  border: `1px solid ${
+                    status === "success" ? "rgba(144,39,147,0.30)" : "rgba(192,57,43,0.30)"
+                  }`,
                 }}
               >
-                {status === "success" ? t.cta.success : t.cta.error}
+                <span aria-hidden="true" style={{ flexShrink: 0, display: "flex" }}>
+                  {status === "success" ? (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <circle cx="9" cy="9" r="8" stroke="currentColor" strokeWidth="1.6" />
+                      <path d="M5.5 9.2 7.8 11.5l4.7-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <circle cx="9" cy="9" r="8" stroke="currentColor" strokeWidth="1.6" />
+                      <path d="M9 5v5M9 12.6v.1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  )}
+                </span>
+                <span>{status === "success" ? t.cta.success : t.cta.error}</span>
               </div>
             )}
 
