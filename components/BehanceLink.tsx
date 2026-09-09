@@ -89,8 +89,14 @@ export default function BehanceLink({ variant = "pill" }: { variant?: "pill" | "
         cursor: "none",
       }}
     >
-      <BehanceIcon size={15} />
-      <span style={{ lineHeight: 1, position: "relative", top: "0.2em" }}>Behance</span>
+      {/* Icon size and text offset are optically tuned against each other, not
+          round numbers: at 15px the mark's ink is taller than Mersad's cap
+          height and its baseline hung ~2 device px below the wordmark's. 14px
+          matches the cap height, and 0.25em drops the text — whose caps sit
+          high in their line box — onto the same top edge. Changing either
+          without re-checking will put them back out of line. */}
+      <BehanceIcon size={14} />
+      <span style={{ lineHeight: 1, position: "relative", top: "0.25em" }}>Behance</span>
     </a>
   );
 }
