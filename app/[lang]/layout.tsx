@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "../globals.css";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import SupportWidget from "@/components/SupportWidget";
+import CookieConsent from "@/components/CookieConsent";
 import JsonLd from "@/components/JsonLd";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
@@ -65,16 +65,14 @@ export default async function RootLayout({
   // valid locales here, but a hand-typed /fr/... would fall through to this).
   if (lang !== "en" && lang !== "ka") notFound();
 
-  // Google Tag Manager — only loads when NEXT_PUBLIC_GTM_ID is set, so no
-  // tracking fires until you add the real container ID to the environment.
+  // Google Tag Manager / Analytics — only configured when their env vars are
+  // set, and even then only loaded once the visitor accepts cookies
+  // (CookieConsent), never on first paint.
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
-  // Google Analytics (GA4, gtag.js) — same opt-in-via-env pattern as GTM above.
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
-      {gtmId && <GoogleTagManager gtmId={gtmId} />}
-      {gaId && <GoogleAnalytics gaId={gaId} />}
       <body>
         {/* Site-wide identity graph (Organization + WebSite). Service pages add
             their own Service/BreadcrumbList nodes on top of this. */}
@@ -85,6 +83,7 @@ export default async function RootLayout({
           <Nav />
           {children}
           <SupportWidget />
+          <CookieConsent gaId={gaId} gtmId={gtmId} />
         </LanguageProvider>
       </body>
     </html>

@@ -1,15 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import birdImg from "./assets/Component 9.png";
 import logoBlack from "./assets/logoblack.svg";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import BehanceLink from "./BehanceLink";
+import { openCookieSettings } from "./CookieConsent";
 import { mtavruli } from "@/lib/i18n";
+import { localizedHref } from "@/lib/routing";
 
 export default function Footer() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const logo = (
@@ -231,6 +234,30 @@ export default function Footer() {
         }}
       >
         {t.footer.copyright}
+        <span aria-hidden="true" style={{ margin: "0 0.75rem" }}>|</span>
+        <Link
+          href={localizedHref("/privacy", lang)}
+          style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "0.2em" }}
+        >
+          {t.footer.privacy}
+        </Link>
+        <span aria-hidden="true" style={{ margin: "0 0.75rem" }}>|</span>
+        <button
+          type="button"
+          onClick={openCookieSettings}
+          style={{
+            background: "none",
+            border: "none",
+            padding: 0,
+            font: "inherit",
+            letterSpacing: "inherit",
+            color: "inherit",
+            textDecoration: "underline",
+            textUnderlineOffset: "0.2em",
+          }}
+        >
+          {t.footer.cookieSettings}
+        </button>
       </div>
     </footer>
   );

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { checkTurnstile } from "@/lib/turnstile";
 
 // Override via env if you verify a different sending domain in Resend.
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "info@grapevine.ge";
@@ -43,23 +44,6 @@ async function createCrmLead(fields: { email: string; subject: string; message: 
   }
 }
 
-async function verifyTurnstile(token: string, ip: string | null) {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) {
-    console.error("Contact form: TURNSTILE_SECRET_KEY is not set");
-    return false;
-  }
-  const params = new URLSearchParams({ secret, response: token });
-  if (ip) params.set("remoteip", ip);
-  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params,
-  });
-  const data = (await res.json()) as { success: boolean };
-  return data.success;
-}
-
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -83,23 +67,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid_input" }, { status: 400 });
   }
 
-  // The captcha is only enforced when it's actually configured, mirroring the
-  // form, which skips the widget when NEXT_PUBLIC_TURNSTILE_SITE_KEY is unset.
-  // The two used to disagree: with no key deployed the form submitted an empty
-  // token and this route rejected every real enquiry with `captcha_required`.
-  if (process.env.TURNSTILE_SECRET_KEY) {
-    if (!turnstileToken) {
-      return NextResponse.json({ error: "captcha_required" }, { status: 400 });
-    }
-    const ip = request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for");
-    const captchaOk = await verifyTurnstile(turnstileToken, ip);
-    if (!captchaOk) {
-      return NextResponse.json({ error: "captcha_failed" }, { status: 400 });
-    }
-  } else {
-    console.warn(
-      "Contact form: TURNSTILE_SECRET_KEY is not set — accepting submissions without spam protection"
-    );
+  const captchaError = await checkTurnstile(request, turnstileToken, "Contact form");
+  if (captchaError) {
+    return NextResponse.json({ error: captchaError }, { status: 400 });
   }
 
   const resend = new Resend(apiKey);

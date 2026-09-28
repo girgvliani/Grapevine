@@ -123,13 +123,17 @@ export default function Hero() {
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
       </div>
 
-      {/* Label — top left */}
-      <div
+      {/* Label — top left. It's the page's only real text heading (the
+          headline lives inside the video), so it doubles as the home H1;
+          styled to look exactly like the small label it always was. */}
+      <h1
         style={{
           position: "absolute",
           top: "clamp(5rem, 10vh, 7rem)",
           left: "clamp(1.5rem, 5vw, 2.5rem)",
           fontSize: "0.6875rem",
+          fontWeight: 400,
+          lineHeight: "normal",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
           color: "var(--orange)",
@@ -139,7 +143,7 @@ export default function Hero() {
         }}
       >
         {t.hero.label}
-      </div>
+      </h1>
 
       {/* Description — bottom left */}
       <p

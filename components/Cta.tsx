@@ -1,67 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import Script from "next/script";
 import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
+import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
-
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (
-        container: HTMLElement,
-        options: {
-          sitekey: string;
-          callback: (token: string) => void;
-          "error-callback"?: () => void;
-          "expired-callback"?: () => void;
-        }
-      ) => string;
-      reset: (widgetId: string) => void;
-    };
-  }
-}
-
-// Renders Cloudflare Turnstile invisibly and hands the verification token up
-// via onToken — kept separate so the widget only mounts/unmounts once, not
-// on every Cta re-render.
-function Turnstile({ onToken }: { onToken: (token: string) => void }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const widgetId = useRef<string | null>(null);
-
-  function renderWidget() {
-    if (!containerRef.current || !window.turnstile || !TURNSTILE_SITE_KEY) return;
-    widgetId.current = window.turnstile.render(containerRef.current, {
-      sitekey: TURNSTILE_SITE_KEY,
-      callback: onToken,
-      "error-callback": () => onToken(""),
-      "expired-callback": () => onToken(""),
-    });
-  }
-
-  useEffect(() => {
-    if (window.turnstile) renderWidget();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!TURNSTILE_SITE_KEY) return null;
-
-  return (
-    <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-        onReady={renderWidget}
-      />
-      <div ref={containerRef} />
-    </>
-  );
-}
 
 function FloatingField({
   label,
@@ -218,6 +163,10 @@ export default function Cta({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [turnstileToken]);
 
+  // On /contact this heading is the page's H1; on the homepage it's one
+  // section among many, and the hero owns the H1.
+  const Heading = standalone ? "h1" : "h2";
+
   const heading = (
     <>
       {eyebrow && (
@@ -234,7 +183,7 @@ export default function Cta({
           {eyebrow}
         </div>
       )}
-      <h2
+      <Heading
         style={{
           fontSize: "clamp(2rem, 5vw, 3.75rem)",
           fontWeight: 900,
@@ -246,7 +195,7 @@ export default function Cta({
         }}
       >
         {mtavruli(t.cta.heading)}
-      </h2>
+      </Heading>
     </>
   );
 

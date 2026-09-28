@@ -52,10 +52,16 @@
   --font-heading: 'Mersad', var(--font-space), 'Arial Black', Arial, sans-serif;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* In Tailwind's base layer on purpose: unlayered, this reset beat every
+   Tailwind utility (utilities live in a layer), so classes like `mt-8` or
+   `px-4` in components/ui/* silently did nothing. The rest of the site styles
+   with inline styles and its own classes, which this doesn't affect. */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 html {
@@ -336,6 +342,126 @@ body[data-menu-open] .support-widget {
 
 .rfm-child {
   transform: var(--transform);
+}
+
+/* Card fan carousel (components/ui/card-fan-carousel.tsx). GSAP positions the
+   cards with transforms from the centre, so every card is absolutely placed at
+   the centre of .fan-layout. Heights mirror getHeightMultiplier() in the
+   component (22/26/28/34/38rem) and are capped at 70vh like its budget; the
+   card height is capped too so the fan still fits a short laptop screen.
+   Centred with inset + auto margins rather than translate(-50%): GSAP owns the
+   transform and resets the CSS `translate` property when it animates. The
+   larger bottom inset lifts the fan so the lower outer cards clear the arrows.
+   Each card is a size container, so its content can scale with cq units. */
+.fan-layout {
+  height: min(22rem, 70vh);
+}
+.fan-card {
+  position: absolute;
+  inset: 0 0 12% 0;
+  margin: auto;
+  height: min(11.5rem, 42vh);
+  aspect-ratio: 19 / 27;
+  container-type: size;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1.25rem 2.5rem -0.75rem rgba(0, 0, 0, 0.55);
+  will-change: transform;
+  opacity: 0; /* revealed by the entrance animation */
+}
+@media (min-width: 480px) {
+  .fan-layout { height: min(26rem, 70vh); }
+  .fan-card { height: min(15rem, 46vh); }
+}
+@media (min-width: 640px) {
+  .fan-layout { height: min(28rem, 70vh); }
+  .fan-card { height: min(17rem, 48vh); }
+}
+@media (min-width: 768px) {
+  .fan-layout { height: min(34rem, 70vh); }
+  .fan-card { height: min(21rem, 50vh); border-radius: 1.25rem; }
+}
+@media (min-width: 1024px) {
+  .fan-layout { height: min(38rem, 70vh); }
+  .fan-card { height: min(26rem, 52vh); border-radius: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan-card { opacity: 1; }
+}
+
+/* Homepage service tile inside a fan card (components/Services.tsx). Sized in
+   container units (the .fan-card is the container) so the same tile reads right
+   from the 11.5rem phone card to the 26rem desktop one. */
+.svc-fan-tile {
+  width: 100%;
+  height: 100%;
+  background: #FFEFAB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8cqh 8cqw 7cqh;
+  color: var(--dark);
+  font-family: var(--font-primary);
+}
+.svc-fan-tile__icon {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.svc-fan-tile__icon img {
+  width: auto;
+  height: auto;
+  max-width: 62cqw;
+  max-height: 100%;
+  object-fit: contain;
+}
+.svc-fan-tile__name {
+  color: var(--orange);
+  font-weight: 700;
+  font-size: max(0.75rem, 5.2cqh);
+  letter-spacing: 0.08em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  margin-top: 4cqh;
+}
+.svc-fan-tile__intro {
+  display: none;
+  font-size: 3.4cqh;
+  line-height: 1.5;
+  color: rgba(26, 5, 18, 0.72);
+  margin-top: 3cqh;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.svc-fan-tile__more {
+  margin-top: 4.5cqh;
+  background: var(--purple-dark);
+  color: var(--white);
+  border-radius: 100px;
+  padding: 1.8cqh 5cqw;
+  font-size: max(0.5625rem, 3cqh);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* The intro sentence only once the card is tall enough to read it. */
+@container (min-height: 20rem) {
+  .svc-fan-tile__intro { display: -webkit-box; }
+}
+
+/* Homepage portfolio slider (components/Portfolio.tsx) — moves only on the
+   arrow buttons / a swipe; this is the slide between positions. */
+.portfolio-track {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-track { transition: none; }
 }
 
 /* Horizontal-scroll hint for the "how we work" steps on mobile. The arrow

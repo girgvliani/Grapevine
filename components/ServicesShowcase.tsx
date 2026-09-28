@@ -14,6 +14,9 @@ import { SERVICE_ASSETS } from "./servicesConfig";
 // Cards stack vertically (icon over detail) below this width.
 const STACK_QUERY = "(max-width: 820px)";
 
+// Services whose expanded card links to the free automatic check at /seo-audit.
+const AUDIT_TOOL_SLUGS: readonly ServiceSlug[] = ["social-media-audit", "seo"];
+
 function ExpandArrow({ open }: { open: boolean }) {
   return (
     <svg
@@ -186,9 +189,12 @@ function ServiceCard({
             textAlign: stack ? "center" : "left",
           }}
         >
-          <h4 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "1.25rem", textTransform: "uppercase", letterSpacing: "-0.01em", color: "var(--dark)", marginBottom: "0.75rem", animation: "svcRise 0.5s 0.14s cubic-bezier(0.16,1,0.3,1) both" }}>
-            {name}{sub ? " " + sub : ""}
-          </h4>
+          {/* Only the open card renders this, and at most one card is open, so
+              it is the page's H1 — /services/<slug> is that service's landing
+              page. The page header steps down to a plain element meanwhile. */}
+          <h1 style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "1.25rem", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1.2, color: "var(--dark)", marginBottom: "0.75rem", animation: "svcRise 0.5s 0.14s cubic-bezier(0.16,1,0.3,1) both" }}>
+            {detail?.title || `${name}${sub ? " " + sub : ""}`}
+          </h1>
 
           {bodyParagraphs.map((para, i) => (
             <p
@@ -247,6 +253,53 @@ function ServiceCard({
               </li>
             ))}
           </ul>
+
+          {AUDIT_TOOL_SLUGS.includes(slug) && (
+            <div
+              style={{
+                marginTop: "1.75rem",
+                padding: "1.125rem 1.25rem",
+                borderRadius: "1rem",
+                background: "var(--cream)",
+                border: "1px solid rgba(26,5,18,0.12)",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: stack ? "center" : "space-between",
+                gap: "0.875rem 1.5rem",
+                animation: "svcRise 0.5s 0.45s cubic-bezier(0.16,1,0.3,1) both",
+              }}
+            >
+              <p
+                style={{
+                  flex: "1 1 18rem",
+                  fontSize: "0.875rem",
+                  lineHeight: 1.6,
+                  color: "rgba(26,5,18,0.8)",
+                  fontFamily: "var(--font-primary)",
+                }}
+              >
+                {p.auditTool.text}
+              </p>
+              <Link
+                href={localizedHref("/seo-audit", lang)}
+                style={{
+                  flex: "0 0 auto",
+                  background: "var(--purple-dark)",
+                  color: "var(--white)",
+                  padding: "0.75rem 1.375rem",
+                  borderRadius: "100px",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textDecoration: "none",
+                  fontFamily: "var(--font-primary)",
+                }}
+              >
+                {p.auditTool.button} →
+              </Link>
+            </div>
+          )}
         </div>
       )}
 
@@ -310,6 +363,10 @@ export default function ServicesShowcase({
     return () => window.removeEventListener("popstate", sync);
   }, []);
 
+  // "Services" is the H1 of the hub page; once a card is open, that card's
+  // heading is the H1 instead (see ServiceCard), so this becomes plain text.
+  const PageTitle = openId ? "div" : "h1";
+
   // Deep-linked open: scroll the expanded card into view on first render.
   useEffect(() => {
     if (!initialOpen) return;
@@ -343,7 +400,7 @@ export default function ServicesShowcase({
         >
           {p.eyebrow}
         </div>
-        <h1
+        <PageTitle
           style={{
             fontFamily: "var(--font-heading)",
             fontWeight: 900,
@@ -355,19 +412,21 @@ export default function ServicesShowcase({
           }}
         >
           {t.services.heading}
-          <span
-            style={{
-              display: "block",
-              color: "var(--white)",
-              fontSize: "clamp(1rem,1.8vw,1.6rem)",
-              letterSpacing: "0.02em",
-              marginTop: "1rem",
-              fontWeight: 700,
-            }}
-          >
-            {p.tagline}
-          </span>
-        </h1>
+        </PageTitle>
+        <p
+          style={{
+            color: "var(--white)",
+            fontFamily: "var(--font-heading)",
+            fontSize: "clamp(1rem,1.8vw,1.6rem)",
+            lineHeight: 0.95,
+            textTransform: "uppercase",
+            letterSpacing: "0.02em",
+            marginTop: "1rem",
+            fontWeight: 700,
+          }}
+        >
+          {p.tagline}
+        </p>
         <p
           style={{
             maxWidth: "34rem",

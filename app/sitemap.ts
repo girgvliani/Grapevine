@@ -11,6 +11,8 @@ const ROUTES: string[] = [
   "/portfolio",
   "/contact",
   "/blog",
+  "/seo-audit",
+  "/privacy",
   ...SERVICE_SLUGS.map((slug) => `/services/${slug}`),
 ];
 
