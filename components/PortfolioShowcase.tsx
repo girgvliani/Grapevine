@@ -70,7 +70,7 @@ function ProjectCard({
       }}
     >
       {/* Visual area — logo on white, or the name centred on the brand colour */}
-      <div style={{ height: "64%", position: "relative", overflow: "hidden", background: hasImage ? "#fff" : project.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: "64%", position: "relative", overflow: "hidden", background: hasImage ? (project.imageBg ?? "#fff") : project.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {hasImage ? (
           <Image
             src={project.image!}
@@ -80,7 +80,7 @@ function ProjectCard({
             style={{ objectFit: "contain", padding: "2rem", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1)", transform: hover ? "scale(1.06)" : "none" }}
           />
         ) : (
-          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05 }}>{title}</span>
+          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05, whiteSpace: "pre-line" }}>{title.replace(/\s+/g, "\n")}</span>
         )}
       </div>
 

@@ -55,11 +55,11 @@ function ProjectCard({
       {/* Visual area — logo on white, or the name centred on the brand colour.
           The card clips the top corners; the bottom pair is rounded here so the
           panel is rounded on all four rather than just the two up top. */}
-      <div style={{ height: size.visual, background: hasImage ? "#fff" : project.bg, borderRadius: "0 0 2.1rem 2.1rem", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "2.5rem" }}>
+      <div style={{ height: size.visual, background: hasImage ? (project.imageBg ?? "#fff") : project.bg, borderRadius: "0 0 2.1rem 2.1rem", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", padding: "2.5rem" }}>
         {hasImage ? (
           <Image src={project.image!} alt={title} sizes="(max-width: 640px) 80vw, 480px" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%", objectFit: "contain", borderRadius: "1.25rem" }} />
         ) : (
-          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05 }}>{title}</span>
+          <span style={{ color: "#fff", fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "clamp(1.5rem,3vw,2.25rem)", textTransform: "uppercase", textAlign: "center", letterSpacing: "-0.01em", padding: "1.5rem", lineHeight: 1.05, whiteSpace: "pre-line" }}>{title.replace(/\s+/g, "\n")}</span>
         )}
       </div>
 

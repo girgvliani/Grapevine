@@ -8,7 +8,7 @@ import img06 from "./assets/portfolioProjects/image06-rounded.png";
 import img07 from "./assets/portfolioProjects/image07-rounded.png";
 import img08 from "./assets/portfolioProjects/image08-rounded.png";
 import img09 from "./assets/portfolioProjects/image09-rounded.png";
-import img10 from "./assets/portfolioProjects/image10-rounded.png";
+import geogpsImg from "./assets/portfolioProjects/geogps-logo.png";
 import diplomatImg from "./assets/portfolio/diplomat-rounded.png";
 import bookImg from "./assets/portfolio/book-rounded.png";
 import sameriImg from "./assets/portfolio/sameri-rounded.png";
@@ -26,6 +26,7 @@ export type PortfolioProject = {
   category: PortfolioCategory;
   bg: string; // card colour (also the background for text-only cards)
   image?: StaticImageData; // undefined = text-only card until a logo is supplied
+  imageBg?: string; // panel behind the image (default white) — for logos made for a dark ground
   // Full case study on the agency's Behance profile, where one has been
   // published. Only these cards are clickable — the rest have no case study to
   // send anyone to, so they deliberately carry no link and no arrow badge.
@@ -48,7 +49,7 @@ export const PORTFOLIO_PROJECTS: PortfolioProject[] = [
   { id: "samery",              category: "branding", bg: "#902793", image: sameriImg, behanceUrl: "https://www.behance.net/gallery/168127165/Sameri-Branding" },
   { id: "eli",                 category: "web",      bg: "#2B6CB0", image: img09 },
   { id: "veronika",            category: "web",      bg: "#D35400" },
-  { id: "geogps",              category: "web",      bg: "#111111", image: img10 },
+  { id: "geogps",              category: "web",      bg: "#0F2D50", image: geogpsImg, imageBg: "#0F2D50" },
 ];
 
 // Filter order for the category chips.
