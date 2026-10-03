@@ -226,7 +226,7 @@ const ka = {
   },
   footer: {
     taglineLine1: "ბრენდებისთვის, რომელთაც",
-    taglineLine2: "სურთ ზრდა.",
+    taglineLine2: "სურთ ზრდა",
     quickLinks: "სწრაფი ბმულები",
     links: { services: "სერვისები", portfolio: "პორტფოლიო", contact: "კონტაქტი" },
     button: "ამოხსენი ქაოსი",
@@ -646,7 +646,7 @@ const en: typeof ka = {
   },
   footer: {
     taglineLine1: "For Brands That",
-    taglineLine2: "Want to Grow.",
+    taglineLine2: "Want to Grow",
     quickLinks: "Quick Links",
     links: { services: "Services", portfolio: "Portfolio", contact: "Contact" },
     button: "Untangle the Chaos",
