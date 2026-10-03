@@ -400,7 +400,7 @@ body[data-menu-open] .support-widget {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 8cqh 8cqw 7cqh;
+  padding: 8cqh 6cqw 7cqh;
   color: var(--dark);
   font-family: var(--font-primary);
 }
@@ -419,13 +419,17 @@ body[data-menu-open] .support-widget {
   max-height: 100%;
   object-fit: contain;
 }
+/* Already capitalised in the markup (mtavruli()) — no text-transform here: on
+   Mtavruli it visually reverts the glyphs in some engines. The width term keeps
+   the widest name word, ᲓᲔᲕᲔᲚᲝᲞᲛᲔᲜᲢᲘ (~10.2em at this letter-spacing), inside
+   the 88cqw text area on every card size; on desktop/tablet the 5.2cqh height
+   term is the smaller one, so those sizes are unchanged. */
 .svc-fan-tile__name {
   color: var(--orange);
   font-weight: 700;
-  font-size: max(0.75rem, 5.2cqh);
-  letter-spacing: 0.08em;
+  font-size: min(5.2cqh, 8.2cqw);
+  letter-spacing: 0.06em;
   line-height: 1.15;
-  text-transform: uppercase;
   margin-top: 4cqh;
 }
 .svc-fan-tile__intro {
@@ -443,11 +447,25 @@ body[data-menu-open] .support-widget {
   background: var(--purple-dark);
   color: var(--white);
   border-radius: 100px;
-  padding: 1.8cqh 5cqw;
+  /* +0.37em gives back the height the text-box trim below removes, so the
+     pill keeps its size. */
+  padding: calc(1.8cqh + 0.37em) 5cqw;
   font-size: max(0.5625rem, 3cqh);
   font-weight: 700;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+  /* All-caps (Mtavruli / Latin) has no descenders, but the line box still
+     reserves room for them, so the label sat ~2–3px high. Trim the box to
+     cap height + baseline so the padding centres the capitals themselves. */
+  text-box: trim-both cap alphabetic;
+}
+/* Browsers without text-box trimming: nudge the padding instead. */
+@supports not (text-box: trim-both cap alphabetic) {
+  .svc-fan-tile__more {
+    padding-top: calc(1.8cqh + 0.12em);
+    padding-bottom: calc(1.8cqh - 0.12em);
+  }
 }
 /* The intro sentence only once the card is tall enough to read it. */
 @container (min-height: 20rem) {

@@ -31,10 +31,15 @@ export default function Services() {
               <div className="svc-fan-tile__icon">
                 <Image src={s.icon} alt="" sizes="(max-width: 768px) 30vw, 220px" />
               </div>
-              <div className="svc-fan-tile__name">{name}</div>
+              {/* Capitals via mtavruli(), not CSS uppercase: Chrome/Android
+                  ignore text-transform for Georgian while Safari applies it,
+                  so the same card read differently per device. The size in
+                  .svc-fan-tile__name is tied to the card width so the widest
+                  word (ᲓᲔᲕᲔᲚᲝᲞᲛᲔᲜᲢᲘ) fits every card. */}
+              <div className="svc-fan-tile__name">{mtavruli(name)}</div>
               {intro && <p className="svc-fan-tile__intro">{intro}</p>}
               <span className="svc-fan-tile__more" aria-hidden="true">
-                {t.servicesPage.seeMore} →
+                {mtavruli(t.servicesPage.seeMore)} →
               </span>
             </div>
           ),
