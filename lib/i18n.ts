@@ -649,7 +649,7 @@ const en: typeof ka = {
     taglineLine2: "Want to Grow",
     quickLinks: "Quick Links",
     links: { services: "Services", portfolio: "Portfolio", contact: "Contact" },
-    button: "Untangle the Chaos",
+    button: "Untangle the Mess",
     copyright: "Copyright © 2026 | All Rights Reserved",
     cookieSettings: "Cookie settings",
     privacy: "Privacy policy",
