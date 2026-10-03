@@ -19,7 +19,7 @@ export class AuditError extends Error {
 }
 
 const USER_AGENT =
-  "Mozilla/5.0 (compatible; GrapevineSEOAudit/1.0; +https://grapevine.ge/seo-audit)";
+  "Mozilla/5.0 (compatible; GrapevineSEOAudit/1.0; +https://www.grapevine.ge/seo-audit)";
 const MAX_REDIRECTS = 5;
 
 // Accepts what people actually type ("example.ge", "www.example.ge/page") and

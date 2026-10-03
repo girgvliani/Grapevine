@@ -18,8 +18,13 @@ export const DEFAULT_LOCALE: Locale = "ka";
 
 // Public origin, used to build absolute URLs for metadata/sitemap. Override in
 // the environment for previews; falls back to the production domain.
+//
+// Must be the host Vercel actually serves: the bare grapevine.ge 308-redirects
+// to www, so canonicals, hreflang, og:url and the sitemap built from the bare
+// host all pointed at a redirect (Search Console: "Alternate page with
+// redirect"). If the primary domain in Vercel ever flips, change this with it.
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://grapevine.ge"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.grapevine.ge"
 ).replace(/\/$/, "");
 
 export function isLocale(value: string): value is Locale {
