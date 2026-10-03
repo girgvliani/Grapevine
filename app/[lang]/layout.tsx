@@ -8,7 +8,7 @@ import SupportWidget from "@/components/SupportWidget";
 import CookieConsent from "@/components/CookieConsent";
 import JsonLd from "@/components/JsonLd";
 import { LanguageProvider } from "@/components/LanguageProvider";
-import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
+import { LANGUAGES, type Lang } from "@/lib/i18n";
 import { isLocale } from "@/lib/routing";
 import { pageMetadata } from "@/lib/seo";
 import { siteSchema } from "@/lib/structuredData";
@@ -35,16 +35,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "ka";
-  const t = translations[locale];
 
   return pageMetadata({
     internalPath: "/",
     locale,
+    // Search-facing title/description: the phrases people search for an agency
+    // ("მარკეტინგული / კრეატიული სააგენტო" + the city). The visible hero copy
+    // (and the H1) stay as designed; only Google's snippet changes.
     title:
       locale === "ka"
-        ? "Grapevine - კრეატიული სააგენტო"
-        : "Grapevine - We Untangle The Mess",
-    description: t.hero.description,
+        ? "Grapevine - მარკეტინგული და კრეატიული სააგენტო თბილისში"
+        : "Grapevine - Creative Agency in Tbilisi. We Untangle The Mess",
+    description:
+      locale === "ka"
+        ? "Grapevine - მარკეტინგული და კრეატიული სააგენტო თბილისში 2014 წლიდან: ბრენდინგი, ციფრული მარკეტინგი, SEO, ვებ და მობილური დეველოპმენტი."
+        : "Grapevine is a creative agency in Tbilisi, since 2014: branding, digital marketing, SEO, web and mobile development. We untangle the mess.",
   });
 }
 
