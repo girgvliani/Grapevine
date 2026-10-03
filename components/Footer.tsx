@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import birdImg from "./assets/Component 9.png";
 import logoBlack from "./assets/logoblack.svg";
 import { useLang } from "./LanguageProvider";
@@ -13,6 +14,7 @@ import { localizedHref } from "@/lib/routing";
 
 export default function Footer() {
   const { t, lang } = useLang();
+  const router = useRouter();
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
   const logo = (
@@ -53,13 +55,16 @@ export default function Footer() {
         {t.footer.quickLinks}
       </div>
       <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+        {/* Real pages, not #section anchors: the footer is on every page, but
+            #services / #work / #cta only exist on the homepage, so the
+            anchors did nothing anywhere else. */}
         {[
-          { label: t.footer.links.services, href: "#services" },
-          { label: t.footer.links.portfolio, href: "#work" },
-          { label: t.footer.links.contact, href: "#cta" },
+          { label: t.footer.links.services, href: localizedHref("/services", lang) },
+          { label: t.footer.links.portfolio, href: localizedHref("/portfolio", lang) },
+          { label: t.footer.links.contact, href: localizedHref("/contact", lang) },
         ].map(({ label, href }) => (
           <li key={href}>
-            <a
+            <Link
               href={href}
               style={{
                 fontSize: "0.8125rem",
@@ -73,7 +78,7 @@ export default function Footer() {
               onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.7")}
             >
               {label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
@@ -98,7 +103,13 @@ export default function Footer() {
       }}
       onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "var(--purple-dark)")}
       onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "var(--dark)")}
-      onClick={() => document.getElementById("cta")?.scrollIntoView({ behavior: "smooth" })}
+      // Scroll to the contact form where the page has one (home, /contact);
+      // everywhere else go to the contact page instead of doing nothing.
+      onClick={() => {
+        const form = document.getElementById("cta");
+        if (form) form.scrollIntoView({ behavior: "smooth" });
+        else router.push(localizedHref("/contact", lang));
+      }}
     >
       {t.footer.button}
     </button>
