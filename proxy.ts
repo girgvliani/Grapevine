@@ -20,6 +20,12 @@ const DEFAULT_LOCALE = "ka";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // The offer editor (app/offers, grapevine.ge/offers) has its own root layout
+  // and no language prefix, so it must not be rewritten onto /ka.
+  if (pathname === "/offers" || pathname.startsWith("/offers/")) {
+    return NextResponse.next();
+  }
+
   // English is already correctly prefixed.
   if (pathname === "/en" || pathname.startsWith("/en/")) {
     return NextResponse.next();

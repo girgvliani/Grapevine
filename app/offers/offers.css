@@ -1,0 +1,283 @@
+/* grapevine.ge/offers — offer editor. Slides are laid out on a 1920×1080
+   canvas (the deck PDF's size) with coordinates taken from the PDF, then
+   scaled to the screen with --slide-scale; print removes the scale and puts
+   one slide on each 1920×1080 page. Colours are the deck's (= the site's). */
+
+@font-face { font-family: "Mersad"; src: url("/fonts/Mersad%20Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Mersad"; src: url("/fonts/Mersad%20Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Mersad"; src: url("/fonts/Mersad%20Black.woff2") format("woff2"); font-weight: 900; font-display: swap; }
+/* The Georgian deck sets body text in a Georgian monospace; DejaVu Sans Mono
+   (Bitstream Vera licence, free to embed), subset to Latin + Georgian. */
+@font-face { font-family: "DejaVu Sans Mono KA"; src: url("/offers/DejaVuSansMono-ka.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "DejaVu Sans Mono KA"; src: url("/offers/DejaVuSansMono-Bold-ka.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+:root {
+  --lavender: #AFA9FF;
+  --yellow: #FFEFAB;
+  --cream: #FFFAEC;
+  --orange: #F0583A;
+  --purple: #902793;
+  --dark: #1A0512;
+  --ui-bg: #EDE9E1;
+  --ui-line: #D8D1C4;
+  --ui-muted: #6E5A62;
+  --danger: #C0392B;
+  /* Latin text uses the deck faces; Georgian characters fall through to
+     Mersad, which has Mkhedruli and Mtavruli. */
+  --f-body: var(--font-fredoka), "Mersad", system-ui, sans-serif;
+  --f-head: var(--font-martian), "Mersad", ui-monospace, monospace;
+  --f-ui: system-ui, -apple-system, "Segoe UI", "Mersad", sans-serif;
+}
+.offer-app[data-lang="ka"] { --f-body: "DejaVu Sans Mono KA", "Mersad", monospace; --f-head: "Mersad", var(--font-martian), monospace; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--ui-bg); color: var(--dark); font-family: var(--f-ui); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.offer-loading { min-height: 100vh; background: var(--lavender); }
+
+/* ---------- Sign in ---------- */
+.signin { min-height: 100vh; background: var(--lavender); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; padding: 48px 16px; position: relative; }
+.signin-label { position: absolute; top: 28px; left: 32px; font: 500 15px var(--f-head); color: var(--cream); }
+.wordmark { display: block; height: auto; aspect-ratio: 1141 / 557; }
+.signin-wordmark { width: min(420px, 70vw); }
+.signin-card { width: min(380px, 100%); background: var(--cream); border: 3px solid var(--dark); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; gap: 8px; }
+.signin-card h1 { margin: 0 0 10px; font: 700 22px var(--f-head); }
+.signin-card label { font: 500 13px var(--f-ui); color: var(--ui-muted); margin-top: 6px; }
+.signin-card input { font: 16px var(--f-ui); padding: 11px 14px; border: 2px solid var(--dark); border-radius: 12px; background: #fff; color: var(--dark); }
+.signin-card input:focus-visible { outline: 3px solid var(--purple); outline-offset: 1px; }
+.signin-card button { margin-top: 14px; padding: 13px; border: 0; border-radius: 999px; background: var(--dark); color: var(--cream); font: 700 15px var(--f-head); cursor: pointer; }
+.signin-card button:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+.signin-error { margin: 6px 0 0; color: var(--danger); font: 14px/1.4 var(--f-ui); }
+
+/* ---------- Editor chrome ---------- */
+.offer-toolbar { position: sticky; top: 0; z-index: 50; background: var(--dark); color: var(--cream); padding: 10px 16px 8px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
+.offer-toolbar-in { max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.offer-brand { display: flex; align-items: center; gap: 12px; font: 500 14px var(--f-ui); }
+.toolbar-wordmark { width: 76px; }
+.offer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.offer-lang { display: inline-flex; border: 1px solid rgba(255,250,236,.35); border-radius: 999px; overflow: hidden; }
+.offer-lang button { border: 0; background: transparent; color: var(--cream); padding: 7px 12px; font: 600 13px var(--f-ui); cursor: pointer; }
+.offer-lang button[aria-pressed="true"] { background: var(--cream); color: var(--dark); }
+.offer-btn { border-radius: 999px; padding: 8px 16px; font: 600 14px var(--f-ui); cursor: pointer; border: 1px solid transparent; }
+.offer-btn.primary { background: var(--orange); color: #fff; }
+.offer-btn.ghost { background: transparent; color: var(--cream); border-color: rgba(255,250,236,.35); }
+.offer-btn:focus-visible, .offer-lang button:focus-visible, .offer-switch:focus-visible, .offer-ctl:focus-visible, .offer-add:focus-visible { outline: 3px solid var(--lavender); outline-offset: 2px; }
+.offer-tip, .offer-problem { max-width: 1240px; margin: 8px auto 0; font: 13px/1.45 var(--f-ui); }
+.offer-tip { color: rgba(255,250,236,.7); }
+.offer-saved { color: rgba(255,250,236,.5); }
+.offer-problem { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; background: var(--danger); color: #fff; padding: 8px 12px; border-radius: 10px; }
+.offer-problem button { border: 1px solid #fff; background: transparent; color: #fff; border-radius: 999px; padding: 4px 12px; font: 600 13px var(--f-ui); cursor: pointer; }
+
+.offer-column { max-width: 1240px; margin: 0 auto; padding: 24px 16px 80px; display: flex; flex-direction: column; gap: 28px; --slide-scale: 0.6; }
+.offer-slide-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; font: 500 13px var(--f-ui); color: var(--ui-muted); }
+.offer-switch { border: 1px solid var(--ui-line); background: #fff; color: var(--dark); border-radius: 999px; padding: 5px 12px; font: 600 12px var(--f-ui); cursor: pointer; }
+.offer-switch[aria-pressed="false"] { background: var(--dark); color: var(--cream); border-color: var(--dark); }
+.offer-slide-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px -14px rgba(26,5,18,.45); }
+.offer-slide-wrap.is-hidden .offer-slide-frame { opacity: .35; }
+.offer-slide-wrap.is-hidden .offer-slide-frame::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent 0 18px, rgba(26,5,18,.06) 18px 36px); pointer-events: none; }
+
+/* ---------- Editable text ---------- */
+.editable { outline: none; border-radius: 6px; white-space: pre-wrap; overflow-wrap: anywhere; cursor: text; transition: box-shadow .15s; min-width: .6em; }
+.editable:hover { box-shadow: 0 0 0 3px rgba(144,39,147,.28); }
+.editable:focus { box-shadow: 0 0 0 4px var(--purple); }
+.editable.is-empty { display: inline-block; min-width: 4em; min-height: 1.1em; box-shadow: 0 0 0 4px var(--danger); }
+.editable.is-empty::before { content: "…"; opacity: .4; }
+body.offer-validate .editable.is-empty { animation: offer-pulse 1s ease 2; }
+@keyframes offer-pulse { 50% { box-shadow: 0 0 0 10px rgba(192,57,43,.35); } }
+@media (prefers-reduced-motion: reduce) { body.offer-validate .editable.is-empty { animation: none; } }
+
+/* Edit-only controls inside slides (remove / add / hide). */
+.offer-ctl { font-family: var(--f-ui); }
+.offer-list { list-style: none; margin: 0; padding: 0; }
+.offer-list > li { position: relative; }
+/* A wrapped list line is one clickable box, not two inline fragments with a
+   dead gap between them. */
+.offer-list > li > [data-editable] { display: inline-block; max-width: 100%; vertical-align: top; }
+.offer-remove { position: absolute; right: -44px; top: 50%; translate: 0 -50%; width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--danger); color: #fff; font: 700 24px/1 var(--f-ui); cursor: pointer; opacity: 0; transition: opacity .15s; }
+.offer-list > li:hover > .offer-remove, .offer-list > li:focus-within > .offer-remove { opacity: 1; }
+.offer-add-row::before { content: none !important; }
+.offer-add { margin-top: 6px; border: 2px dashed currentColor; background: transparent; color: inherit; opacity: .5; border-radius: 999px; padding: 4px 16px; font: 600 20px var(--f-ui); cursor: pointer; }
+.offer-add:hover, .offer-add:focus-visible { opacity: 1; }
+
+/* ---------- Slide canvas ---------- */
+.slide { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; overflow: hidden; transform: scale(var(--slide-scale)); transform-origin: 0 0; font-family: var(--f-body); color: var(--dark); font-weight: 300; }
+.slide h2, .slide h3, .slide p { margin: 0; }
+.slide strong { font-weight: 500; }
+.thread { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.thread path { fill: none; stroke: var(--orange); stroke-width: 34; stroke-linecap: round; stroke-linejoin: round; }
+.thread-lavender path { stroke: var(--lavender); stroke-width: 54; }
+.thread-purple path { stroke: var(--purple); stroke-width: 30; }
+
+/* Title bands: a pill running in from the left edge. */
+.band { position: absolute; left: 0; top: 100px; height: 122px; min-width: 775px; padding: 0 80px 0 145px; border-radius: 0 61px 61px 0; display: flex; align-items: center; }
+.band h2, .band-pill h2 { font: 700 84px/1 var(--f-head); letter-spacing: .02em; white-space: nowrap; }
+.band-orange { background: var(--orange); }
+.band-lavender { background: var(--lavender); }
+.band-pill { position: absolute; border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 70px; }
+.band-yellow { background: var(--yellow); color: var(--purple); }
+.tone-lavender { --tone: var(--lavender); --tone-ink: var(--dark); }
+.tone-orange { --tone: var(--orange); --tone-ink: var(--dark); }
+.tone-purple { --tone: var(--purple); --tone-ink: var(--cream); }
+.tile { position: absolute; width: 212px; height: 212px; border-radius: 22px; background: var(--tone); display: flex; align-items: center; justify-content: center; }
+.tile img { width: 68%; height: 68%; object-fit: contain; }
+.tile-sm { width: 146px; height: 146px; border-radius: 18px; }
+
+/* 1 · Cover */
+.s-cover { background: var(--lavender); }
+.cover-label { position: absolute; left: 64px; top: 56px; font: 500 26px var(--f-head); color: var(--cream); }
+.cover-wordmark { position: absolute; left: 415px; top: 287px; width: 1090px; }
+.cover-contacts { position: absolute; left: 72px; top: 945px; display: flex; flex-direction: column; gap: 10px; font: 500 26px var(--f-head); color: var(--cream); }
+.cover-address { position: absolute; right: 76px; top: 985px; font: 500 26px var(--f-head); color: var(--cream); text-align: right; }
+
+/* 2 · About */
+.s-about { background: var(--yellow); }
+.about-lead { position: absolute; left: 145px; top: 305px; width: 760px; font-size: 34px; line-height: 1.3; }
+.about-right { position: absolute; left: 1042px; top: 312px; width: 800px; font-size: 34px; line-height: 1.3; display: flex; flex-direction: column; gap: 28px; }
+.about-intro { margin-top: 18px !important; font-weight: 500; }
+.about-bullets { font-weight: 500; margin-top: -20px !important; }
+.about-bullets > li:not(.offer-add-row)::before { content: "• "; }
+.about-closing { margin-top: 40px !important; }
+.about-scribble { position: absolute; left: 0; top: 590px; width: 820px; pointer-events: none; }
+
+/* 3 · Values */
+.s-values { background: var(--dark); }
+.value-pill { position: absolute; background: var(--cream); border-radius: 62px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 14px 40px; font-size: 34px; line-height: 1.25; min-height: 121px; }
+.value-0 { left: 149px; top: 513px; width: 431px; }
+.value-1 { left: 754px; top: 287px; width: 425px; }
+.value-2 { left: 741px; top: 513px; width: 438px; }
+.value-3 { left: 1338px; top: 506px; width: 441px; }
+.value-4 { left: 746px; top: 791px; width: 429px; }
+.values-closing { position: absolute; left: 76px; top: 908px; font-size: 34px; line-height: 1.35; color: var(--cream); }
+
+/* 4–5 · Customers */
+.s-clients { background: var(--yellow); }
+.clients-title { position: absolute; left: 112px; top: 50px; font: 700 96px/0.95 var(--f-head); color: var(--orange); white-space: pre-line; }
+.clients-period { position: absolute; left: 118px; top: 248px; font: 500 28px var(--f-head); }
+.logo-grid { position: absolute; left: 116px; top: 326px; width: 1716px; display: grid; grid-template-columns: repeat(6, 226px); column-gap: 72px; row-gap: 48px; }
+.s-clients-2 .logo-grid { top: 120px; row-gap: 50px; }
+.logo-pill { position: relative; width: 226px; height: 126px; }
+.logo-pill img { width: 100%; height: 100%; display: block; }
+.logo-pill.is-hidden img { opacity: .2; }
+.offer-logo-btn { position: absolute; left: 50%; bottom: -14px; translate: -50% 0; border: 0; border-radius: 999px; background: var(--dark); color: var(--cream); padding: 6px 16px; font: 600 18px var(--f-ui); cursor: pointer; opacity: 0; transition: opacity .15s; }
+.logo-pill:hover .offer-logo-btn, .logo-pill .offer-logo-btn:focus-visible, .logo-pill.is-hidden .offer-logo-btn { opacity: 1; }
+
+/* 6 · Services intro */
+.s-intro { background: linear-gradient(90deg, var(--yellow) 0 50%, var(--dark) 50% 100%); }
+.intro-tiles .tile:nth-child(1) { left: 120px; top: 289px; }
+.intro-tiles .tile:nth-child(2) { left: 372px; top: 289px; }
+.intro-tiles .tile:nth-child(3) { left: 622px; top: 286px; }
+.intro-tiles .tile:nth-child(4) { left: 120px; top: 541px; }
+.intro-tiles .tile:nth-child(5) { left: 370px; top: 541px; }
+.intro-tiles .tile:nth-child(6) { left: 619px; top: 545px; }
+.intro-right { position: absolute; left: 960px; top: 0; width: 960px; height: 1080px; display: flex; align-items: center; justify-content: center; }
+.intro-right h2 { font: 400 72px/1.15 var(--f-head); color: var(--cream); text-align: center; white-space: pre-line; }
+
+/* 7 + 10 · Service cards */
+.s-services { background: var(--cream); }
+.svc-grid { position: absolute; left: 181px; top: 79px; width: 1170px; display: flex; flex-wrap: wrap; gap: 42px 54px; }
+.svc-grid-b { left: 346px; width: 1180px; top: 65px; justify-content: center; gap: 52px 57px; }
+.svc-card { position: relative; width: 351px; min-height: 451px; border: 5px solid var(--dark); border-radius: 30px; background: var(--cream); overflow: visible; }
+.svc-card-head { background: var(--tone); color: var(--tone-ink); border-radius: 25px 25px 0 0; min-height: 70px; padding: 12px 16px; display: flex; align-items: center; justify-content: center; text-align: center; font: 700 24px/1.15 var(--f-head); }
+.svc-card-list { padding: 30px 30px 26px 34px !important; font-size: 23px; line-height: 1.3; display: flex; flex-direction: column; gap: 22px; }
+.svc-card-list > li:not(.offer-add-row) { padding-left: 18px; }
+.svc-card-list > li:not(.offer-add-row)::before { content: "·"; position: absolute; left: 0; top: -2px; font-weight: 500; }
+.svc-card-list .offer-remove { right: -18px; width: 28px; height: 28px; font-size: 20px; }
+.svc-card-list .offer-add { font-size: 16px; }
+.svc-card.is-hidden { opacity: .3; }
+.offer-eye { position: absolute; top: -18px; right: 14px; border: 0; border-radius: 999px; background: var(--dark); color: var(--cream); padding: 6px 14px; font: 600 16px var(--f-ui); cursor: pointer; opacity: 0; transition: opacity .15s; }
+.svc-card:hover .offer-eye, .offer-eye:focus-visible, .svc-card.is-hidden .offer-eye { opacity: 1; }
+.deco-a1 { left: 1543px; top: 554px; }
+.deco-a2 { left: 1689px; top: 717px; }
+.deco-arrow { position: absolute; left: 1477px; top: 922px; width: 300px; height: 60px; }
+.deco-arrow path { fill: none; stroke: var(--dark); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.deco-b1 { left: 273px; top: 638px; }
+.deco-b2 { left: 100px; top: 802px; }
+
+/* 8 · Projects */
+.s-projects { background: var(--dark); }
+.projects-title { position: absolute; left: 0; right: 0; top: 130px; text-align: center; font: 500 116px/1 var(--f-head); color: var(--cream); }
+.projects-link { position: absolute; left: 650px; top: 541px; width: 210px; text-align: center; font: 500 30px var(--f-head); color: var(--cream); text-decoration: none; }
+.projects-cursor { position: absolute; left: 852px; top: 590px; width: 56px; height: 70px; }
+.projects-cursor path { fill: var(--cream); stroke: var(--dark); stroke-width: 1.2; }
+.projects-url-row { position: absolute; left: 40px; bottom: 34px; display: flex; gap: 12px; align-items: baseline; color: rgba(255,250,236,.75); font: 500 22px var(--f-ui); max-width: 1800px; }
+.projects-url { color: var(--cream); font: 22px var(--f-ui); }
+
+/* 9 · How we work */
+.s-how { background: var(--lavender); }
+.how-art { position: absolute; left: 0; top: 0; width: 1003px; height: 1080px; object-fit: cover; }
+.how-right { position: absolute; left: 1003px; top: 0; width: 917px; height: 1080px; }
+.how-right .band-pill { left: 124px; top: 94px; height: 112px; min-width: 649px; }
+.how-right .band-pill h2 { font-size: 80px; }
+.how-intro { position: absolute; left: 181px; top: 268px; font-size: 40px; line-height: 1.4; width: 700px; }
+.how-we { position: absolute; left: 162px; top: 432px; font: 700 70px/1 var(--f-head); color: var(--purple); }
+.how-bullets { position: absolute; left: 105px; top: 565px; width: 790px; font-size: 40px; line-height: 1.45; }
+.how-bullets > li:not(.offer-add-row) { padding-left: 76px; }
+.how-bullets > li:not(.offer-add-row)::before { content: "•"; position: absolute; left: 0; }
+.how-closing { position: absolute; left: 183px; top: 800px; width: 640px; font-size: 40px; line-height: 1.4; }
+
+/* 11 · What the brand gets */
+.s-gets { background: var(--lavender); }
+.gets-band { left: 327px; top: 158px; width: 1263px; height: 133px; }
+.gets-band h2 { font-size: 84px; }
+.gets-card { position: absolute; top: 392px; width: 609px; min-height: 373px; background: var(--cream); border: 5px solid var(--dark); border-radius: 34px; padding: 40px 50px 30px 74px; }
+.gets-left { left: 301px; }
+.gets-right { left: 1009px; }
+.gets-card h3 { font: 700 46px/1.1 var(--f-head); color: var(--purple); margin-bottom: 28px; }
+.gets-list { font-size: 46px; line-height: 1.25; font-weight: 300; }
+.gets-list > li:not(.offer-add-row) { padding-left: 22px; }
+.gets-list > li:not(.offer-add-row)::before { content: "·"; position: absolute; left: 0; }
+.bird { position: absolute; left: 96px; top: 640px; width: 320px; height: 340px; filter: drop-shadow(10px 0 0 #fff) drop-shadow(-10px 0 0 #fff) drop-shadow(0 10px 0 #fff) drop-shadow(0 -10px 0 #fff); transform: rotate(-24deg); }
+.bird-shape { width: 100%; height: 100%; background: var(--purple); -webkit-mask: url("/offers/bird.png") center / contain no-repeat; mask: url("/offers/bird.png") center / contain no-repeat; }
+
+/* 12 · In one sentence */
+.s-sentence { background: var(--orange); }
+.sentence-band { left: 79px; top: 479px; width: 1084px; height: 135px; }
+.sentence-band h2 { font-size: 92px; }
+.sentence-text { position: absolute; left: 1199px; top: 497px; width: 700px; font: 700 38px/1.25 var(--f-head); color: var(--yellow); white-space: pre-line; }
+.sentence-wordmark { position: absolute; left: 783px; top: 810px; width: 354px; }
+
+/* Narrower headings: Martian Mono's width axis at 87.5%, nearer the deck's
+   TT Autonomous Mono (long card titles stay on one line). */
+.offer-app .band h2, .offer-app .band-pill h2, .offer-app .svc-card-head, .offer-app .clients-title,
+.offer-app .projects-title, .offer-app .projects-link, .offer-app .intro-right h2, .offer-app .how-we,
+.offer-app .gets-card h3, .offer-app .sentence-text, .offer-app .cover-label, .offer-app .cover-contacts,
+.offer-app .cover-address, .offer-app .clients-period { font-stretch: 87.5%; }
+
+/* Georgian. Headings: Mersad, the closest to the deck's Futura GEO. Body:
+   DejaVu Sans Mono, matching the deck's Georgian monospace. It runs wide, so
+   sizes are smaller than the English ones. */
+.offer-app[data-lang="ka"] .band h2, .offer-app[data-lang="ka"] .band-pill h2 { font-weight: 700; font-size: 76px; letter-spacing: 0; }
+.offer-app[data-lang="ka"] .how-right .band-pill { left: 70px; padding: 0 48px; }
+.offer-app[data-lang="ka"] .how-right .band-pill h2 { font-size: 60px; }
+.offer-app[data-lang="ka"] .clients-title { font-size: 92px; }
+.offer-app[data-lang="ka"] .cover-label, .offer-app[data-lang="ka"] .cover-contacts, .offer-app[data-lang="ka"] .cover-address { font-family: var(--f-body); font-weight: 400; font-size: 27px; }
+.offer-app[data-lang="ka"] .about-lead, .offer-app[data-lang="ka"] .about-right { font-size: 25px; line-height: 1.4; }
+.offer-app[data-lang="ka"] .about-lead strong, .offer-app[data-lang="ka"] .about-intro, .offer-app[data-lang="ka"] .about-bullets { font-weight: 700; }
+.offer-app[data-lang="ka"] .value-pill { font-size: 24px; line-height: 1.35; }
+.offer-app[data-lang="ka"] .values-closing { font-size: 26px; }
+.offer-app[data-lang="ka"] .intro-right h2 { font-family: "Mersad", sans-serif; font-size: 96px; }
+.offer-app[data-lang="ka"] .svc-card-head { font-family: var(--f-body); font-weight: 700; font-size: 21px; }
+.offer-app[data-lang="ka"] .svc-card-list { font-family: var(--f-body); font-weight: 400; font-size: 19px; gap: 18px; }
+.offer-app[data-lang="ka"] .projects-title { font-family: "Mersad", sans-serif; font-weight: 400; font-size: 104px; }
+.offer-app[data-lang="ka"] .how-intro, .offer-app[data-lang="ka"] .how-bullets, .offer-app[data-lang="ka"] .how-closing { font-size: 29px; }
+.offer-app[data-lang="ka"] .how-closing { width: 600px; }
+.offer-app[data-lang="ka"] .how-bullets > li:not(.offer-add-row) { padding-left: 40px; }
+.offer-app[data-lang="ka"] .gets-card h3 { font-family: "Mersad", sans-serif; font-size: 42px; }
+.offer-app[data-lang="ka"] .gets-list { font-size: 28px; font-weight: 400; line-height: 1.5; }
+.offer-app[data-lang="ka"] .sentence-text { font-family: var(--f-body); font-weight: 700; font-size: 33px; }
+
+/* ---------- PDF (print) ---------- */
+@page { size: 1920px 1080px; margin: 0; }
+@media print {
+  html, body { background: none !important; }
+  .offer-toolbar, .offer-slide-head, .offer-ctl, .offer-add, .offer-remove, .offer-eye, .offer-logo-btn, .projects-url-row { display: none !important; }
+  .offer-column { max-width: none; padding: 0; gap: 0; display: block; }
+  .offer-slide-wrap.is-hidden, .svc-card.is-hidden, .logo-pill.is-hidden { display: none !important; }
+  .offer-slide-frame { width: 1920px; height: 1080px; aspect-ratio: auto; border-radius: 0; box-shadow: none; }
+  /* New page before every included slide except the first one, so hidden
+     slides (first or last) never leave a blank page behind. */
+  .offer-slide-wrap:not(.is-hidden) ~ .offer-slide-wrap:not(.is-hidden) .offer-slide-frame { break-before: page; page-break-before: always; }
+  .slide { transform: none; }
+  .editable, .editable:hover, .editable:focus, .editable.is-empty { box-shadow: none !important; animation: none !important; }
+  .editable.is-empty::before { content: none; }
+}
