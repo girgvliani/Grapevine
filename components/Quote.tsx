@@ -63,7 +63,7 @@ export default function Quote() {
         >
           <video
             ref={videoRef}
-            src="/assets/videos/Comp1-web.mp4"
+            src="/assets/videos/home-video.mp4"
             muted
             loop
             playsInline
