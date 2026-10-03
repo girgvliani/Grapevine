@@ -38,7 +38,7 @@ export default function Services() {
                   word (ᲓᲔᲕᲔᲚᲝᲞᲛᲔᲜᲢᲘ) fits every card. */}
               <div className="svc-fan-tile__name">{mtavruli(name)}</div>
               {intro && <p className="svc-fan-tile__intro">{intro}</p>}
-              <span className="svc-fan-tile__more" aria-hidden="true">
+              <span className="svc-fan-tile__more caps-pill" aria-hidden="true">
                 {mtavruli(t.servicesPage.seeMore)} →
               </span>
             </div>

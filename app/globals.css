@@ -443,28 +443,35 @@ body[data-menu-open] .support-widget {
   overflow: hidden;
 }
 .svc-fan-tile__more {
+  --pad-y: 1.8cqh;
+  --pad-x: 5cqw;
   margin-top: 4.5cqh;
   background: var(--purple-dark);
   color: var(--white);
   border-radius: 100px;
-  /* +0.37em gives back the height the text-box trim below removes, so the
-     pill keeps its size. */
-  padding: calc(1.8cqh + 0.37em) 5cqw;
   font-size: max(0.5625rem, 3cqh);
   font-weight: 700;
   letter-spacing: 0.08em;
   white-space: nowrap;
+}
+
+/* Pill buttons whose label is all capitals (mtavruli() / Latin caps). Caps
+   have no descenders, but the line box still reserves room for them, so the
+   label sat ~2–3px high. Trim the box to cap height + baseline so the padding
+   centres the capitals; the +0.37em gives back the height the trim removes so
+   the pill keeps its size. Set --pad-y / --pad-x for the visible padding. */
+.caps-pill {
   line-height: 1;
-  /* All-caps (Mtavruli / Latin) has no descenders, but the line box still
-     reserves room for them, so the label sat ~2–3px high. Trim the box to
-     cap height + baseline so the padding centres the capitals themselves. */
+  padding: calc(var(--pad-y) + 0.37em) var(--pad-x);
   text-box: trim-both cap alphabetic;
 }
-/* Browsers without text-box trimming: nudge the padding instead. */
+/* No text-box support (Firefox): Mersad caps are 0.77em tall and sit 0.3em
+   above centre in a 1em line box — measured — so pad more on top than below,
+   keeping the same total height as the trimmed version. */
 @supports not (text-box: trim-both cap alphabetic) {
-  .svc-fan-tile__more {
-    padding-top: calc(1.8cqh + 0.12em);
-    padding-bottom: calc(1.8cqh - 0.12em);
+  .caps-pill {
+    padding-top: calc(var(--pad-y) + 0.4em);
+    padding-bottom: calc(var(--pad-y) + 0.11em);
   }
 }
 /* The intro sentence only once the card is tall enough to read it. */

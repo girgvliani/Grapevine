@@ -7,7 +7,7 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref, stripLocale } from "@/lib/routing";
 import { getServiceDetail } from "@/lib/serviceContent";
-import { type ServiceSlug } from "@/lib/i18n";
+import { type ServiceSlug, mtavruli } from "@/lib/i18n";
 import BehanceLink from "./BehanceLink";
 import { SERVICE_ASSETS } from "./servicesConfig";
 
@@ -500,23 +500,26 @@ export default function ServicesShowcase({
         >
           {p.bandDesc}
         </p>
+        {/* Capitals via mtavruli() rather than CSS uppercase (which Chrome
+            ignores for Georgian but Safari applies); .caps-pill centres them. */}
         <Link
           href={localizedHref("/contact", lang)}
+          className="caps-pill"
           style={{
             display: "inline-block",
             background: "var(--purple-dark)",
             color: "var(--white)",
-            padding: "0.75rem 1.5rem",
+            "--pad-y": "0.75rem",
+            "--pad-x": "1.5rem",
             borderRadius: "100px",
             fontSize: "0.75rem",
             letterSpacing: "0.08em",
-            textTransform: "uppercase",
             fontFamily: "var(--font-primary)",
             fontWeight: 700,
             textDecoration: "none",
-          }}
+          } as React.CSSProperties}
         >
-          {p.bandCta}
+          {mtavruli(p.bandCta)}
         </Link>
       </section>
     </>
