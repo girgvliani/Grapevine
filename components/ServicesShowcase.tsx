@@ -418,7 +418,9 @@ export default function ServicesShowcase({
             color: "var(--white)",
             fontFamily: "var(--font-heading)",
             fontSize: "clamp(1rem,1.8vw,1.6rem)",
-            lineHeight: 0.95,
+            // Was 0.95 (inherited from the big heading above) — the tagline's
+            // lines nearly touched once it wrapped on phones.
+            lineHeight: 1.3,
             textTransform: "uppercase",
             letterSpacing: "0.02em",
             marginTop: "1rem",
