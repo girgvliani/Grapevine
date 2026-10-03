@@ -219,11 +219,13 @@ export default function Footer() {
         </div>
       )}
 
-      {/* Bottom bar */}
+      {/* Bottom bar. Padding lives in .footer-bottom-bar (globals.css): below
+          1024px it reserves room under the text for the fixed support bubble,
+          which otherwise sits on top of the last line when scrolled to the end. */}
       <div
+        className="footer-bottom-bar"
         style={{
           borderTop: "1px solid rgba(26,5,18,0.1)",
-          padding: "1rem clamp(1.5rem, 5vw, 3rem)",
           textAlign: "center",
           fontSize: "0.6875rem",
           color: "rgba(26,5,18,0.4)",

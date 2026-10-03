@@ -454,6 +454,18 @@ body[data-menu-open] .support-widget {
   .svc-fan-tile__intro { display: -webkit-box; }
 }
 
+/* Footer bottom bar (components/Footer.tsx). The support bubble is fixed to the
+   bottom-right corner (~52–58px tall, 16–24px up); below 1024px the centred
+   footer text reaches under it, so leave that strip empty instead. */
+.footer-bottom-bar {
+  padding: 1rem clamp(1.5rem, 5vw, 3rem);
+}
+@media (max-width: 1023px) {
+  .footer-bottom-bar {
+    padding-bottom: 6rem;
+  }
+}
+
 /* Homepage portfolio slider (components/Portfolio.tsx) — moves only on the
    arrow buttons / a swipe; this is the slide between positions. */
 .portfolio-track {
