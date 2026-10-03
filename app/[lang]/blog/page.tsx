@@ -156,25 +156,27 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
                       {post.excerpt}
                     </p>
                   )}
+                  {/* Capitals via mtavruli() (CSS uppercase is ignored for
+                      Georgian by Chrome, applied by Safari); .caps-pill
+                      centres them vertically. */}
                   <span
+                    className="caps-pill"
                     style={{
                       marginTop: "auto",
                       alignSelf: "flex-start",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "0.35rem",
+                      display: "inline-block",
                       background: "var(--purple-dark)",
                       color: "var(--white)",
-                      padding: "0.5rem 0.9rem",
+                      "--pad-y": "0.5rem",
+                      "--pad-x": "0.9rem",
                       borderRadius: "100px",
                       fontSize: "0.6875rem",
                       fontWeight: 700,
                       letterSpacing: "0.08em",
-                      textTransform: "uppercase",
                       fontFamily: "var(--font-primary)",
-                    }}
+                    } as CSSProperties}
                   >
-                    {t.blog.readMore} →
+                    {mtavruli(t.blog.readMore)} →
                   </span>
                 </Link>
               ))}

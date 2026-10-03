@@ -119,25 +119,26 @@ export default function Nav() {
           <button
             key={code}
             onClick={() => setLang(code)}
+            className="caps-pill"
             style={{
               background: active ? (light ? "var(--dark)" : "var(--white)") : "transparent",
               color: active ? (light ? "var(--cream)" : "var(--dark)") : fg,
               border: "none",
               borderRadius: "100px",
-              padding: compact ? "0.1875rem 0.5rem" : "0.25rem 0.625rem",
+              "--pad-y": compact ? "0.1875rem" : "0.25rem",
+              "--pad-x": compact ? "0.5rem" : "0.625rem",
+              "--pad-comp": "0.115em",
               fontSize: compact ? "0.5625rem" : "0.6875rem",
               fontWeight: 700,
               letterSpacing: "0.08em",
               fontFamily: "var(--font-primary)",
               lineHeight: 1,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
+              display: "inline-block",
               opacity: active ? 1 : 0.7,
               transition: "background 0.2s, color 0.2s, opacity 0.2s",
-            }}
+            } as React.CSSProperties}
           >
-            <span style={{ position: "relative", top: "0.1em" }}>{mtavruli(label)}</span>
+            {mtavruli(label)}
           </button>
         );
       })}
@@ -245,10 +246,13 @@ export default function Nav() {
             <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
               {renderLangToggle()}
               <button
+                className="caps-pill"
                 style={{
                   background: "var(--purple-dark)",
                   color: "var(--white)",
-                  padding: "0.625rem 1.375rem",
+                  "--pad-y": "0.625rem",
+                  "--pad-x": "1.375rem",
+                  "--pad-comp": "0.265em",
                   borderRadius: "100px",
                   fontSize: "0.75rem",
                   letterSpacing: "0.08em",
@@ -259,7 +263,7 @@ export default function Nav() {
                   textAlign: "center",
                   lineHeight: 1.3,
                   transition: "transform 0.2s, background 0.2s",
-                }}
+                } as React.CSSProperties}
                 onMouseEnter={(e) => {
                   const btn = e.currentTarget;
                   btn.style.background = "#a030aa";
@@ -377,11 +381,14 @@ export default function Nav() {
           {/* CTA */}
           <button
             onClick={() => goTo(withLocale("/contact"))}
+            className="caps-pill"
             style={{
               width: "100%",
               background: "var(--purple-dark)",
               color: "var(--white)",
-              padding: "1rem",
+              "--pad-y": "1rem",
+              "--pad-x": "1rem",
+              "--pad-comp": "0.265em",
               borderRadius: "100px",
               fontSize: "0.875rem",
               letterSpacing: "0.08em",
@@ -390,7 +397,7 @@ export default function Nav() {
               fontWeight: 700,
               whiteSpace: "pre-line",
               lineHeight: 1.3,
-            }}
+            } as React.CSSProperties}
           >
             {mtavruli(t.nav.cta)}
           </button>

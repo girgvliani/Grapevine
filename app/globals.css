@@ -458,11 +458,15 @@ body[data-menu-open] .support-widget {
 /* Pill buttons whose label is all capitals (mtavruli() / Latin caps). Caps
    have no descenders, but the line box still reserves room for them, so the
    label sat ~2–3px high. Trim the box to cap height + baseline so the padding
-   centres the capitals; the +0.37em gives back the height the trim removes so
-   the pill keeps its size. Set --pad-y / --pad-x for the visible padding. */
+   centres the capitals; --pad-comp gives back the height the trim removes so
+   the pill keeps its size: (line-height − 0.77) / 2 em, i.e. 0.37em for normal
+   line spacing (the default), 0.265em at 1.3, 0.115em at 1. Set --pad-y /
+   --pad-x for the visible padding. The element must be a block container
+   (block / inline-block, not flex): text-box-trim does nothing on a flex box. */
 .caps-pill {
+  --pad-comp: 0.37em;
   line-height: 1;
-  padding: calc(var(--pad-y) + 0.37em) var(--pad-x);
+  padding: calc(var(--pad-y) + var(--pad-comp)) var(--pad-x);
   text-box: trim-both cap alphabetic;
 }
 /* No text-box support (Firefox): Mersad caps are 0.77em tall and sit 0.3em
@@ -470,8 +474,8 @@ body[data-menu-open] .support-widget {
    keeping the same total height as the trimmed version. */
 @supports not (text-box: trim-both cap alphabetic) {
   .caps-pill {
-    padding-top: calc(var(--pad-y) + 0.4em);
-    padding-bottom: calc(var(--pad-y) + 0.11em);
+    padding-top: calc(var(--pad-y) + var(--pad-comp) + 0.03em);
+    padding-bottom: max(0px, calc(var(--pad-y) + var(--pad-comp) - 0.27em));
   }
 }
 /* The intro sentence only once the card is tall enough to read it. */
