@@ -266,17 +266,78 @@ body.offer-validate .editable.is-empty { animation: offer-pulse 1s ease 2; }
 .offer-app[data-lang="ka"] .gets-list { font-size: 28px; font-weight: 400; line-height: 1.5; }
 .offer-app[data-lang="ka"] .sentence-text { font-family: var(--f-body); font-weight: 700; font-size: 33px; }
 
+/* ---------- Pages added in the editor ---------- */
+.s-custom.bg-cream { background: var(--cream); }
+.s-custom.bg-yellow { background: var(--yellow); }
+.s-custom.bg-lavender { background: var(--lavender); }
+.s-custom.bg-orange { background: var(--orange); }
+.s-custom.bg-purple { background: var(--purple); }
+.s-custom.bg-dark { background: var(--dark); }
+
+/* Page tools above each slide, and the "add page" row between slides. */
+.offer-slide-head { flex-wrap: wrap; }
+.offer-page-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; }
+.offer-switch.icon { width: 30px; padding: 5px 0; text-align: center; }
+.offer-switch:disabled { opacity: .35; cursor: default; }
+.offer-switch.danger { color: var(--danger); border-color: rgba(192,57,43,.35); }
+.offer-switch.danger.is-confirm { background: var(--danger); color: #fff; border-color: var(--danger); }
+.offer-bg-pick { display: inline-flex; gap: 4px; padding: 0 4px; }
+.offer-swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--ui-line); cursor: pointer; padding: 0; }
+.offer-swatch.sm { width: 20px; height: 20px; }
+.offer-swatch[aria-pressed="true"] { border-color: var(--dark); box-shadow: 0 0 0 2px var(--ui-bg), 0 0 0 4px var(--dark); }
+.offer-swatch:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+.offer-page { display: flex; flex-direction: column; gap: 14px; }
+.offer-addpage { display: flex; justify-content: center; }
+.offer-addpage-btn { border: 2px dashed var(--ui-line); background: transparent; color: var(--ui-muted); border-radius: 999px; padding: 6px 18px; font: 600 13px var(--f-ui); cursor: pointer; }
+.offer-addpage-btn:hover, .offer-addpage-btn:focus-visible { border-color: var(--purple); color: var(--purple); }
+.offer-addpage-pick { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; background: #fff; border: 1px solid var(--ui-line); border-radius: 14px; padding: 10px 14px; font: 500 13px var(--f-ui); color: var(--ui-muted); }
+.offer-addpage-sep { margin-left: 8px; }
+
+/* ---------- Free boxes (text / image) ---------- */
+/* A transparent slide-sized layer over the slide; only the boxes catch clicks. */
+.obox-layer { background: none; pointer-events: none; }
+.obox { position: absolute; pointer-events: auto; }
+.obox-copy { min-height: 1em; line-height: 1.3; font-weight: 300; }
+.obox-copy.is-heading { font-family: var(--f-head); font-stretch: 87.5%; font-weight: 700; line-height: 1.1; }
+.offer-app[data-lang="ka"] .obox-copy.is-heading { font-family: "Mersad", sans-serif; }
+.obox img { display: block; width: 100%; height: 100%; object-fit: cover; user-select: none; -webkit-user-drag: none; cursor: move; }
+.obox.is-selected { outline: calc(2px / var(--slide-scale)) dashed var(--purple); outline-offset: calc(4px / var(--slide-scale)); }
+.obox.is-dragging { opacity: .85; }
+/* The box toolbar is drawn at screen size whatever the slide's scale. */
+.obox-bar { position: absolute; left: 0; bottom: 100%; margin-bottom: calc(10px / var(--slide-scale)); z-index: 5; transform: scale(calc(1 / var(--slide-scale))); transform-origin: left bottom; display: flex; align-items: center; gap: 2px; padding: 4px; background: var(--dark); color: var(--cream); border-radius: 10px; white-space: nowrap; box-shadow: 0 6px 18px -6px rgba(26,5,18,.5); }
+.obox-bar.below { bottom: auto; top: 100%; margin-bottom: 0; margin-top: calc(10px / var(--slide-scale)); transform-origin: left top; }
+.obox-bar button { min-width: 28px; height: 28px; padding: 0 7px; border: 0; border-radius: 7px; background: transparent; color: var(--cream); font: 600 13px var(--f-ui); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.obox-bar button:hover { background: rgba(255,250,236,.12); }
+.obox-bar button[aria-pressed="true"] { background: var(--cream); color: var(--dark); }
+.obox-bar button:focus-visible { outline: 2px solid var(--lavender); outline-offset: 1px; }
+.obox-bar .obox-grip { cursor: move; font-size: 16px; touch-action: none; }
+.obox-bar .obox-b { font-weight: 800; }
+.obox-bar .obox-del { color: #fff; background: var(--danger); font-size: 18px; }
+.obox-bar .obox-swatch { min-width: 20px; width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 2px solid rgba(255,250,236,.4); }
+.obox-bar .obox-swatch[aria-pressed="true"] { border-color: var(--cream); box-shadow: 0 0 0 2px var(--dark), 0 0 0 4px var(--cream); }
+.obox-size { min-width: 26px; text-align: center; font: 600 12px var(--f-ui); opacity: .8; }
+.obox-sep { width: 1px; height: 18px; background: rgba(255,250,236,.25); margin: 0 3px; }
+.obox-align { display: inline-flex; flex-direction: column; gap: 2px; width: 14px; }
+.obox-align i { display: block; height: 2px; background: currentColor; border-radius: 1px; }
+.obox-align i:nth-child(2) { width: 60%; }
+.obox-align-center { align-items: center; }
+.obox-align-right { align-items: flex-end; }
+.obox-resize { position: absolute; z-index: 4; background: var(--purple); border: calc(2px / var(--slide-scale)) solid #fff; touch-action: none; }
+.obox-resize-text { right: calc(-9px / var(--slide-scale)); top: 50%; width: calc(14px / var(--slide-scale)); height: calc(40px / var(--slide-scale)); translate: 0 -50%; border-radius: 999px; cursor: ew-resize; }
+.obox-resize-image { right: calc(-9px / var(--slide-scale)); bottom: calc(-9px / var(--slide-scale)); width: calc(18px / var(--slide-scale)); height: calc(18px / var(--slide-scale)); border-radius: 50%; cursor: nwse-resize; }
+
 /* ---------- PDF (print) ---------- */
 @page { size: 1920px 1080px; margin: 0; }
 @media print {
   html, body { background: none !important; }
-  .offer-toolbar, .offer-slide-head, .offer-ctl, .offer-add, .offer-remove, .offer-eye, .offer-logo-btn, .projects-url-row { display: none !important; }
-  .offer-column { max-width: none; padding: 0; gap: 0; display: block; }
+  .offer-toolbar, .offer-slide-head, .offer-ctl, .offer-add, .offer-remove, .offer-eye, .offer-logo-btn, .projects-url-row, .offer-addpage { display: none !important; }
+  .offer-column, .offer-page { max-width: none; padding: 0; gap: 0; display: block; }
+  .obox.is-selected { outline: none; }
   .offer-slide-wrap.is-hidden, .svc-card.is-hidden, .logo-pill.is-hidden { display: none !important; }
   .offer-slide-frame { width: 1920px; height: 1080px; aspect-ratio: auto; border-radius: 0; box-shadow: none; }
   /* New page before every included slide except the first one, so hidden
      slides (first or last) never leave a blank page behind. */
-  .offer-slide-wrap:not(.is-hidden) ~ .offer-slide-wrap:not(.is-hidden) .offer-slide-frame { break-before: page; page-break-before: always; }
+  .offer-page:has(> .offer-slide-wrap:not(.is-hidden)) ~ .offer-page > .offer-slide-wrap:not(.is-hidden) .offer-slide-frame { break-before: page; page-break-before: always; }
   .slide { transform: none; }
   .editable, .editable:hover, .editable:focus, .editable.is-empty { box-shadow: none !important; animation: none !important; }
   .editable.is-empty::before { content: none; }

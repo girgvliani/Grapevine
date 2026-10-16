@@ -43,11 +43,57 @@ export type OfferContent = {
   sentence: { title: string; text: string };
 };
 
+// Pages the team adds themselves, and free-placed boxes on any page.
+// Box positions/sizes are in slide pixels (the 1920×1080 canvas).
+export const PAGE_BACKGROUNDS = ["cream", "yellow", "lavender", "orange", "purple", "dark"] as const;
+export type PageBg = (typeof PAGE_BACKGROUNDS)[number];
+export const BOX_COLORS = ["dark", "cream", "purple", "orange", "lavender", "yellow"] as const;
+export type BoxColor = (typeof BOX_COLORS)[number];
+
+export type TextBox = {
+  id: string;
+  kind: "text";
+  x: number;
+  y: number;
+  w: number;
+  text: string;
+  size: number;
+  color: BoxColor;
+  heading: boolean;
+  bold: boolean;
+  align: "left" | "center" | "right";
+};
+export type ImageBox = { id: string; kind: "image"; x: number; y: number; w: number; h: number; src: string };
+export type Box = TextBox | ImageBox;
+export type CustomPage = { bg: PageBg };
+
 export type OfferState = {
   content: OfferContent;
   hiddenSlides: string[];
   hiddenCards: string[];
   hiddenLogos: number[];
+  /** Page order: built-in slide ids and custom page ids. A deleted page is simply absent. */
+  order: string[];
+  /** Pages added in the editor, by id. */
+  pages: Record<string, CustomPage>;
+  /** Text and image boxes, by page id (built-in or custom). */
+  boxes: Record<string, Box[]>;
+};
+
+/** Background of each built-in slide, so a new text box starts in a readable colour. */
+export const SLIDE_BG: Record<string, PageBg> = {
+  cover: "lavender",
+  about: "yellow",
+  values: "dark",
+  clients1: "yellow",
+  clients2: "yellow",
+  servicesIntro: "dark",
+  servicesA: "cream",
+  projects: "dark",
+  how: "lavender",
+  servicesB: "cream",
+  gets: "lavender",
+  sentence: "orange",
 };
 
 // Slide order follows the deck.
@@ -210,5 +256,8 @@ export function defaultState(lang: OfferLang): OfferState {
     hiddenSlides: [],
     hiddenCards: [],
     hiddenLogos: [],
+    order: SLIDES.map((s) => s.id),
+    pages: {},
+    boxes: {},
   };
 }

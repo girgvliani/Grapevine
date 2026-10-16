@@ -2,16 +2,22 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import Editable from "./Editable";
+import SlideBox from "./SlideBox";
 import {
   DEFAULT_CONTENT,
   LOGO_COUNT,
   LOGOS_ON_FIRST_SLIDE,
+  PAGE_BACKGROUNDS,
   SLIDES,
+  SLIDE_BG,
   defaultState,
+  type Box,
   type OfferContent,
   type OfferLang,
   type OfferState,
+  type PageBg,
   type ServiceCard,
+  type TextBox,
 } from "@/lib/offers/content";
 
 // The offer deck as an editable web page. Slides are drawn on a fixed
@@ -41,11 +47,41 @@ const UI = {
     remove: "Remove line",
     link: "Link",
     required: "Required",
-    emptyOne: "1 text is empty. Fill it in or remove the line before downloading.",
-    emptyMany: (n: number) => `${n} texts are empty. Fill them in or remove the lines before downloading.`,
+    emptyOne: "1 text is empty. Fill it in or remove it before downloading.",
+    emptyMany: (n: number) => `${n} texts are empty. Fill them in or remove them before downloading.`,
     badUrl: "The projects link must start with https://",
     showFirst: "Show me",
-    tip: "Click any text to edit it. Changes save automatically in this browser.",
+    tip: "Click any text to edit it. Add pages, text and images with the buttons above each page; drag a box by its ⠿ handle. Changes save automatically in this browser.",
+    addPage: "+ Add page here",
+    blankPage: "New page, background:",
+    restore: "Bring back:",
+    cancel: "Cancel",
+    newPage: "New page",
+    addText: "+ Text",
+    addImage: "+ Image",
+    moveUp: "Move page up",
+    moveDown: "Move page down",
+    deletePage: "Delete page",
+    deleteConfirm: "Click again to delete",
+    background: "Background",
+    newText: "Your text",
+    storageFull: "Browser storage is full, so the last change was not saved. Remove an image or use a smaller one.",
+    imageError: "That file could not be read as an image.",
+    box: {
+      drag: "Drag to move",
+      resize: "Drag to resize",
+      heading: "Heading",
+      body: "Text",
+      bigger: "Bigger text",
+      smaller: "Smaller text",
+      bold: "Bold",
+      alignLeft: "Align left",
+      alignCenter: "Centre",
+      alignRight: "Align right",
+      color: "Colour",
+      removeBox: "Delete box",
+      textBox: "Text box",
+    },
     printHint: "In the print window choose “Save as PDF” as the destination.",
   },
   ka: {
@@ -65,11 +101,41 @@ const UI = {
     remove: "ხაზის წაშლა",
     link: "ბმული",
     required: "სავალდებულო",
-    emptyOne: "1 ტექსტი ცარიელია. შეავსეთ ან წაშალეთ ხაზი ჩამოტვირთვამდე.",
-    emptyMany: (n: number) => `${n} ტექსტი ცარიელია. შეავსეთ ან წაშალეთ ხაზები ჩამოტვირთვამდე.`,
+    emptyOne: "1 ტექსტი ცარიელია. შეავსეთ ან წაშალეთ ჩამოტვირთვამდე.",
+    emptyMany: (n: number) => `${n} ტექსტი ცარიელია. შეავსეთ ან წაშალეთ ჩამოტვირთვამდე.`,
     badUrl: "პროექტების ბმული უნდა იწყებოდეს https://-ით",
     showFirst: "მაჩვენე",
-    tip: "დააჭირეთ ნებისმიერ ტექსტს მის შესაცვლელად. ცვლილებები ავტომატურად ინახება ამ ბრაუზერში.",
+    tip: "დააჭირეთ ნებისმიერ ტექსტს მის შესაცვლელად. გვერდები, ტექსტი და სურათები დაამატეთ თითოეული გვერდის ზემოთ არსებული ღილაკებით; ბლოკი გადაიტანეთ ⠿ სახელურით. ცვლილებები ავტომატურად ინახება ამ ბრაუზერში.",
+    addPage: "+ გვერდის დამატება აქ",
+    blankPage: "ახალი გვერდი, ფონი:",
+    restore: "დაბრუნება:",
+    cancel: "გაუქმება",
+    newPage: "ახალი გვერდი",
+    addText: "+ ტექსტი",
+    addImage: "+ სურათი",
+    moveUp: "გვერდის ზემოთ აწევა",
+    moveDown: "გვერდის ქვემოთ ჩამოწევა",
+    deletePage: "გვერდის წაშლა",
+    deleteConfirm: "დააჭირეთ კიდევ ერთხელ",
+    background: "ფონი",
+    newText: "თქვენი ტექსტი",
+    storageFull: "ბრაუზერის მეხსიერება სავსეა, ამიტომ ბოლო ცვლილება არ შეინახა. წაშალეთ სურათი ან გამოიყენეთ უფრო პატარა.",
+    imageError: "ეს ფაილი სურათად ვერ წაიკითხა.",
+    box: {
+      drag: "გადასატანად გაწიეთ",
+      resize: "ზომის შესაცვლელად გაწიეთ",
+      heading: "სათაური",
+      body: "ტექსტი",
+      bigger: "უფრო დიდი ტექსტი",
+      smaller: "უფრო პატარა ტექსტი",
+      bold: "მუქი",
+      alignLeft: "მარცხნივ",
+      alignCenter: "ცენტრში",
+      alignRight: "მარჯვნივ",
+      color: "ფერი",
+      removeBox: "ბლოკის წაშლა",
+      textBox: "ტექსტური ბლოკი",
+    },
     printHint: "ბეჭდვის ფანჯარაში აირჩიეთ „Save as PDF“.",
   },
 } as const;
@@ -80,6 +146,26 @@ function getAt(obj: unknown, path: Path): unknown {
   return path.reduce<unknown>((o, k) => (o as Record<string | number, unknown>)?.[k], obj);
 }
 
+const isBuiltIn = (id: string) => SLIDES.some((s) => s.id === id);
+const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+// Shrink an uploaded picture so a few of them fit in browser storage
+// (localStorage holds about 5 MB for the whole editor).
+async function readImage(file: File): Promise<{ src: string; w: number; h: number }> {
+  const bitmap = await createImageBitmap(file);
+  const max = 1600;
+  const k = Math.min(1, max / Math.max(bitmap.width, bitmap.height));
+  const w = Math.round(bitmap.width * k);
+  const h = Math.round(bitmap.height * k);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  let src = canvas.toDataURL("image/webp", 0.82);
+  if (!src.startsWith("data:image/webp")) src = canvas.toDataURL("image/png"); // Safari can't encode WebP
+  return { src, w, h };
+}
+
 function loadState(lang: OfferLang): OfferState {
   try {
     const raw = localStorage.getItem(STORE(lang));
@@ -87,7 +173,10 @@ function loadState(lang: OfferLang): OfferState {
       const saved = JSON.parse(raw) as OfferState;
       // A saved copy from before a content change could miss sections; fall
       // back to the defaults for anything absent.
-      return { ...defaultState(lang), ...saved, content: { ...DEFAULT_CONTENT[lang], ...saved.content } };
+      const state = { ...defaultState(lang), ...saved, content: { ...DEFAULT_CONTENT[lang], ...saved.content } };
+      // Drop page ids that no longer exist (a removed built-in slide, a broken save).
+      state.order = state.order.filter((id) => isBuiltIn(id) || !!state.pages[id]);
+      return state;
     }
   } catch {
     /* storage blocked or corrupt — start from the deck */
@@ -102,7 +191,13 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
   const [version, setVersion] = useState(0); // bumps on reset/lang switch so Editables re-seed
+  const [selected, setSelected] = useState<string | null>(null); // selected box id
+  const [addAt, setAddAt] = useState<number | null>(null); // "add page" picker open after this index
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [storageFull, setStorageFull] = useState(false);
   const columnRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const imageTarget = useRef<string | null>(null);
   const t = UI[lang];
   const c = state.content;
 
@@ -123,7 +218,10 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
     const id = setTimeout(() => {
       try {
         localStorage.setItem(STORE(lang), JSON.stringify(state));
-      } catch {}
+        setStorageFull(false);
+      } catch {
+        setStorageFull(true); // quota exceeded, almost always because of images
+      }
     }, 300);
     return () => clearTimeout(id);
   }, [state, lang, ready]);
@@ -138,6 +236,17 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, [ready]);
+
+  // Clicking anywhere outside a box deselects it.
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      if (!(e.target as Element).closest?.(".obox")) setSelected(null);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, []);
+
+  const getScale = useCallback(() => (columnRef.current ? columnRef.current.clientWidth / 1920 : 1), []);
 
   const update = useCallback((fn: (draft: OfferState) => void) => {
     setState((prev) => {
@@ -172,6 +281,7 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
       return;
     }
     setConfirmReset(false);
+    setSelected(null);
     setState(defaultState(lang));
     setVersion((v) => v + 1);
     setProblem(null);
@@ -485,7 +595,186 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
     ),
   };
 
+  // ----- Pages -----
+  const pageName = (id: string) => SLIDES.find((s) => s.id === id)?.name[lang] ?? t.newPage;
+  const pageBg = (id: string): PageBg => state.pages[id]?.bg ?? SLIDE_BG[id] ?? "cream";
+  const deletedBuiltIns = SLIDES.filter((s) => !state.order.includes(s.id));
+
+  function addPage(after: number, bg: PageBg) {
+    const id = newId("page");
+    update((d) => {
+      d.pages[id] = { bg };
+      d.order.splice(after + 1, 0, id);
+    });
+    setAddAt(null);
+  }
+
+  function restorePage(after: number, id: string) {
+    update((d) => {
+      d.order.splice(after + 1, 0, id);
+    });
+    setAddAt(null);
+  }
+
+  function movePage(i: number, dir: -1 | 1) {
+    update((d) => {
+      const j = i + dir;
+      if (j < 0 || j >= d.order.length) return;
+      [d.order[i], d.order[j]] = [d.order[j], d.order[i]];
+    });
+  }
+
+  // Two clicks: the first arms the button for 3 seconds.
+  function deletePage(id: string) {
+    if (confirmDelete !== id) {
+      setConfirmDelete(id);
+      setTimeout(() => setConfirmDelete((cur) => (cur === id ? null : cur)), 3000);
+      return;
+    }
+    setConfirmDelete(null);
+    update((d) => {
+      d.order = d.order.filter((x) => x !== id);
+      d.hiddenSlides = d.hiddenSlides.filter((x) => x !== id);
+      delete d.boxes[id];
+      if (!isBuiltIn(id)) delete d.pages[id];
+    });
+  }
+
+  // ----- Boxes -----
+  function addBox(pageId: string, box: Box) {
+    update((d) => {
+      (d.boxes[pageId] ??= []).push(box);
+    });
+    setSelected(box.id);
+  }
+
+  function addText(pageId: string) {
+    const darkBg = ["dark", "purple", "orange"].includes(pageBg(pageId));
+    const box: TextBox = {
+      id: newId("box"),
+      kind: "text",
+      x: 660,
+      y: 460,
+      w: 600,
+      text: t.newText,
+      size: 48,
+      color: darkBg ? "cream" : "dark",
+      heading: false,
+      bold: false,
+      align: "left",
+    };
+    addBox(pageId, box);
+    // Put the caret in the new box with its placeholder text selected.
+    setTimeout(() => {
+      const el = document.querySelector<HTMLElement>(`[data-box="${box.id}"] [data-editable]`);
+      if (!el) return;
+      el.focus();
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+    }, 40);
+  }
+
+  function pickImage(pageId: string) {
+    imageTarget.current = pageId;
+    fileRef.current?.click();
+  }
+
+  async function onImageFile(file: File | undefined) {
+    const pageId = imageTarget.current;
+    if (!file || !pageId) return;
+    try {
+      const img = await readImage(file);
+      // Start at most half the slide's size, centred.
+      const k = Math.min(1, 960 / img.w, 540 / img.h);
+      const w = Math.round(img.w * k);
+      const h = Math.round(img.h * k);
+      addBox(pageId, { id: newId("img"), kind: "image", x: Math.round((1920 - w) / 2), y: Math.round((1080 - h) / 2), w, h, src: img.src });
+      setProblem(null);
+    } catch {
+      setProblem(t.imageError);
+    }
+  }
+
+  const changeBox = (pageId: string, id: string, patch: Partial<Box>) =>
+    update((d) => {
+      const b = d.boxes[pageId]?.find((x) => x.id === id);
+      if (b) Object.assign(b, patch);
+    });
+
+  const removeBox = (pageId: string, id: string) => {
+    update((d) => {
+      d.boxes[pageId] = (d.boxes[pageId] ?? []).filter((x) => x.id !== id);
+    });
+    setSelected(null);
+  };
+
+  // Boxes sit on their own transparent layer above the slide, so they never
+  // shift the slide's own layout.
+  const boxLayer = (pageId: string) => {
+    const list = state.boxes[pageId] ?? [];
+    if (!list.length) return null;
+    return (
+      <div className="slide obox-layer">
+        {list.map((b) => (
+          <SlideBox
+            key={b.id}
+            box={b}
+            version={version}
+            selected={selected === b.id}
+            getScale={getScale}
+            labels={t.box}
+            onSelect={() => setSelected(b.id)}
+            onChange={(patch) => changeBox(pageId, b.id, patch)}
+            onRemove={() => removeBox(pageId, b.id)}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const addPageRow = (after: number) => (
+    <div className="offer-addpage">
+      {addAt === after ? (
+        <div className="offer-addpage-pick">
+          <span>{t.blankPage}</span>
+          {PAGE_BACKGROUNDS.map((bg) => (
+            <button
+              key={bg}
+              type="button"
+              className="offer-swatch"
+              style={{ background: `var(--${bg})` }}
+              title={bg}
+              aria-label={`${t.newPage}: ${bg}`}
+              onClick={() => addPage(after, bg)}
+            />
+          ))}
+          {deletedBuiltIns.length > 0 && (
+            <>
+              <span className="offer-addpage-sep">{t.restore}</span>
+              {deletedBuiltIns.map((s) => (
+                <button key={s.id} type="button" className="offer-switch" onClick={() => restorePage(after, s.id)}>
+                  {s.name[lang]}
+                </button>
+              ))}
+            </>
+          )}
+          <button type="button" className="offer-switch" onClick={() => setAddAt(null)}>
+            {t.cancel}
+          </button>
+        </div>
+      ) : (
+        <button type="button" className="offer-addpage-btn" onClick={() => setAddAt(after)}>
+          {t.addPage}
+        </button>
+      )}
+    </div>
+  );
+
   if (!ready) return <div className="offer-loading" />;
+
 
   return (
     <div className="offer-app" data-lang={lang} lang={lang}>
@@ -515,7 +804,11 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
             </button>
           </div>
         </div>
-        {problem ? (
+        {storageFull ? (
+          <div className="offer-problem" role="alert">
+            <span>{t.storageFull}</span>
+          </div>
+        ) : problem ? (
           <div className="offer-problem" role="alert">
             <span>{problem}</span>
             <button type="button" onClick={showFirstProblem}>
@@ -530,20 +823,82 @@ export default function OfferEditor({ onSignOut }: { onSignOut: () => void }) {
       </header>
 
       <main className="offer-column" ref={columnRef}>
-        {SLIDES.map((s, i) => {
-          const hidden = state.hiddenSlides.includes(s.id);
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={(e) => {
+            void onImageFile(e.target.files?.[0]);
+            e.target.value = "";
+          }}
+        />
+        {addPageRow(-1)}
+        {state.order.map((id, i) => {
+          const hidden = state.hiddenSlides.includes(id);
+          const builtIn = isBuiltIn(id);
           return (
-            <section key={s.id} className={`offer-slide-wrap${hidden ? " is-hidden" : ""}`} aria-label={s.name[lang]}>
-              <div className="offer-slide-head">
-                <span>
-                  {i + 1} / {SLIDES.length} · {s.name[lang]}
-                </span>
-                <button type="button" className="offer-switch" aria-pressed={!hidden} onClick={() => toggle("hiddenSlides", s.id)}>
-                  {hidden ? t.excluded : t.include}
-                </button>
-              </div>
-              <div className="offer-slide-frame">{slides[s.id]}</div>
-            </section>
+            <div key={id} className="offer-page">
+              <section className={`offer-slide-wrap${hidden ? " is-hidden" : ""}`} aria-label={pageName(id)}>
+                <div className="offer-slide-head">
+                  <span>
+                    {i + 1} / {state.order.length} · {pageName(id)}
+                  </span>
+                  <div className="offer-page-tools">
+                    <button type="button" className="offer-switch" onClick={() => addText(id)}>
+                      {t.addText}
+                    </button>
+                    <button type="button" className="offer-switch" onClick={() => pickImage(id)}>
+                      {t.addImage}
+                    </button>
+                    {!builtIn && (
+                      <span className="offer-bg-pick" role="group" aria-label={t.background}>
+                        {PAGE_BACKGROUNDS.map((bg) => (
+                          <button
+                            key={bg}
+                            type="button"
+                            className="offer-swatch sm"
+                            style={{ background: `var(--${bg})` }}
+                            aria-pressed={pageBg(id) === bg}
+                            title={`${t.background}: ${bg}`}
+                            aria-label={`${t.background}: ${bg}`}
+                            onClick={() =>
+                              update((d) => {
+                                d.pages[id].bg = bg;
+                              })
+                            }
+                          />
+                        ))}
+                      </span>
+                    )}
+                    <button type="button" className="offer-switch icon" disabled={i === 0} title={t.moveUp} aria-label={t.moveUp} onClick={() => movePage(i, -1)}>
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      className="offer-switch icon"
+                      disabled={i === state.order.length - 1}
+                      title={t.moveDown}
+                      aria-label={t.moveDown}
+                      onClick={() => movePage(i, 1)}
+                    >
+                      ↓
+                    </button>
+                    <button type="button" className={`offer-switch danger${confirmDelete === id ? " is-confirm" : ""}`} onClick={() => deletePage(id)}>
+                      {confirmDelete === id ? t.deleteConfirm : t.deletePage}
+                    </button>
+                    <button type="button" className="offer-switch" aria-pressed={!hidden} onClick={() => toggle("hiddenSlides", id)}>
+                      {hidden ? t.excluded : t.include}
+                    </button>
+                  </div>
+                </div>
+                <div className="offer-slide-frame">
+                  {builtIn ? slides[id as (typeof SLIDES)[number]["id"]] : <div className={`slide s-custom bg-${pageBg(id)}`} />}
+                  {boxLayer(id)}
+                </div>
+              </section>
+              {addPageRow(i)}
+            </div>
           );
         })}
       </main>
