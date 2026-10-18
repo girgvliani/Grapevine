@@ -8,7 +8,8 @@
       "intro": "One short lead sentence under the H1.",
       "body": "Main descriptive paragraph(s). \\n\\n separates paragraphs.",
       "included": "Bullet list — what the service includes.",
-      "price": "e.g. '₾1,500'. '' hides the price block. Old site listed no prices."
+      "price": "e.g. '₾1,500'. '' hides the price block. Old site listed no prices.",
+      "faq": "4-6 question/answer pairs shown under 'What's included' and emitted as FAQPage structured data. Drafted 2026-10-19 by Claude from the SEO report's advice; marketing to review wording and any timelines before treating as final."
     },
     "notes": "sourceUrl = old page the copy came from ('' = new service, write fresh). Do not rename service keys (they are URLs)."
   },
@@ -19,7 +20,7 @@
         "title": "SEO და სოციალური მედია აუდიტი",
         "metaTitle": "SEO და სოციალური მედია აუდიტი | Grapevine",
         "metaDescription": "უფასო SEO და სოციალური მედია აუდიტი Grapevine-ისგან — ვებსაიტის, კონტენტის, არხებისა და კონკურენტების ანალიზი და კონკრეტული რეკომენდაციები.",
-        "intro": "აუდიტი აჩვენებს, სად დგახართ დღეს — თქვენი ვებსაიტისა და სოციალური მედიის არსებული აქტივობების დეტალური ანალიზით.",
+        "intro": "სოციალური მედიის აუდიტი აჩვენებს, სად დგახართ დღეს — თქვენი ვებსაიტისა და სოციალური მედიის არსებული აქტივობების დეტალური ანალიზით.",
         "body": "SEO აუდიტი აფასებს თქვენი ვებსაიტის ტექნიკურ მდგომარეობას, საკვანძო სიტყვებსა და საძიებო სისტემებში ხილვადობას, ხოლო სოციალური მედიის აუდიტი სწავლობს თქვენს პროფილებს, კონტენტს, აუდიტორიასა და კონკურენტებს.\n\nორივე ერთად გაძლევთ სრულ სურათს, თუ სად არის გაუმჯობესების შესაძლებლობები — ხელშესახები, გაზომვადი რეკომენდაციებით, რომლითაც სტრატეგიას გავამართავთ.",
         "included": [
           "ვებსაიტის ტექნიკური SEO ანალიზი",
@@ -29,7 +30,25 @@
           "მეტრიკების განხილვა",
           "რეკომენდაციები"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რას ამოწმებს სოციალური მედიის აუდიტი?",
+            "a": "პროფილების შევსებას, კონტენტის ხარისხსა და სიხშირეს, ჩართულობის მაჩვენებლებს, აუდიტორიის შესაბამისობას, რეკლამის ისტორიას და კონკურენტების აქტივობას. ვებსაიტის ნაწილში — SEO-ს საბაზისო მაჩვენებლებს და სისწრაფეს."
+          },
+          {
+            "q": "რამდენ ხანში მივიღებ შედეგს?",
+            "a": "დეტალური აუდიტი 5-7 სამუშაო დღეში მზადდება. ავტომატური SEO შემოწმება ამავე გვერდიდან 30 წამში შეგიძლიათ გაუშვათ."
+          },
+          {
+            "q": "რა ფორმით მივიღებ აუდიტს?",
+            "a": "დოკუმენტი, სადაც თითოეულ პუნქტს აქვს სტატუსი (კარგია / გასასწორებელია), ახსნა მარტივი ენით და პრიორიტეტებად დალაგებული რეკომენდაციები."
+          },
+          {
+            "q": "აუდიტის შემდეგ აუცილებელია თქვენთან მუშაობა?",
+            "a": "არა. აუდიტი დამოუკიდებელი პროდუქტია და რეკომენდაციების შესრულება თქვენს გუნდსაც შეუძლია. თუ გსურთ, გავაგრძელებთ ჩვენ."
+          }
+        ]
       },
       "en": {
         "title": "SEO & Social Media Audit",
@@ -45,7 +64,25 @@
           "Metrics review",
           "Recommendations"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "What does the social media audit check?",
+            "a": "Profile completeness, content quality and frequency, engagement metrics, audience fit, advertising history and competitor activity. On the website side, basic SEO signals and speed."
+          },
+          {
+            "q": "How soon do I get the results?",
+            "a": "A detailed audit takes 5-7 working days. The automatic SEO check on this page runs in about 30 seconds."
+          },
+          {
+            "q": "What format does the audit come in?",
+            "a": "A document where each item has a status (good / needs fixing), a plain-language explanation and recommendations ordered by priority."
+          },
+          {
+            "q": "Do I have to work with you afterwards?",
+            "a": "No. The audit is a standalone product and your own team can act on it. If you want, we continue from there."
+          }
+        ]
       }
     },
     "seo": {
@@ -54,7 +91,7 @@
         "title": "SEO ოპტიმიზაცია",
         "metaTitle": "SEO ოპტიმიზაცია - ორგანული ზრდა | Grapevine",
         "metaDescription": "SEO ოპტიმიზაცია Grapevine-ისგან — საკვანძო სიტყვების კვლევა, ტექნიკური და on-page ოპტიმიზაცია გრძელვადიანი ორგანული ზრდისთვის.",
-        "intro": "SEO ეხმარება ბრენდს, გამოჩნდეს მაშინ, როცა მომხმარებელი მას აქტიურად ეძებს.",
+        "intro": "SEO ოპტიმიზაცია ეხმარება ბრენდს, გამოჩნდეს Google-ში მაშინ, როცა მომხმარებელი მას აქტიურად ეძებს.",
         "body": "ვამუშავებთ თქვენი ვებსაიტის ტექნიკურ და კონტენტ მხარეს, რომ საძიებო სისტემებში მოწინავე პოზიციები დაიკავოს. საკვანძო სიტყვების კვლევიდან ტექნიკურ ოპტიმიზაციამდე — ვქმნით სტრუქტურას, რომელიც გრძელვადიან ორგანულ ზრდას უზრუნველყოფს.\n\nSEO ჩვენთვის ცალკე აქტივობა არ არის — ის ვებ დეველოპმენტთან და კონტენტ სტრატეგიასთან ერთ სისტემაში მუშაობს.",
         "included": [
           "საკვანძო სიტყვების კვლევა",
@@ -63,7 +100,25 @@
           "კონტენტის სტრუქტურა",
           "ანალიტიკა და მონიტორინგი"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რამდენ ხანში მუშაობს SEO?",
+            "a": "პირველი ცვლილებები Google-ის შედეგებში, როგორც წესი, 2-3 თვეში ჩანს, სტაბილური ზრდა კი 4-6 თვის შემდეგ იწყება. ვადა დამოკიდებულია საიტის ტექნიკურ მდგომარეობაზე, კონკურენციაზე და იმაზე, რამდენად რეგულარულად ემატება კონტენტი."
+          },
+          {
+            "q": "რა ღირს SEO მომსახურება?",
+            "a": "ფასი დამოკიდებულია საიტის ზომაზე, საკვანძო სიტყვების რაოდენობასა და კონკურენციაზე. მოკლე აუდიტის შემდეგ გიგზავნით ფიქსირებულ შეთავაზებას ყოველთვიური სამუშაოების ზუსტი ჩამონათვალით."
+          },
+          {
+            "q": "რა შედის SEO-ში?",
+            "a": "საკვანძო სიტყვების კვლევა, ტექნიკური შემოწმება და გასწორება (სისწრაფე, ინდექსაცია, მობილური ვერსია), გვერდების სათაურებისა და ტექსტების ოპტიმიზაცია, ლოკალური SEO Google Maps-ისთვის და ყოველთვიური ანგარიში Search Console-ის მონაცემებით."
+          },
+          {
+            "q": "მუშაობთ ქართულენოვან საიტებზე?",
+            "a": "დიახ. ქართულ ბაზარზე კონკურენცია მრავალ თემაზე ჯერ კიდევ დაბალია, ამიტომ სწორად აწყობილი ქართულენოვანი გვერდები შედარებით სწრაფად იკავებენ მაღალ პოზიციებს. ვამოწმებთ ენის მონიშვნას, ქართულ საკვანძო სიტყვებს და ორენოვან სტრუქტურას."
+          }
+        ]
       },
       "en": {
         "title": "SEO Optimisation",
@@ -78,7 +133,25 @@
           "Content structure",
           "Analytics and monitoring"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "How long does SEO take to work?",
+            "a": "The first movement in Google results usually shows within 2-3 months, and steady growth starts after 4-6 months. The timeline depends on the site's technical state, the competition, and how regularly new content is added."
+          },
+          {
+            "q": "How much does SEO cost?",
+            "a": "It depends on the size of the site, the number of keywords and the competition. After a short audit we send a fixed quote with the exact monthly scope of work."
+          },
+          {
+            "q": "What is included?",
+            "a": "Keyword research, a technical check and fixes (speed, indexing, mobile), optimised titles and page copy, local SEO for Google Maps, and a monthly report built on Search Console data."
+          },
+          {
+            "q": "Do you work on Georgian-language sites?",
+            "a": "Yes. Competition for many Georgian search terms is still low, so well-built Georgian pages tend to climb quickly. We check language markup, Georgian keywords and the bilingual structure."
+          }
+        ]
       }
     },
     "strategy": {
@@ -87,7 +160,7 @@
         "title": "სტრატეგია",
         "metaTitle": "სტრატეგია - მარკეტინგული სტრატეგია | Grapevine",
         "metaDescription": "მარკეტინგული სტრატეგია Grapevine-ისგან — პოზიციონირება, აუდიტორიის სეგმენტაცია, საკომუნიკაციო და არხების ჩარჩო ერთ სისტემაში.",
-        "intro": "სტრატეგია არის ის ძაფი, რომელიც ბრენდის ყველა ქმედებას ერთ ლოგიკურ სისტემაში აკავშირებს.",
+        "intro": "მარკეტინგული სტრატეგია არის ის ძაფი, რომელიც ბრენდის ყველა ქმედებას ერთ ლოგიკურ სისტემაში აკავშირებს.",
         "body": "სანამ შესრულებაზე გადავალთ, ვსაზღვრავთ მიმართულებას: სად არის ბრენდი დღეს, სად უნდა მივიდეს და რა ნაბიჯები აკავშირებს ამ ორ წერტილს. ვქმნით მკაფიო პოზიციონირებას, აუდიტორიის სეგმენტაციასა და საკომუნიკაციო ჩარჩოს, რომელზეც შემდგომი ყველა აქტივობა შენდება.\n\nჩვენთვის სტრატეგია ცალკე დოკუმენტი არ არის — ეს არის სისტემა, რომელიც კრეატივსა და შესრულებას ერთმანეთს უკავშირებს.",
         "included": [
           "მარკეტინგული სტრატეგია",
@@ -96,7 +169,25 @@
           "საკომუნიკაციო ჩარჩო",
           "არხების სტრატეგია"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "საიდან იწყება მარკეტინგული სტრატეგია?",
+            "a": "აუდიტით: სად დგას ბრენდი დღეს, ვინ არის მომხმარებელი, რას აკეთებენ კონკურენტები და რომელი არხები მუშაობს რეალურად. მხოლოდ ამის შემდეგ ვწერთ პოზიციონირებას, მიზნებსა და არხების გეგმას."
+          },
+          {
+            "q": "რამდენ ხანს გრძელდება სტრატეგიის შემუშავება?",
+            "a": "როგორც წესი, 3-5 კვირა: კვლევა და ინტერვიუები, სამუშაო სესია გუნდთან, დოკუმენტის მომზადება და პრეზენტაცია."
+          },
+          {
+            "q": "რას ვიღებ შედეგად?",
+            "a": "დოკუმენტს, რომელიც პასუხობს ოთხ კითხვას: ვის ვესაუბრებით, რას ვეუბნებით, სად და როგორ ვზომავთ. მას მოჰყვება 6-12 თვის სამოქმედო გეგმა, რომლითაც შეგიძლიათ იმუშაოთ ჩვენთან ან დამოუკიდებლად."
+          },
+          {
+            "q": "სჭირდება სტრატეგია მცირე ბიზნესს?",
+            "a": "განსაკუთრებით მცირე ბიზნესს, რადგან მას შეცდომის ნაკლები რესურსი აქვს. მცირე ბიზნესისთვის სტრატეგია უფრო მოკლე და კონკრეტულია, მაგრამ იგივე კითხვებს პასუხობს."
+          }
+        ]
       },
       "en": {
         "title": "Strategy",
@@ -111,7 +202,25 @@
           "Communication framework",
           "Channel strategy"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "Where does a marketing strategy start?",
+            "a": "With an audit: where the brand stands today, who the customer is, what competitors do and which channels actually work. Only then do we write positioning, goals and a channel plan."
+          },
+          {
+            "q": "How long does it take?",
+            "a": "Usually 3-5 weeks: research and interviews, a working session with your team, the document and a presentation."
+          },
+          {
+            "q": "What do I get?",
+            "a": "A document that answers four questions: who we talk to, what we say, where, and how we measure it. It comes with a 6-12 month action plan you can run with us or on your own."
+          },
+          {
+            "q": "Does a small business need a strategy?",
+            "a": "Small businesses most of all, because they have less room for mistakes. For a small business the strategy is shorter and more concrete, but it answers the same questions."
+          }
+        ]
       }
     },
     "campaigns": {
@@ -128,7 +237,25 @@
           "არხების კოორდინაცია",
           "შესრულება და ანალიზი"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რა განსხვავებაა კამპანიასა და მუდმივ რეკლამას შორის?",
+            "a": "კამპანიას აქვს კონკრეტული მიზანი, დასაწყისი და დასასრული: გაშვება, აქცია, სეზონი. ის ერთ იდეას რამდენიმე არხში ერთდროულად იყენებს. მუდმივი რეკლამა კი ყოველდღიურ მოთხოვნას ემსახურება."
+          },
+          {
+            "q": "რამდენ ხანში შეიძლება კამპანიის გაშვება?",
+            "a": "სტანდარტულად 2-3 კვირა სჭირდება იდეიდან გაშვებამდე: ბრიფი, კონცეფცია, ვიზუალები და ტექსტები, ტექნიკური აწყობა. სასწრაფო კამპანიების შემთხვევაში ვადას ბრიფის დროს ვათანხმებთ."
+          },
+          {
+            "q": "რა შედის Google Ads კამპანიაში?",
+            "a": "საკვანძო სიტყვების კვლევა, სარეკლამო ტექსტები, სადესანტო გვერდის რეკომენდაციები, კონვერსიების თრექინგი და ყოველთვიური ოპტიმიზაცია ფასსა და შედეგზე დაყრდნობით."
+          },
+          {
+            "q": "როგორ გავიგებ, იმუშავა თუ არა კამპანიამ?",
+            "a": "მიზნებს წინასწარ ვწერთ ციფრებში (ლიდები, გაყიდვები, რეგისტრაციები, ნახვები) და კამპანიის ბოლოს გიგზავნით ანგარიშს, სადაც ჩანს, რა ღირდა თითოეული შედეგი."
+          }
+        ]
       },
       "en": {
         "title": "Campaigns",
@@ -142,7 +269,25 @@
           "Channel coordination",
           "Execution & analysis"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "What is the difference between a campaign and always-on advertising?",
+            "a": "A campaign has a specific goal, a start and an end: a launch, a promotion, a season. It carries one idea across several channels at once. Always-on advertising serves everyday demand."
+          },
+          {
+            "q": "How fast can a campaign launch?",
+            "a": "Typically 2-3 weeks from idea to launch: brief, concept, visuals and copy, technical setup. For urgent campaigns we agree the timeline at the briefing."
+          },
+          {
+            "q": "What is included in a Google Ads campaign?",
+            "a": "Keyword research, ad copy, landing page recommendations, conversion tracking and monthly optimisation based on cost and results."
+          },
+          {
+            "q": "How will I know whether the campaign worked?",
+            "a": "We write the goals down as numbers in advance (leads, sales, sign-ups, views) and send a closing report that shows what each result cost."
+          }
+        ]
       }
     },
     "production": {
@@ -151,14 +296,32 @@
         "title": "ვიდეო პროდაქშენი",
         "metaTitle": "ვიდეო პროდაქშენი - ვიდეო და ფოტო | Grapevine",
         "metaDescription": "სარეკლამო ვიდეოს გადაღება, ფოტო და კამპანიის მასალები Grapevine-ისგან — ბრენდის ერთიან ვიზუალურ ენაზე.",
-        "intro": "პროდაქშენი აქცევს სტრატეგიასა და იდეას ხელშესახებ ვიზუალურ მასალად.",
+        "intro": "სარეკლამო ვიდეოს გადაღება და პროდაქშენი აქცევს სტრატეგიასა და იდეას ხელშესახებ ვიზუალურ მასალად.",
         "body": "კრეატიული მიმართულებიდან საბოლოო შედეგამდე — ვქმნით ვიდეო, ფოტო და კამპანიის მასალებს, რომლებიც ბრენდის ერთიან ვიზუალურ ენას მისდევს. თითოეული კადრი ემსახურება უფრო დიდ სისტემას და არა ცალკე აქტივობას.",
         "included": [
           "ვიდეო პროდაქშენი",
           "ფოტო პროდაქშენი",
           "კამპანიის მასალები"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რა ღირს სარეკლამო ვიდეოს გადაღება?",
+            "a": "ფასი დამოკიდებულია ქრონომეტრაჟზე, გადასაღები დღეების რაოდენობაზე, ლოკაციებზე, მსახიობებსა და პოსტპროდაქშენზე. მოკლე ბრიფის შემდეგ გიგზავნით ფიქსირებულ ხარჯთაღრიცხვას."
+          },
+          {
+            "q": "რამდენ ხანში მზადდება ვიდეო?",
+            "a": "სტანდარტული სარეკლამო რგოლი იდეიდან საბოლოო ფაილამდე 3-5 კვირას იკავებს: სცენარი, მომზადება, გადაღება, მონტაჟი და ორი რაუნდი შესწორებები."
+          },
+          {
+            "q": "იღებთ კონტენტს სოციალური მედიისთვის?",
+            "a": "დიახ. ერთი გადაღებიდან ვამზადებთ რამდენიმე ფორმატს: სრული რგოლი, ვერტიკალური ვერსიები Reels/TikTok-ისთვის, მოკლე ქავერები და ფოტომასალა."
+          },
+          {
+            "q": "ვის ეკუთვნის მასალა?",
+            "a": "საბოლოო ვიდეო და ფოტოები თქვენია და გამოიყენებთ ყველა არხში შეუზღუდავად. ხელშეკრულებაში ვწერთ, რომელი მასალა გადმოგეცემათ, მათ შორის ნედლი კადრები, თუ ეს შეთანხმებულია."
+          }
+        ]
       },
       "en": {
         "title": "Video Production",
@@ -171,7 +334,25 @@
           "Photo production",
           "Campaign materials"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "How much does a commercial video cost?",
+            "a": "It depends on length, shooting days, locations, cast and post-production. After a short brief we send a fixed estimate."
+          },
+          {
+            "q": "How long does production take?",
+            "a": "A standard commercial takes 3-5 weeks from idea to final file: script, pre-production, shoot, edit and two rounds of revisions."
+          },
+          {
+            "q": "Do you shoot content for social media?",
+            "a": "Yes. One shoot yields several formats: the full spot, vertical cuts for Reels and TikTok, short covers and photos."
+          },
+          {
+            "q": "Who owns the material?",
+            "a": "The final video and photos are yours to use in every channel without limits. The contract lists exactly what is handed over, including raw footage when agreed."
+          }
+        ]
       }
     },
     "pr-services": {
@@ -180,7 +361,7 @@
         "title": "PR სერვისები",
         "metaTitle": "PR სააგენტო თბილისში - ონლაინ PR მენეჯმენტი | Grapevine",
         "metaDescription": "Grapevine-ის ციფრული PR მომსახურება — სტრატეგია, კონტენტი, მედია-ურთიერთობები, ინფლუენსერ მარკეტინგი და ონლაინ რეპუტაციის მართვა.",
-        "intro": "პიარ (PR) მენეჯმენტი – ეს არის თქვენი კომპანიის რეპუტაციის, სანდოობისა და იმიჯის მართვის სტრატეგიული პროცესი.",
+        "intro": "PR სააგენტო თქვენი კომპანიის რეპუტაციის, სანდოობისა და იმიჯის მართვის სტრატეგიულ პროცესს უძღვება.",
         "body": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ონლაინ PR მომსახურებას, რომელიც დაგეხმარებათ მყარი და დადებითი ურთიერთობის ჩამოყალიბებაში თქვენს აუდიტორიასთან და პარტნიორებთან. ჩვენი ციფრული PR სერვისი მიზნად ისახავს, რომ თქვენი ბიზნესი გახდეს არა მხოლოდ ცნობილი, არამედ სანდო და ღირებული ბრენდი, რომლის ხმაც ისმის და რომელსაც ენდობიან.\n\nრატომ არის მნიშვნელოვანი ციფრული PR? მომხმარებელი გენდობა დადებითი საზოგადოებრივი აზრის საფუძველზე; იზრდება თქვენი ავტორიტეტი; ეფექტურად იმართება კომუნიკაცია კრიზისის დროს; მიიღწევა ორგანული ზრდა და SEO პოზიციების გაუმჯობესება; და საბოლოოდ იზრდება ცნობადობა და გაყიდვები.",
         "included": [
           "PR სტრატეგია",
@@ -188,7 +369,25 @@
           "საკომუნიკაციო გეგმა",
           "რეპუტაციის მართვა"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რას აკეთებს PR სააგენტო მცირე ბიზნესისთვის?",
+            "a": "ეხმარება, რომ თქვენზე სხვები ისაუბრონ: მედიაში გამოჩენა, ექსპერტული სტატიები, პარტნიორობები, ონლაინ რეპუტაციის მართვა და კრიზისის დროს სწორი კომუნიკაცია. მცირე ბიზნესისთვის PR ხშირად რეკლამაზე იაფია."
+          },
+          {
+            "q": "რით განსხვავდება PR რეკლამისგან?",
+            "a": "რეკლამას ყიდულობთ, PR-ს იმსახურებთ. PR-ით მიღებული სტატია ან მოხსენიება უფრო სანდოა, მაგრამ მასზე სრული კონტროლი არ გაქვთ. ორივე ერთად საუკეთესოდ მუშაობს."
+          },
+          {
+            "q": "რამდენ ხანში ჩანს შედეგი?",
+            "a": "პირველი პუბლიკაციები 4-6 კვირაში ჩნდება, სტაბილური ყოფნა მედიაში კი 3-6 თვის სისტემურ მუშაობას მოითხოვს."
+          },
+          {
+            "q": "როგორ ზომავთ PR-ს?",
+            "a": "პუბლიკაციების რაოდენობა და ხარისხი, მოხსენიების ტონი, მიღწეული აუდიტორია, ბრენდული ძიებების ზრდა Google-ში და ბმულები თქვენს საიტზე."
+          }
+        ]
       },
       "en": {
         "title": "PR Services",
@@ -202,7 +401,25 @@
           "Communications plan",
           "Reputation management"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "What does a PR agency do for a small business?",
+            "a": "It gets other people talking about you: media coverage, expert articles, partnerships, online reputation management and the right communication in a crisis. For a small business PR is often cheaper than advertising."
+          },
+          {
+            "q": "How is PR different from advertising?",
+            "a": "You buy advertising; you earn PR. An article or mention earned through PR is more trusted, but you do not fully control it. The two work best together."
+          },
+          {
+            "q": "How soon are there results?",
+            "a": "The first publications appear within 4-6 weeks; a steady presence in the media takes 3-6 months of consistent work."
+          },
+          {
+            "q": "How do you measure PR?",
+            "a": "The number and quality of publications, the tone of mentions, audience reached, growth in branded Google searches and links to your website."
+          }
+        ]
       }
     },
     "crm-systems": {
@@ -219,7 +436,25 @@
           "ავტომატიზაცია",
           "ანალიტიკა"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რომელი CRM სისტემა სჭირდება მცირე ბიზნესს?",
+            "a": "ის, რომელსაც გუნდი რეალურად გამოიყენებს: მარტივი კონტაქტები, გარიგებების ეტაპები, შეხსენებები და ანგარიშები. ვირჩევთ მზა სისტემას ან ვაწყობთ მსუბუქ, თქვენზე მორგებულს — იმის მიხედვით, როგორ ყიდით."
+          },
+          {
+            "q": "რამდენ ხანს გრძელდება CRM-ის დანერგვა?",
+            "a": "მცირე და საშუალო ბიზნესისთვის 3-6 კვირა: პროცესების აღწერა, აწყობა, მონაცემების გადატანა, ინტეგრაციები (საიტი, ტელეფონი, ელფოსტა) და გუნდის სწავლება."
+          },
+          {
+            "q": "შეიძლება არსებული მონაცემების გადატანა?",
+            "a": "დიახ. Excel-ის ცხრილები, ძველი სისტემა ან ფოსტის კონტაქტები გადაგვაქვს გაწმენდილი და სტრუქტურირებული სახით, დუბლიკატების გარეშე."
+          },
+          {
+            "q": "რა ხდება დანერგვის შემდეგ?",
+            "a": "ვრჩებით მხარდაჭერაზე: ვპასუხობთ კითხვებს, ვამატებთ ავტომატიზაციებსა და ანგარიშებს, როცა პროცესი იცვლება. მხარდაჭერის ფორმატს ხელშეკრულებაში ვათანხმებთ."
+          }
+        ]
       },
       "en": {
         "title": "CRM Services",
@@ -233,7 +468,25 @@
           "Automation",
           "Analytics"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "Which CRM does a small business need?",
+            "a": "The one your team will actually use: simple contacts, deal stages, reminders and reports. We pick an off-the-shelf system or build a light custom one, depending on how you sell."
+          },
+          {
+            "q": "How long does a CRM implementation take?",
+            "a": "For small and mid-sized businesses, 3-6 weeks: mapping the process, setup, data migration, integrations (website, phone, email) and team training."
+          },
+          {
+            "q": "Can you migrate our existing data?",
+            "a": "Yes. Spreadsheets, an old system or mailbox contacts are moved over cleaned and structured, without duplicates."
+          },
+          {
+            "q": "What happens after launch?",
+            "a": "We stay on for support: answering questions and adding automations and reports as the process changes. The support format is agreed in the contract."
+          }
+        ]
       }
     },
     "branding": {
@@ -242,7 +495,7 @@
         "title": "ბრენდინგი",
         "metaTitle": "ბრენდინგი და ლოგოს დიზაინი - ბრენდის შექმნა | Grapevine",
         "metaDescription": "მარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ბრენდინგ სერვისებს — ბრენდის აუდიტი, პოზიციონირება, ლოგოს დიზაინი და ბრენდბუქი.",
-        "intro": "ბრენდინგი არის პროცესი, რომლის დროსაც იქმნება უნიკალური იდენტობა კომპანიისთვის, პროდუქტისთვის ან სერვისისთვის.",
+        "intro": "ბრენდინგი და ლოგოს დიზაინი არის პროცესი, რომლის დროსაც იქმნება უნიკალური იდენტობა კომპანიისთვის, პროდუქტისთვის ან სერვისისთვის.",
         "body": "ეს მოიცავს არა მხოლოდ ვიზუალურ ელემენტებს (როგორიცაა ლოგო და ფერები), არამედ კომპანიის ღირებულებების, ხედვისა და დაპირების ჩამოყალიბებას. ეფექტური ბრენდინგი ეხმარება ბიზნესს, გამორჩეული გახდეს კონკურენტებისგან, მოიზიდოს სამიზნე აუდიტორია და შექმნას ძლიერი ემოციური კავშირი მომხმარებლებთან.\n\nმარკეტინგული სააგენტო Grapevine გთავაზობთ სრულყოფილ ბრენდინგ სერვისებს, რომელიც დაგეხმარებათ შექმნათ მყარი და დასამახსოვრებელი ბრენდი.\n\nრატომ არის მნიშვნელოვანი ძლიერი ბრენდინგი? ის განასხვავებს თქვენს ბიზნესს, ზრდის ცნობადობასა და ნდობას, ამყარებს მომხმარებელთა ლოიალობას, ხელს უწყობს გაყიდვებს და იზიდავს საუკეთესო კადრებს.",
         "included": [
           "ბრენდის იდენტობა",
@@ -250,7 +503,25 @@
           "ტონი და ხმა",
           "გაიდლაინები"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რა განსხვავებაა ლოგოსა და ბრენდინგს შორის?",
+            "a": "ლოგო ბრენდის ერთი ნიშანია. ბრენდინგი კი მთლიანი სისტემაა: პოზიციონირება, ტონი, ფერები, ტიპოგრაფია და წესები, რომლითაც ეს ყველაფერი ერთნაირად გამოიყენება ყველა არხში. ლოგო ბრენდბუქის გარეშე სწრაფად „იშლება“."
+          },
+          {
+            "q": "რამდენ ხანს გრძელდება ბრენდინგის პროექტი?",
+            "a": "სრული ბრენდინგი (კვლევა, პოზიციონირება, ვიზუალური იდენტობა, ბრენდბუქი) ჩვეულებრივ 4-8 კვირას იკავებს. მხოლოდ ლოგო და ბაზისური სტილი უფრო სწრაფად კეთდება."
+          },
+          {
+            "q": "რას ვიღებ პროექტის ბოლოს?",
+            "a": "ლოგოს ყველა საჭირო ფორმატში, ფერთა და შრიფტების სისტემას, ბრენდბუქს გამოყენების წესებით და საბაზისო მასალებს (სავიზიტო, სოციალური მედიის შაბლონები, პრეზენტაციის სლაიდი)."
+          },
+          {
+            "q": "როდის სჭირდება ბიზნესს რებრენდინგი?",
+            "a": "როცა ბრენდი აღარ შეესაბამება იმას, რასაც კომპანია დღეს აკეთებს: შეიცვალა აუდიტორია, პროდუქტი ან ბაზარი, ან ვიზუალი კონკურენტებს ერევა. რებრენდინგი ყოველთვის სრულ ცვლილებას არ ნიშნავს — ხშირად განახლება საკმარისია."
+          }
+        ]
       },
       "en": {
         "title": "Branding",
@@ -264,7 +535,25 @@
           "Tone & voice",
           "Guidelines"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "What is the difference between a logo and branding?",
+            "a": "A logo is one mark. Branding is the whole system: positioning, tone of voice, colours, typography and the rules for using them consistently everywhere. A logo without brand guidelines falls apart quickly."
+          },
+          {
+            "q": "How long does a branding project take?",
+            "a": "Full branding (research, positioning, visual identity, brand book) usually takes 4-8 weeks. A logo with a basic style guide is faster."
+          },
+          {
+            "q": "What do I get at the end?",
+            "a": "The logo in every format you need, a colour and type system, a brand book with usage rules, and starter materials such as business cards, social media templates and a presentation slide."
+          },
+          {
+            "q": "When does a business need a rebrand?",
+            "a": "When the brand no longer matches what the company does today: the audience, product or market has changed, or the visuals blend in with competitors. A rebrand does not always mean starting over; often a refresh is enough."
+          }
+        ]
       }
     },
     "mobile-app": {
@@ -273,7 +562,7 @@
         "title": "მობილური აპლიკაცია",
         "metaTitle": "მობილური აპლიკაციის შექმნა - iOS და Android | Grapevine",
         "metaDescription": "მობილური აპლიკაციები Grapevine-ისგან — პროდუქტის ლოგიკა, UX/UI დიზაინი, iOS და Android დეველოპმენტი და ინტეგრაციები.",
-        "intro": "მობილური აპლიკაცია ბრენდს პირდაპირ მომხმარებლის ჯიბეში ამყოფებს.",
+        "intro": "მობილური აპლიკაციის შექმნა ბრენდს პირდაპირ მომხმარებლის ჯიბეში ამყოფებს.",
         "body": "პროდუქტის ლოგიკიდან გამოშვებამდე — ვგეგმავთ, ვაპროექტებთ და ვამუშავებთ iOS და Android აპლიკაციებს, რომლებიც მოსახერხებელია და თქვენს არსებულ სისტემებთან ინტეგრირებული. UX/UI დიზაინი და დეველოპმენტი ერთ პროცესად მიდის.",
         "included": [
           "პროდუქტის ლოგიკა",
@@ -281,7 +570,25 @@
           "iOS და Android დეველოპმენტი",
           "ინტეგრაციები"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რა ღირს მობილური აპლიკაციის შექმნა?",
+            "a": "ფასი დამოკიდებულია ფუნქციების რაოდენობაზე, პლატფორმებზე (iOS, Android ან ორივე), ინტეგრაციებსა და დიზაინის სირთულეზე. პირველი ეტაპი ყოველთვის მოკლე პროდუქტის აღწერაა, რომლის შემდეგაც გიგზავნით ფიქსირებულ შეფასებას."
+          },
+          {
+            "q": "რამდენ ხანში მზადდება აპლიკაცია?",
+            "a": "მარტივი აპლიკაცია (MVP) 2-3 თვეში, უფრო რთული პროდუქტი 4-6 თვეში. ვმუშაობთ ეტაპებად, რათა პირველი ვერსია რაც შეიძლება მალე გამოსცადოთ რეალურ მომხმარებლებზე."
+          },
+          {
+            "q": "iOS-ზეც და Android-ზეც ერთდროულად?",
+            "a": "დიახ. უმეტეს შემთხვევაში ვიყენებთ კროსპლატფორმულ ტექნოლოგიას, რომლითაც ერთი კოდი ორივე პლატფორმაზე მუშაობს და განახლებაც უფრო იაფია."
+          },
+          {
+            "q": "ვინ ათავსებს აპლიკაციას მაღაზიებში და ვინ უვლის მას?",
+            "a": "App Store-სა და Google Play-ში განთავსებას ჩვენ ვაკეთებთ თქვენი ანგარიშებით. გაშვების შემდეგ ვთავაზობთ მხარდაჭერის პაკეტს განახლებებისა და ახალი ფუნქციებისთვის."
+          }
+        ]
       },
       "en": {
         "title": "Mobile App",
@@ -295,7 +602,25 @@
           "iOS and Android development",
           "Integrations"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "How much does it cost to build a mobile app?",
+            "a": "It depends on the number of features, the platforms (iOS, Android or both), integrations and design complexity. The first step is always a short product description, after which we send a fixed estimate."
+          },
+          {
+            "q": "How long does it take?",
+            "a": "A simple app (MVP) takes 2-3 months, a more complex product 4-6 months. We work in stages so you can test the first version with real users as early as possible."
+          },
+          {
+            "q": "iOS and Android at the same time?",
+            "a": "Yes. In most cases we use cross-platform technology, so one codebase runs on both platforms and updates cost less."
+          },
+          {
+            "q": "Who publishes the app and who maintains it?",
+            "a": "We handle App Store and Google Play publishing under your accounts. After launch we offer a support package for updates and new features."
+          }
+        ]
       }
     },
     "digital-advertising": {
@@ -304,7 +629,7 @@
         "title": "ციფრული მარკეტინგი",
         "metaTitle": "ციფრული მარკეტინგი - ფეისბუქ, Google და TikTok რეკლამა | Grapevine",
         "metaDescription": "ფეისბუქ რეკლამა, Instagram, TikTok, LinkedIn და Google Ads კამპანიები Grapevine-ისგან — სტრატეგიით, ვიზუალითა და ყოველთვიური რეპორტინგით.",
-        "intro": "ადამიანები სულ უფრო მეტ დროს ატარებენ ციფრულ სივრცეში — ციფრული მარკეტინგი საშუალებას გაძლევთ მიაღწიოთ ზუსტად იმ ადამიანებამდე, ვინც დაინტერესებულია თქვენი პროდუქტით ან მომსახურებით.",
+        "intro": "ფეისბუქ რეკლამა, Google Ads და TikTok კამპანიები საშუალებას გაძლევთ, მიაღწიოთ ზუსტად იმ ადამიანებამდე, ვინც თქვენი პროდუქტით არის დაინტერესებული — იქ, სადაც ისინი სულ უფრო მეტ დროს ატარებენ.",
         "body": "იმისათვის, რომ თქვენი ბრენდი მხოლოდ ერთ მარკეტინგულ არხში არ იყოს წარმოდგენილი, გრეიფვაინი გთავაზობთ ციფრული რეკლამირების მომსახურებას სხვადასხვა პლატფორმაზე: Facebook/Instagram რეკლამა, TikTok Ads, LinkedIn რეკლამა და Google Ads.\n\nრატომ არის მნიშვნელოვანი ციფრული მარკეტინგი? მომხმარებელი თავად გეძებთ; შესაძლებელია რეკლამის ზუსტი დამიზნება დემოგრაფიის, ინტერესებისა და ქცევის მიხედვით; იზრდება ბრენდის ცნობადობა და გაყიდვები; მიიღწევა სწრაფი შედეგები ორგანული ზრდისგან განსხვავებით; და ყველა შედეგი გაზომვადი და ხელშესახებია.",
         "included": [
           "Meta, Google, TikTok, YouTube",
@@ -313,7 +638,25 @@
           "ბიუჯეტის ოპტიმიზაცია",
           "ანალიტიკა"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რამდენი ბიუჯეტი სჭირდება ფეისბუქ რეკლამას?",
+            "a": "დამოკიდებულია მიზანსა და აუდიტორიის ზომაზე. ვიწყებთ სატესტო ბიუჯეტით, 2-3 კვირაში ვაფასებთ შედეგს და მხოლოდ მომუშავე კამპანიებს ვზრდით. სააგენტოს მომსახურების ფასი სარეკლამო ბიუჯეტისგან განცალკევებულია."
+          },
+          {
+            "q": "რომელ არხებში უშვებთ რეკლამას?",
+            "a": "Facebook და Instagram, Google Ads (ძიება, YouTube, Display), TikTok და LinkedIn. არხებს ვირჩევთ იმის მიხედვით, სად არის თქვენი მომხმარებელი და რა უჯდება ერთი ლიდი თითოეულში."
+          },
+          {
+            "q": "როგორ ზომავთ შედეგს?",
+            "a": "ვაყენებთ ანალიტიკასა და კონვერსიების თრექინგს და ყოველთვიურად გიგზავნით ანგარიშს: დახარჯული თანხა, ლიდების რაოდენობა და ღირებულება, გაყიდვები, სადაც ეს იზომება."
+          },
+          {
+            "q": "თქვენ ამზადებთ რეკლამის ვიზუალსაც?",
+            "a": "დიახ. კამპანიის ტექსტები, სტატიკური ვიზუალები და მოკლე ვიდეოები ერთი გუნდის ხელიდან გამოდის, რათა რეკლამა და ბრენდი ერთნაირად გამოიყურებოდეს."
+          }
+        ]
       },
       "en": {
         "title": "Digital Advertising",
@@ -328,7 +671,25 @@
           "Budget optimisation",
           "Analytics"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "What budget does Facebook advertising need?",
+            "a": "It depends on the goal and the audience size. We start with a test budget, judge results after 2-3 weeks and scale only what works. Our fee is separate from the ad spend."
+          },
+          {
+            "q": "Which channels do you run?",
+            "a": "Facebook and Instagram, Google Ads (Search, YouTube, Display), TikTok and LinkedIn. We pick channels by where your customers are and what a lead costs in each."
+          },
+          {
+            "q": "How do you measure results?",
+            "a": "We set up analytics and conversion tracking and send a monthly report: spend, number and cost of leads, and sales where they can be measured."
+          },
+          {
+            "q": "Do you also produce the ad creative?",
+            "a": "Yes. Copy, static visuals and short videos come from the same team, so the ads and the brand look like one thing."
+          }
+        ]
       }
     },
     "web-development": {
@@ -345,7 +706,25 @@
           "ოპტიმიზაცია",
           "ტექნიკური მხარდაჭერა"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "რა ღირს საიტის დამზადება?",
+            "a": "ფასი დამოკიდებულია გვერდების რაოდენობაზე, დიზაინზე (შაბლონი თუ ინდივიდუალური), ენებზე, ონლაინ მაღაზიის ფუნქციებსა და ინტეგრაციებზე. მოკლე ბრიფის შემდეგ გიგზავნით ფიქსირებულ შეთავაზებას ეტაპებად."
+          },
+          {
+            "q": "რამდენ ხანში მზადდება ვებსაიტი?",
+            "a": "საპრეზენტაციო საიტი 3-5 კვირაში, ონლაინ მაღაზია ან რთული პორტალი 6-10 კვირაში. ვადაში ყველაზე მეტად კონტენტის (ტექსტი, ფოტო) დროულად მოწოდება მოქმედებს."
+          },
+          {
+            "q": "შევძლებ საიტის დამოუკიდებლად მართვას?",
+            "a": "დიახ. საიტს ვაწყობთ ისე, რომ ტექსტის, ფოტოებისა და პროდუქტების განახლება თქვენს გუნდს პროგრამისტის გარეშე შეეძლოს. გადაბარებისას ვატარებთ მოკლე სწავლებას."
+          },
+          {
+            "q": "არის საიტი SEO-სთვის მზად?",
+            "a": "დიახ. ყველა საიტი იწყება სწორი სტრუქტურით, სისწრაფით, მობილური ვერსიით, ენების მონიშვნით და ტექნიკური SEO-ს საბაზისო პარამეტრებით, რათა გაშვებისთანავე Google-მა სწორად წაიკითხოს."
+          }
+        ]
       },
       "en": {
         "title": "Web Development",
@@ -359,7 +738,25 @@
           "Optimisation",
           "Technical support"
         ],
-        "price": ""
+        "price": "",
+        "faq": [
+          {
+            "q": "How much does a website cost?",
+            "a": "It depends on the number of pages, the design (template or custom), languages, e-commerce features and integrations. After a short brief we send a fixed quote broken into stages."
+          },
+          {
+            "q": "How long does a website take?",
+            "a": "A presentation site takes 3-5 weeks, an online shop or a complex portal 6-10 weeks. The biggest factor is how quickly the content (text, photos) is supplied."
+          },
+          {
+            "q": "Will I be able to manage the site myself?",
+            "a": "Yes. We build sites so your team can update text, photos and products without a developer, and we run a short training session at handover."
+          },
+          {
+            "q": "Is the site ready for SEO?",
+            "a": "Yes. Every site starts with the right structure, speed, mobile version, language markup and basic technical SEO so Google reads it correctly from launch."
+          }
+        ]
       }
     }
   }

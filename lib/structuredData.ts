@@ -67,11 +67,15 @@ export function serviceSchema({
   locale,
   name,
   description,
+  faq,
 }: {
   slug: ServiceSlug;
   locale: Locale;
   name: string;
   description: string;
+  // The page's visible FAQ block, when the service has one. Emitted as a
+  // FAQPage node so the questions can appear under the result in Google.
+  faq?: { q: string; a: string }[];
 }) {
   const path = `/services/${slug}`;
   const url = absoluteUrl(localizedHref(path, locale));
@@ -82,7 +86,24 @@ export function serviceSchema({
     { name, path },
   ];
 
+  const faqNode =
+    faq && faq.length > 0
+      ? [
+          {
+            "@type": "FAQPage",
+            "@id": `${url}#faq`,
+            inLanguage: LANG_TAG[locale],
+            mainEntity: faq.map((item) => ({
+              "@type": "Question",
+              name: item.q,
+              acceptedAnswer: { "@type": "Answer", text: item.a },
+            })),
+          },
+        ]
+      : [];
+
   return graph([
+    ...faqNode,
     {
       "@type": "Service",
       "@id": `${url}#service`,

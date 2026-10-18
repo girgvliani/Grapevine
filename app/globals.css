@@ -215,6 +215,13 @@ body[data-menu-open] .support-widget {
   transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
 
+/* Service card FAQ (components/ServicesShowcase.tsx): hide the default
+   disclosure triangle, flip the + to × while open. */
+.svc-faq > summary::-webkit-details-marker { display: none; }
+.svc-faq[open] > summary .svc-faq-mark { transform: rotate(45deg); }
+.svc-faq .svc-faq-mark { transition: transform 0.2s ease; display: inline-block; }
+.svc-faq > summary:focus-visible { outline: 2px solid var(--purple-dark); outline-offset: 2px; }
+
 /* Cap content width on large screens and centre it (backgrounds stay full-bleed). */
 .container-cap {
   max-width: 90rem; /* 1440px — the design reference width */

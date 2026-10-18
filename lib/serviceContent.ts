@@ -15,6 +15,9 @@ export type ServiceDetail = {
   body: string;
   included: string[];
   price: string;
+  // Question/answer pairs shown under "What's included" and emitted as
+  // FAQPage structured data. Optional: services without one show no block.
+  faq?: { q: string; a: string }[];
 };
 
 const services = data.services as Record<

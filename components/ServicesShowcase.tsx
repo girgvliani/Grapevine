@@ -196,6 +196,26 @@ function ServiceCard({
             {detail?.title || `${name}${sub ? " " + sub : ""}`}
           </h1>
 
+          {/* Lead sentence under the H1 (content/services.json `intro`). It
+              carries the page's target search phrase, so it belongs in the
+              first paragraph here, not only on the homepage cards. */}
+          {detail?.intro && (
+            <p
+              style={{
+                fontSize: "1.0625rem",
+                lineHeight: 1.6,
+                fontWeight: 700,
+                color: "var(--dark)",
+                maxWidth: "46rem",
+                marginBottom: "1rem",
+                fontFamily: "var(--font-primary)",
+                animation: "svcRise 0.5s 0.17s cubic-bezier(0.16,1,0.3,1) both",
+              }}
+            >
+              {detail.intro}
+            </p>
+          )}
+
           {bodyParagraphs.map((para, i) => (
             <p
               key={i}
@@ -253,6 +273,45 @@ function ServiceCard({
               </li>
             ))}
           </ul>
+
+          {/* FAQ — the questions clients actually ask before hiring. Native
+              <details> so each answer is one tap away without any state, and
+              the copy is in the HTML for Google (FAQPage JSON-LD comes from
+              the page). */}
+          {detail?.faq && detail.faq.length > 0 && (
+            <div style={{ marginTop: "1.75rem", animation: "svcRise 0.5s 0.4s cubic-bezier(0.16,1,0.3,1) both" }}>
+              <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--orange-ink)", marginBottom: "0.75rem", fontFamily: "var(--font-primary)" }}>
+                {p.faqLabel}
+              </div>
+              <div style={{ maxWidth: "46rem", borderTop: "1px solid rgba(26,5,18,0.12)" }}>
+                {detail.faq.map((item) => (
+                  <details key={item.q} className="svc-faq" style={{ borderBottom: "1px solid rgba(26,5,18,0.12)" }}>
+                    <summary
+                      style={{
+                        cursor: "pointer",
+                        listStyle: "none",
+                        padding: "0.8rem 2rem 0.8rem 0",
+                        fontSize: "0.9375rem",
+                        fontWeight: 700,
+                        lineHeight: 1.4,
+                        color: "var(--dark)",
+                        fontFamily: "var(--font-primary)",
+                        position: "relative",
+                      }}
+                    >
+                      {item.q}
+                      <span aria-hidden="true" className="svc-faq-mark" style={{ position: "absolute", right: 0, top: "0.7rem", color: "var(--orange)", fontSize: "1.25rem", lineHeight: 1 }}>
+                        +
+                      </span>
+                    </summary>
+                    <p style={{ margin: "0 0 1rem", fontSize: "0.9375rem", lineHeight: 1.7, color: "rgba(26,5,18,0.8)", fontFamily: "var(--font-primary)" }}>
+                      {item.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
 
           {AUDIT_TOOL_SLUGS.includes(slug) && (
             <div

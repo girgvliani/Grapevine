@@ -102,6 +102,7 @@ const ka = {
     priceValue: "₾0,000",
     priceNote: "პროექტზე · სანიმუშო",
     includedLabel: "რას მოიცავს",
+    faqLabel: "ხშირად დასმული კითხვები",
     // Callout on the SEO-related service cards, linking to /seo-audit.
     auditTool: {
       text: "გინდათ, ახლავე ნახოთ, სად დგას თქვენი საიტი? გაუშვით უფასო ავტომატური SEO შემოწმება — დაახლოებით 30 წამში.",
@@ -523,6 +524,7 @@ const en: typeof ka = {
     priceValue: "₾0,000",
     priceNote: "Per Project · Sample",
     includedLabel: "What's Included",
+    faqLabel: "Frequently asked questions",
     auditTool: {
       text: "Want to see where your site stands right now? Run our free automatic SEO check — it takes about 30 seconds.",
       button: "Try the free SEO check",

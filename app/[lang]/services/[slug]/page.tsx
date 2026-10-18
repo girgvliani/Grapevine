@@ -36,6 +36,7 @@ function serviceCopy({ locale, slug }: { locale: Locale; slug: ServiceSlug }) {
   return {
     name: detail?.title || [card.name, card.sub].filter(Boolean).join(" "),
     description: detail?.metaDescription || t.servicesPage.tagline,
+    faq: detail?.faq,
   };
 }
 
@@ -70,14 +71,14 @@ export default async function ServicePage({
   const r = resolve(lang, slug);
   if (!r) notFound();
 
-  const { name, description } = serviceCopy(r);
+  const { name, description, faq } = serviceCopy(r);
 
   return (
     <main>
-      {/* Service + BreadcrumbList, layered on the Organization/WebSite graph
-          the root layout already emits. */}
+      {/* Service + BreadcrumbList (+ FAQPage when the service has questions),
+          layered on the Organization/WebSite graph the root layout already emits. */}
       <JsonLd
-        data={serviceSchema({ slug: r.slug, locale: r.locale, name, description })}
+        data={serviceSchema({ slug: r.slug, locale: r.locale, name, description, faq })}
       />
       <ServicesShowcase initialOpen={r.slug} />
       <Footer />
