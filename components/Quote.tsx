@@ -67,7 +67,10 @@ export default function Quote() {
             muted
             loop
             playsInline
-            preload="auto"
+            // "auto" pulled the whole 880 KB clip on page load, on phones too.
+            // The observer above calls play() when the section scrolls into
+            // view, which fetches it then.
+            preload="metadata"
             style={{
               width: "100%",
               height: "100%",

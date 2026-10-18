@@ -23,9 +23,12 @@ function StepSlider({
   onSelect: (i: number) => void;
   labels: string[];
 }) {
-  const segment = "1rem";
-  const ball = "0.625rem";
-  const height = "0.875rem";
+  // Each dot is its own button; 1.5rem (24px) is the minimum tap target
+  // Lighthouse and WCAG 2.5.8 accept. The pill grew from 14px to 24px tall
+  // for the same reason.
+  const segment = "1.75rem";
+  const ball = "0.875rem";
+  const height = "1.75rem";
 
   return (
     <div

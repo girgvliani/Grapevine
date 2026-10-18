@@ -134,7 +134,7 @@ function ServiceCard({
 
         <div
           style={{
-            color: "var(--orange)",
+            color: "var(--orange-ink)",
             fontSize: open ? "1rem" : "0.875rem",
             fontWeight: 700,
             letterSpacing: "0.12em",
@@ -153,7 +153,7 @@ function ServiceCard({
               fontSize: "0.5625rem",
               letterSpacing: "0.16em",
               textTransform: "uppercase",
-              color: "rgba(26,5,18,0.42)",
+              color: "rgba(26,5,18,0.65)",
               marginTop: "0.6rem",
               fontFamily: "var(--font-primary)",
             }}
@@ -165,7 +165,7 @@ function ServiceCard({
         {/* Price (open only, when set) */}
         {open && price && (
           <div style={{ marginTop: "1.25rem", animation: "svcRise 0.5s 0.16s cubic-bezier(0.16,1,0.3,1) both" }}>
-            <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(26,5,18,0.45)", marginBottom: "0.25rem", fontFamily: "var(--font-primary)" }}>
+            <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(26,5,18,0.65)", marginBottom: "0.25rem", fontFamily: "var(--font-primary)" }}>
               {p.startingFrom}
             </div>
             <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: "1.75rem", color: "var(--dark)", lineHeight: 1 }}>
@@ -213,7 +213,7 @@ function ServiceCard({
             </p>
           ))}
 
-          <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--orange)", margin: "1.25rem 0 0.75rem", fontFamily: "var(--font-primary)", animation: "svcRise 0.5s 0.26s cubic-bezier(0.16,1,0.3,1) both" }}>
+          <div style={{ fontSize: "0.5625rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--orange-ink)", margin: "1.25rem 0 0.75rem", fontFamily: "var(--font-primary)", animation: "svcRise 0.5s 0.26s cubic-bezier(0.16,1,0.3,1) both" }}>
             {p.includedLabel}
           </div>
           <ul

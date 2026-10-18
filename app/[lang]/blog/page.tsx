@@ -24,8 +24,15 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/blog",
     locale,
-    title: locale === "ka" ? "ბლოგი - Grapevine" : "Blog - Grapevine",
-    description: t.blog.intro,
+    title:
+      locale === "ka"
+        ? "ბლოგი: მარკეტინგი, ბრენდინგი და SEO ქართული ბიზნესისთვის - Grapevine"
+        : "Blog: Marketing, Branding and SEO for Georgian Business - Grapevine",
+    description:
+      locale === "ka"
+        ? `პრაქტიკული სტატიები მარკეტინგზე, ბრენდინგზე, SEO-სა და რეკლამაზე ქართული ბიზნესისთვის. ${t.blog.intro}`
+        : `Practical articles on marketing, branding, SEO and advertising for businesses in Georgia. ${t.blog.intro}`,
+    ogTitle: t.nav?.blog ?? (locale === "ka" ? "ბლოგი" : "Blog"),
   });
 }
 

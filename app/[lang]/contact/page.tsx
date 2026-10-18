@@ -14,11 +14,15 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/contact",
     locale,
-    title: locale === "ka" ? "კონტაქტი - Grapevine" : "Contact - Grapevine",
+    title:
+      locale === "ka"
+        ? "დაგვიკავშირდით: მარკეტინგული სააგენტო თბილისში - Grapevine"
+        : "Contact Grapevine: Marketing Agency in Tbilisi",
     description:
       locale === "ka"
-        ? "გვითხარით, სად არის თქვენი ბრენდი აღრეული. ჩვენ ვიპოვით ძაფს და გეგმას მის გასასწორებლად."
-        : "Tell us where your brand is tangled. We'll find the thread and a plan to pull it straight.",
+        ? "info@grapevine.ge, +995 599 495 574. გვითხარით, სად არის თქვენი ბრენდი აღრეული. ჩვენ ვიპოვით ძაფს და გეგმას მის გასასწორებლად."
+        : "info@grapevine.ge, +995 599 495 574. Tell us where your brand is tangled. We'll find the thread and a plan to pull it straight.",
+    ogTitle: locale === "ka" ? "კონტაქტი" : "Contact",
   });
 }
 

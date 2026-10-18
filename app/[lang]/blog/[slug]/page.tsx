@@ -28,7 +28,10 @@ export async function generateMetadata({
     internalPath: `/blog/${slug}`,
     locale,
     title: `${post.title} - Grapevine`,
+    // pageMetadata trims this to ~155 characters; the first post's excerpt is
+    // 370 and Google was cutting it mid-sentence.
     description: post.excerpt || post.title,
+    ogTitle: post.title,
     // Posts are independent rows per (lang, slug) — no matching translation
     // exists at this slug in the other locale, so no hreflang alternate.
     singleLocale: true,

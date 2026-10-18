@@ -45,7 +45,10 @@ export default function Hero() {
           inset: 0,
           zIndex: 0,
           overflow: "hidden",
-          animation: `heroFade 1.2s ${EASE} 0.2s both`,
+          // No entrance fade on the background: at opacity 0 the poster can't
+          // count as the Largest Contentful Paint, so Lighthouse measured the
+          // 120px nav logo instead, two seconds late. The label and copy
+          // still fade up; the poster paints with the first frame.
         }}
       >
         {!mounted ? (

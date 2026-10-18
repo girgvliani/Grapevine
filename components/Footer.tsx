@@ -47,7 +47,7 @@ export default function Footer() {
           fontSize: "0.6875rem",
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "rgba(26,5,18,0.45)",
+          color: "rgba(26,5,18,0.62)",
           fontFamily: "var(--font-primary)",
           marginBottom: "1rem",
         }}
@@ -239,7 +239,7 @@ export default function Footer() {
           borderTop: "1px solid rgba(26,5,18,0.1)",
           textAlign: "center",
           fontSize: "0.6875rem",
-          color: "rgba(26,5,18,0.4)",
+          color: "rgba(26,5,18,0.62)",
           fontFamily: "var(--font-primary)",
           letterSpacing: "0.08em",
           position: "relative",

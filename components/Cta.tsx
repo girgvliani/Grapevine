@@ -7,6 +7,7 @@ import { useLang } from "./LanguageProvider";
 import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
+import { readLeadAttribution } from "@/lib/leadAttribution";
 
 function FloatingField({
   label,
@@ -30,7 +31,8 @@ function FloatingField({
   const [focused, setFocused] = useState(false);
 
   const borderColor = focused ? "var(--purple-dark)" : "rgba(26,5,18,0.25)";
-  const labelColor = focused ? "var(--purple-dark)" : "rgba(26,5,18,0.5)";
+  // 0.62 alpha on cream is the lightest that still passes 4.5:1 for 11px text.
+  const labelColor = focused ? "var(--purple-dark)" : "rgba(26,5,18,0.62)";
 
   const sharedStyle: React.CSSProperties = {
     width: "100%",
@@ -131,7 +133,8 @@ export default function Cta({
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, turnstileToken: token }),
+        // Which ad / campaign brought them, if any — sent only with the form.
+        body: JSON.stringify({ ...form, turnstileToken: token, attribution: readLeadAttribution() }),
       });
       if (!res.ok) throw new Error("request_failed");
       setStatus("success");
@@ -331,7 +334,7 @@ export default function Cta({
               style={{
                 textAlign: "center",
                 fontSize: "0.75rem",
-                color: "rgba(26,5,18,0.4)",
+                color: "rgba(26,5,18,0.62)",
                 fontFamily: "var(--font-primary)",
                 letterSpacing: "0.1em",
               }}
@@ -355,7 +358,7 @@ export default function Cta({
                   <path d="M1 5L9 10L17 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.email}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.62)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.email}</div>
                   <a href="mailto:info@grapevine.ge" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none", borderBottom: "1px solid rgba(26,5,18,0.2)" }}>
                     info@grapevine.ge
                   </a>
@@ -368,7 +371,7 @@ export default function Cta({
                   <path d="M3 2h4l1.5 4-2 1.5a10 10 0 004 4L12 9.5l4 1.5v4a1 1 0 01-1 1C6 16 2 10 2 3a1 1 0 011-1z" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.phone}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.62)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.phone}</div>
                   <a href="tel:+995599495574" style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)", textDecoration: "none" }}>
                     +995 599 495 574
                   </a>
@@ -382,7 +385,7 @@ export default function Cta({
                   <path d="M2 16c0-3 3-5 7-5s7 2 7 5" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" fill="none" opacity="0.5" />
                 </svg>
                 <div>
-                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.5)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.62)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
                   <div style={{ display: "flex", gap: "0.375rem" }}>
                     {[
                       { label: "f", href: "https://www.facebook.com/share/1EK3dwXeqv/?mibextid=wwXIfr" },

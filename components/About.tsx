@@ -129,7 +129,8 @@ export default function About() {
             display: "inline-flex",
             alignItems: "center",
             gap: "0.375rem",
-            color: "#902793",
+            // Light purple on the dark panel: the dark purple read at 2.8:1.
+            color: "var(--purple-light)",
             fontSize: "clamp(1rem, 1.7vw, 1.5625rem)",
             letterSpacing: "0",
             textTransform: "uppercase",

@@ -6,6 +6,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref } from "@/lib/routing";
+import { onConsentChange } from "@/lib/leadAttribution";
 
 // Cookie consent, "basic" mode: Google Analytics / Tag Manager are not loaded
 // AT ALL until the visitor accepts — no script, no cookies, no pings. Rejecting
@@ -72,6 +73,7 @@ export default function CookieConsent({ gaId, gtmId }: { gaId?: string; gtmId?: 
       /* storage blocked — the choice still applies for this page view */
     }
     setOpen(false);
+    onConsentChange(next);
     if (next === "denied" && choice === "granted") {
       // Already-running Google scripts can't be unloaded, so drop their
       // cookies and reload into a clean, analytics-free page.

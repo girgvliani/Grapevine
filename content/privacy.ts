@@ -58,6 +58,20 @@ const ka: Policy = {
       needsConsent: false,
     },
     {
+      name: "gv-lead-attribution",
+      provider: "Grapevine (ბრაუზერის session storage)",
+      purpose: "იმახსოვრებს, რომელი რეკლამით ან კამპანიის ბმულით მოხვედით. იგზავნება მხოლოდ საკონტაქტო ფორმასთან ერთად.",
+      duration: "ბრაუზერის ჩანართის დახურვამდე",
+      needsConsent: false,
+    },
+    {
+      name: "gv-lead-attribution",
+      provider: "Grapevine (ბრაუზერის local storage)",
+      purpose: "იგივე, ოღონდ შემდეგ ვიზიტებზეც ინახება, რათა მოგვიანებით გამოგზავნილი ფორმაც სწორ კამპანიას მიეკუთვნოს.",
+      duration: "90 დღე",
+      needsConsent: true,
+    },
+    {
       name: "_ga",
       provider: "Google Analytics",
       purpose: "განასხვავებს ვიზიტორებს საიტის სტატისტიკისთვის.",
@@ -88,7 +102,7 @@ const ka: Policy = {
       blocks: [
         {
           type: "p",
-          text: "საკონტაქტო ფორმა. როცა ფორმას აგზავნით, ვიღებთ თქვენს ელ.ფოსტას, თემასა და შეტყობინებას. მათ ვიყენებთ მხოლოდ თქვენს მოთხოვნაზე საპასუხოდ. შეტყობინება ჩვენს ელ.ფოსტაზე მოდის და ინახება ჩვენს CRM სისტემაში (კლიენტებთან ურთიერთობის სისტემა), როგორც ახალი კონტაქტი.",
+          text: "საკონტაქტო ფორმა. როცა ფორმას აგზავნით, ვიღებთ თქვენს ელ.ფოსტას, თემასა და შეტყობინებას. მათ ვიყენებთ მხოლოდ თქვენს მოთხოვნაზე საპასუხოდ. შეტყობინება ჩვენს ელ.ფოსტაზე მოდის და ინახება ჩვენს CRM სისტემაში (კლიენტებთან ურთიერთობის სისტემა), როგორც ახალი კონტაქტი. თუ საიტზე ჩვენი რეკლამის ან კამპანიის ბმულით მოხვედით, ფორმასთან ერთად ვინახავთ ისიც, თუ რომელი იყო ის (კამპანიის სახელი, გვერდი, რომელზეც შემოხვედით, და საიტი, საიდანაც გადმოხვედით), რათა ვიცოდეთ, რომელი რეკლამა მუშაობს. ეს ინფორმაცია მხოლოდ ფორმასთან ერთად იგზავნება.",
         },
         {
           type: "p",
@@ -236,6 +250,20 @@ const en: Policy = {
       needsConsent: false,
     },
     {
+      name: "gv-lead-attribution",
+      provider: "Grapevine (browser session storage)",
+      purpose: "Remembers which ad or campaign link brought you here. Only sent together with the contact form.",
+      duration: "Until you close the tab",
+      needsConsent: false,
+    },
+    {
+      name: "gv-lead-attribution",
+      provider: "Grapevine (browser local storage)",
+      purpose: "The same, kept across visits so a form you send later is still credited to the right campaign.",
+      duration: "90 days",
+      needsConsent: true,
+    },
+    {
       name: "_ga",
       provider: "Google Analytics",
       purpose: "Distinguishes visitors for site statistics.",
@@ -266,7 +294,7 @@ const en: Policy = {
       blocks: [
         {
           type: "p",
-          text: "Contact form. When you send the form we receive your email address, subject and message, and use them only to answer your enquiry. The message arrives in our inbox and is saved in our CRM (customer relationship system) as a new contact.",
+          text: "Contact form. When you send the form we receive your email address, subject and message, and use them only to answer your enquiry. The message arrives in our inbox and is saved in our CRM (customer relationship system) as a new contact. If you reached the site through one of our ads or campaign links, we also note which one (the campaign name, the page you landed on and the site that referred you) so we know which advertising works. This is only sent together with the form.",
         },
         {
           type: "p",

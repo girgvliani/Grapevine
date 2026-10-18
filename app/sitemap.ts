@@ -16,9 +16,20 @@ const ROUTES: string[] = [
   ...SERVICE_SLUGS.map((slug) => `/services/${slug}`),
 ];
 
+// When each static page's content last changed. Google uses lastmod to decide
+// what to recrawl, so keep it honest: bump a route's date when its copy or
+// metadata changes, not on every deploy. Routes not listed fall back to
+// SITE_LAST_MODIFIED (the last site-wide metadata change).
+const SITE_LAST_MODIFIED = "2026-10-19"; // titles, descriptions and share images reworked
+const ROUTE_LAST_MODIFIED: Record<string, string> = {
+  "/privacy": "2026-09-28",
+  "/seo-audit": "2026-09-28",
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = ROUTES.map((route) => ({
     url: absoluteUrl(localizedHref(route, "ka")),
+    lastModified: new Date(ROUTE_LAST_MODIFIED[route] ?? SITE_LAST_MODIFIED),
     alternates: {
       languages: {
         ka: absoluteUrl(localizedHref(route, "ka")),

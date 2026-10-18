@@ -6,9 +6,10 @@ import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import SupportWidget from "@/components/SupportWidget";
 import CookieConsent from "@/components/CookieConsent";
+import LeadAttributionCapture from "@/components/LeadAttributionCapture";
 import JsonLd from "@/components/JsonLd";
 import { LanguageProvider } from "@/components/LanguageProvider";
-import { LANGUAGES, type Lang } from "@/lib/i18n";
+import { LANGUAGES, translations, type Lang } from "@/lib/i18n";
 import { isLocale } from "@/lib/routing";
 import { pageMetadata } from "@/lib/seo";
 import { siteSchema } from "@/lib/structuredData";
@@ -50,6 +51,8 @@ export async function generateMetadata({
       locale === "ka"
         ? "Grapevine - მარკეტინგული და კრეატიული სააგენტო თბილისში 2014 წლიდან: ბრენდინგი, ციფრული მარკეტინგი, SEO, ვებ და მობილური დეველოპმენტი."
         : "Grapevine is a creative agency in Tbilisi, since 2014: branding, digital marketing, SEO, web and mobile development. We untangle the mess.",
+    // The share card keeps the hero label, as the previous homepage card did.
+    ogTitle: translations[locale].hero.label,
   });
 }
 
@@ -79,6 +82,12 @@ export default async function RootLayout({
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
       <body>
+        {/* Mersad is self-hosted via @font-face in globals.css, so the browser
+            only discovers it after the CSS arrives. Preloading the two weights
+            every page paints with (headings and body) gets them in flight with
+            the HTML. React hoists these into <head>. */}
+        <link rel="preload" href="/fonts/Mersad%20Black.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Mersad%20Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         {/* Site-wide identity graph (Organization + WebSite). Service pages add
             their own Service/BreadcrumbList nodes on top of this. */}
         <JsonLd data={siteSchema(lang)} />
@@ -89,6 +98,7 @@ export default async function RootLayout({
           {children}
           <SupportWidget />
           <CookieConsent gaId={gaId} gtmId={gtmId} />
+          <LeadAttributionCapture />
         </LanguageProvider>
       </body>
     </html>

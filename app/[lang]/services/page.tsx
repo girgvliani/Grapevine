@@ -13,11 +13,20 @@ export async function generateMetadata({
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "ka";
   const t = translations[locale];
+  // Search-facing: the hub page should rank for "marketing services" queries,
+  // not for the word "Services". The visible heading stays as designed.
   return pageMetadata({
     internalPath: "/services",
     locale,
-    title: locale === "ka" ? "სერვისები - Grapevine" : "Services - Grapevine",
-    description: t.servicesPage.tagline,
+    title:
+      locale === "ka"
+        ? "მარკეტინგული სერვისები თბილისში - Grapevine"
+        : "Marketing Services in Tbilisi - Grapevine",
+    description:
+      locale === "ka"
+        ? `ბრენდინგი, ციფრული რეკლამა, SEO, ვიდეო პროდაქშენი, ვებ და მობილური დეველოპმენტი, CRM და PR ერთი სააგენტოსგან თბილისში. ${t.servicesPage.tagline}`
+        : `Branding, digital advertising, SEO, video production, web and mobile development, CRM and PR from one agency in Tbilisi. ${t.servicesPage.tagline}`,
+    ogTitle: t.nav?.services ?? (locale === "ka" ? "სერვისები" : "Services"),
   });
 }
 

@@ -43,6 +43,9 @@
 :root {
   --cream: #FFFAEC;
   --orange: #EF583A;
+  /* Darker orange for small text on the yellow service cards: the brand
+     orange reads at 3:1 there, this at 5:1. Headings keep --orange. */
+  --orange-ink: #B8381A;
   --purple-light: #AFA9FF;
   --purple-dark: #902793;
   --dark: #1A0512;

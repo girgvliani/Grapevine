@@ -63,7 +63,7 @@ export default function PrivacyPolicy() {
               </thead>
               <tbody>
                 {policy.cookies.map((row) => (
-                  <tr key={row.name}>
+                  <tr key={`${row.name}|${row.provider}`}>
                     <td style={{ ...cell, fontWeight: 700, whiteSpace: "nowrap" }}>{row.name}</td>
                     <td style={cell}>{row.provider}</td>
                     <td style={cell}>{row.purpose}</td>

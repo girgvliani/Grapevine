@@ -16,8 +16,15 @@ export async function generateMetadata({
   return pageMetadata({
     internalPath: "/portfolio",
     locale,
-    title: locale === "ka" ? "პორტფოლიო - Grapevine" : "Portfolio - Grapevine",
-    description: t.portfolioPage.intro,
+    title:
+      locale === "ka"
+        ? "პორტფოლიო: ბრენდინგისა და მარკეტინგის ნამუშევრები - Grapevine"
+        : "Portfolio: Branding and Marketing Work - Grapevine",
+    description:
+      locale === "ka"
+        ? "Grapevine-ის შესრულებული პროექტები: ბრენდინგი, კამპანიები, ვებსაიტები და ვიდეო ქართული და საერთაშორისო ბრენდებისთვის."
+        : "Selected projects by Grapevine: branding, campaigns, websites and video for Georgian and international brands.",
+    ogTitle: t.nav?.portfolio ?? (locale === "ka" ? "პორტფოლიო" : "Portfolio"),
   });
 }
 
