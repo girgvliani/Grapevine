@@ -213,6 +213,8 @@ const ka = {
   },
   cta: {
     heading: "მოდი ვისაუბროთ ქაოსზე.",
+    // H1 of /contact (SEO review, 26 Oct 2026); the homepage block keeps `heading`.
+    pageHeading: "დაგვიკავშირდით",
     fields: { email: "ელ.ფოსტა", subject: "თემა", message: "შეტყობინება" },
     placeholders: {
       email: "შეიყვანეთ ელ.ფოსტა",
@@ -253,7 +255,7 @@ const ka = {
   },
   blog: {
     eyebrow: "Grapevine — ბლოგი",
-    heading: "ბლოგი",
+    heading: "მარკეტინგის ბლოგი",
     intro: "აზრები სტრატეგიაზე, ბრენდინგსა და იმაზე, თუ როგორ ვზრდით ბრენდებს.",
     empty: "პოსტები მალე გამოქვეყნდება.",
     readMore: "სრულად ნახვა",
@@ -636,6 +638,7 @@ const en: typeof ka = {
   },
   cta: {
     heading: "Let's Talk About the Chaos.",
+    pageHeading: "Contact Us",
     fields: { email: "Email", subject: "Subject", message: "Message" },
     placeholders: {
       email: "Enter Your Email",
@@ -676,7 +679,7 @@ const en: typeof ka = {
   },
   blog: {
     eyebrow: "Grapevine — Blog",
-    heading: "Blog",
+    heading: "Marketing Blog",
     intro: "Thoughts on strategy, branding, and how we grow brands.",
     empty: "Posts are coming soon.",
     readMore: "Read more",

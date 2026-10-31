@@ -7,7 +7,6 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY, TABLET_QUERY, SHORT_QUERY, WIDE_QUERY } from "@/lib/useMediaQuery";
 import { CLIENT_LOGOS, type ClientLogo } from "./assets/clientLogos";
 import { BEHANCE_URL } from "./BehanceLink";
-import { mtavruli } from "@/lib/i18n";
 
 // Where a tile sits in the scattered grid. Purely positional — a slot knows
 // nothing about which logo lands in it, so reordering CLIENT_LOGOS leaves
@@ -129,7 +128,7 @@ export default function Partners() {
         marginBottom: "2.5rem",
       }}
     >
-      {mtavruli(t.partners.heading)}
+      {t.partners.heading}
     </h2>
   );
 

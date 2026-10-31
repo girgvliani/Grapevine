@@ -68,7 +68,7 @@ export default function Services() {
           marginBottom: "clamp(1rem, 3vh, 2rem)",
         }}
       >
-        {mtavruli(t.services.heading)}
+        {t.services.heading}
       </h2>
       <SocialCards cards={cards} labels={{ previous: t.services.previous, next: t.services.next }} />
     </section>

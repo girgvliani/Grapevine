@@ -7,7 +7,6 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY, WIDE_QUERY, HUGE_QUERY } from "@/lib/useMediaQuery";
 import { PORTFOLIO_PROJECTS, type PortfolioProject } from "./portfolioConfig";
 import { CarouselControls } from "./ui/carousel-controls";
-import { mtavruli } from "@/lib/i18n";
 import { localizedHref } from "@/lib/routing";
 
 type CardSize = { width: string; height: string; visual: string };
@@ -178,7 +177,7 @@ export default function Portfolio() {
     <section id="work" style={{ background: "var(--dark)", overflow: "hidden", paddingBottom: "5rem" }}>
       <div style={{ padding: "5.25rem clamp(1.5rem, 7.6vw, 6.875rem) 2.5rem" }}>
         <h2 style={{ fontSize: "clamp(2rem, 4.44vw, 4rem)", fontWeight: 900, letterSpacing: "0", color: "var(--orange)", fontFamily: "var(--font-heading)" }}>
-          {mtavruli(t.portfolio.heading)}
+          {t.portfolio.heading}
         </h2>
       </div>
 

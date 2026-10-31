@@ -24,6 +24,13 @@ export async function generateMetadata({
   const locale = isLocale(lang) ? lang : "ka";
   const post = await getPublishedPostBySlug(locale, slug);
   if (!post) return {};
+  // Posts are independent rows per (lang, slug). When the team publishes
+  // the same slug in both languages (web-development, pr-services…) the
+  // pair gets ka / en / x-default hreflang like every other page; a post
+  // with no twin keeps a self-referencing canonical only, because claiming
+  // an alternate that does not exist is what Search Console flags.
+  const other: Locale = locale === "ka" ? "en" : "ka";
+  const twin = await getPublishedPostBySlug(other, slug);
   return pageMetadata({
     internalPath: `/blog/${slug}`,
     locale,
@@ -32,9 +39,7 @@ export async function generateMetadata({
     // 370 and Google was cutting it mid-sentence.
     description: post.excerpt || post.title,
     ogTitle: post.title,
-    // Posts are independent rows per (lang, slug) — no matching translation
-    // exists at this slug in the other locale, so no hreflang alternate.
-    singleLocale: true,
+    singleLocale: !twin,
   });
 }
 

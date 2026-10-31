@@ -9,7 +9,6 @@ import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import BehanceLink from "./BehanceLink";
 import { openCookieSettings } from "./CookieConsent";
-import { mtavruli } from "@/lib/i18n";
 import { localizedHref } from "@/lib/routing";
 
 export default function Footer() {
@@ -36,9 +35,9 @@ export default function Footer() {
         textAlign: isMobile ? "right" : "left",
       }}
     >
-      {mtavruli(t.footer.taglineLine1)}
+      {t.footer.taglineLine1}
       <br />
-      {mtavruli(t.footer.taglineLine2)}
+      {t.footer.taglineLine2}
     </p>
   );
 

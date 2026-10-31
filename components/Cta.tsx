@@ -6,7 +6,6 @@ import birdImg from "./assets/Component 9.png";
 import { useLang } from "./LanguageProvider";
 import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
-import { mtavruli } from "@/lib/i18n";
 import { readLeadAttribution } from "@/lib/leadAttribution";
 import { trackEvent } from "@/lib/analytics";
 
@@ -207,7 +206,7 @@ export default function Cta({
           marginBottom: isMobile ? 0 : "2.5rem",
         }}
       >
-        {mtavruli(t.cta.heading)}
+        {standalone ? t.cta.pageHeading : t.cta.heading}
       </Heading>
     </>
   );

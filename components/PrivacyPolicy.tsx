@@ -3,7 +3,6 @@
 import type { CSSProperties } from "react";
 import { useLang } from "./LanguageProvider";
 import { openCookieSettings } from "./CookieConsent";
-import { mtavruli } from "@/lib/i18n";
 import { PRIVACY, type PolicyBlock } from "@/content/privacy";
 
 // Client component (like the other pages) so the header language toggle swaps
@@ -128,7 +127,7 @@ export default function PrivacyPolicy() {
               maxWidth: "60rem",
             }}
           >
-            {mtavruli(policy.title)}
+            {policy.title}
           </h1>
           <p style={{ marginTop: "1.5rem", fontSize: "0.8125rem", color: "rgba(255,250,236,0.55)", fontFamily: "var(--font-primary)" }}>
             {policy.updatedLabel} {policy.updated}

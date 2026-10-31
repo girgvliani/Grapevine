@@ -6,7 +6,6 @@ import vectorImg from "./assets/Vector.png";
 import logoOrange from "./assets/logoorange.svg";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
-import { mtavruli } from "@/lib/i18n";
 
 export default function About() {
   const { t } = useLang();
@@ -57,7 +56,7 @@ export default function About() {
           transition: "all 0.8s ease 0.1s",
         }}
       >
-        {mtavruli(t.about.heading)}
+        {t.about.heading}
       </h2>
 
       {/* Body */}

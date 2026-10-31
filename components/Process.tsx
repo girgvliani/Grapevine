@@ -242,7 +242,7 @@ export default function Process() {
                 marginBottom: "1.75rem",
               }}
             >
-              {mtavruli(t.process.benefitsHeading)}
+              {t.process.benefitsHeading}
             </h3>
 
             {t.process.benefits.map((group) => (
@@ -383,7 +383,7 @@ export default function Process() {
                   fontFamily: "var(--font-heading)",
                   marginBottom: "2.5rem",
                 }}>
-                  {mtavruli(t.process.benefitsHeading)}
+                  {t.process.benefitsHeading}
                 </h3>
 
                 {t.process.benefits.map((group) => (

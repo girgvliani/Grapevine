@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import Link from "next/link";
 import { useLang } from "./LanguageProvider";
 import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
-import { mtavruli } from "@/lib/i18n";
 import { localizedHref } from "@/lib/routing";
 import { trackEvent } from "@/lib/analytics";
 import type {
@@ -209,7 +208,7 @@ export default function SeoAudit() {
               color: "var(--orange)",
             }}
           >
-            {mtavruli(s.heading)}
+            {s.heading}
           </h1>
           <p
             style={{
@@ -364,7 +363,7 @@ function Summary({ state }: { state: AuditState }) {
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1.5rem 2rem" }}>
         <Gauge value={overall} size={132} pending={state.phase === "running"} />
         <div style={{ flex: "1 1 14rem", minWidth: 0 }}>
-          <h2 style={{ ...cardHeading, marginBottom: "0.5rem" }}>{mtavruli(s.scores.overall)}</h2>
+          <h2 style={{ ...cardHeading, marginBottom: "0.5rem" }}>{s.scores.overall}</h2>
           {state.page && (
             <p style={{ fontSize: "0.8125rem", color: MUTED, overflowWrap: "anywhere" }}>
               {s.audited} {state.page.finalUrl}
@@ -503,7 +502,7 @@ function Checks({ checks }: { checks: Check[] }) {
           <section key={status} style={card}>
             <h2 style={{ ...cardHeading, display: "flex", alignItems: "center", gap: "0.625rem" }}>
               <StatusDot status={status} size={12} />
-              {mtavruli(s.groups[status])}
+              {s.groups[status]}
               <span style={{ fontSize: "0.875rem", color: MUTED, fontWeight: 400 }}>({group.length})</span>
             </h2>
             <CheckList checks={group} showFix={status !== "info"} />
@@ -515,7 +514,7 @@ function Checks({ checks }: { checks: Check[] }) {
           <details>
             <summary style={{ ...cardHeading, marginBottom: 0, display: "flex", alignItems: "center", gap: "0.625rem", listStyle: "none" }}>
               <StatusDot status="pass" size={12} />
-              {mtavruli(fill(s.groups.pass, { n: passed.length }))}
+              {fill(s.groups.pass, { n: passed.length })}
               <span aria-hidden="true" style={{ marginLeft: "auto", fontSize: "1rem", color: MUTED }}>+</span>
             </summary>
             <div style={{ marginTop: "1rem" }}>
@@ -577,7 +576,7 @@ function Speed({ state }: { state: AuditState }) {
   const s = useLang().t.seoAudit;
   return (
     <section style={card}>
-      <h2 style={cardHeading}>{mtavruli(s.speed.heading)}</h2>
+      <h2 style={cardHeading}>{s.speed.heading}</h2>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(17rem, 1fr))", gap: "1.5rem 2.5rem" }}>
         {STRATEGIES.map((strategy) => (
           <SpeedColumn
@@ -713,7 +712,7 @@ function AuditCta({ href }: { href: string }) {
       }}
     >
       <div style={{ flex: "1 1 20rem", minWidth: 0 }}>
-        <h2 style={{ ...cardHeading, color: "var(--white)", marginBottom: "0.5rem" }}>{mtavruli(s.cta.heading)}</h2>
+        <h2 style={{ ...cardHeading, color: "var(--white)", marginBottom: "0.5rem" }}>{s.cta.heading}</h2>
         <p style={{ fontSize: "0.9rem", lineHeight: 1.7, maxWidth: "40rem" }}>{s.cta.body}</p>
       </div>
       <Link

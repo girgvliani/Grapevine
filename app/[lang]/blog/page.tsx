@@ -72,12 +72,11 @@ export default async function BlogPage({ params }: { params: Promise<{ lang: str
               fontWeight: 900,
               fontSize: "clamp(2.75rem,7vw,6rem)",
               lineHeight: 0.95,
-              textTransform: "uppercase",
               letterSpacing: "-0.02em",
               color: "var(--orange)",
             }}
           >
-            {mtavruli(t.blog.heading)}
+            {t.blog.heading}
           </h1>
           <p
             style={{
