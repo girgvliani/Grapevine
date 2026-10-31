@@ -174,9 +174,11 @@ export default function Cta({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [turnstileToken]);
 
-  // On /contact this heading is the page's H1; on the homepage it's one
-  // section among many, and the hero owns the H1.
-  const Heading = standalone ? "h1" : "h2";
+  // On /contact this heading is the page's H1. Everywhere else the block is
+  // a repeated call to action, not a section of the page's content, so it
+  // renders as a <p> and stays out of the heading outline (SEO review,
+  // 26 Oct 2026).
+  const Heading = standalone ? "h1" : "p";
 
   const heading = (
     <>

@@ -126,14 +126,18 @@ export default function Hero() {
         <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)" }} />
       </div>
 
-      {/* Label — top left. It's the page's only real text heading (the
-          headline lives inside the video), so it doubles as the home H1;
-          styled to look exactly like the small label it always was. */}
-      <h1
+      {/* Top left: the page's H1 (search-facing, "Grapevine - marketing
+          agency") with the slogan as a plain line under it. The headline
+          proper lives inside the video, so both are styled as the small
+          label this corner always carried. */}
+      <div
         style={{
           position: "absolute",
           top: "clamp(5rem, 10vh, 7rem)",
           left: "clamp(1.5rem, 5vw, 2.5rem)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
           fontSize: "0.6875rem",
           fontWeight: 400,
           lineHeight: "normal",
@@ -145,8 +149,9 @@ export default function Hero() {
           animation: `heroFadeUp 0.8s ${EASE} 0.4s both`,
         }}
       >
-        {t.hero.label}
-      </h1>
+        <h1 style={{ font: "inherit", letterSpacing: "inherit", margin: 0 }}>{t.hero.h1}</h1>
+        <p style={{ margin: 0, opacity: 0.85 }}>{t.hero.label}</p>
+      </div>
 
       {/* Description — bottom left */}
       <p

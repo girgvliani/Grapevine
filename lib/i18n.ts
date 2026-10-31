@@ -40,6 +40,8 @@ const ka = {
     cta: "მიზნამდე\nერთი ნაბიჯია!",
   },
   hero: {
+    // The page H1 (search-facing); the label below it is the slogan.
+    h1: "Grapevine - მარკეტინგული სააგენტო",
     label: "კრეატიული სააგენტო - 2014 წლიდან",
     description:
       "Grapevine პოულობს თქვენი ბრენდის მთავარ კვანძს და გეხმარებათ მის გახსნაში - ყველანაირი ქაოსის გარეშე.",
@@ -229,6 +231,7 @@ const ka = {
     taglineLine1: "ბრენდებისთვის, რომელთაც",
     taglineLine2: "სურთ ზრდა",
     quickLinks: "სწრაფი ბმულები",
+    contact: "კონტაქტი",
     links: { services: "სერვისები", portfolio: "პორტფოლიო", contact: "კონტაქტი" },
     button: "ამოხსენი ქაოსი",
     copyright: "საავტორო უფლებები © 2026 | ყველა უფლება დაცულია",
@@ -467,6 +470,7 @@ const en: typeof ka = {
     cta: "One Step\nFrom Your Goal!",
   },
   hero: {
+    h1: "Grapevine - Marketing Agency",
     label: "Creative Agency - Since 2014",
     description:
       "Grapevine finds your brand's main knot and helps you untangle it - without any chaos.",
@@ -650,6 +654,7 @@ const en: typeof ka = {
     taglineLine1: "For Brands That",
     taglineLine2: "Want to Grow",
     quickLinks: "Quick Links",
+    contact: "Contact",
     links: { services: "Services", portfolio: "Portfolio", contact: "Contact" },
     button: "Untangle the Mess",
     copyright: "Copyright © 2026 | All Rights Reserved",

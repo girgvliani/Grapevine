@@ -533,9 +533,10 @@ export default function ServicesShowcase({
         </div>
       </div>
 
-      {/* CTA band */}
+      {/* CTA band. A <p>, not an H2: it is the same call to action on every
+          service page and was polluting each page's heading outline. */}
       <section style={{ padding: "5rem clamp(1.5rem,7.6vw,6.875rem)", textAlign: "center" }}>
-        <h2
+        <p
           style={{
             fontFamily: "var(--font-heading)",
             fontWeight: 900,
@@ -548,7 +549,7 @@ export default function ServicesShowcase({
         >
           {p.bandPre}
           <span style={{ color: "var(--orange)" }}>{p.bandAccent}</span>
-        </h2>
+        </p>
         <p
           style={{
             color: "rgba(255,250,236,0.65)",

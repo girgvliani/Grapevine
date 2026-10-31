@@ -21,8 +21,10 @@ export default function Footer() {
     <Image src={logoBlack} alt="Grapevine" style={{ width: "7.5rem", height: "auto" }} />
   );
 
+  // A <p>, not a heading: it is a slogan repeated on every page, and as an
+  // H3 it polluted the heading outline of all 40 pages.
   const tagline = (
-    <h3
+    <p
       style={{
         fontSize: isMobile ? "1.125rem" : "clamp(1.125rem, 2.5vw, 1.75rem)",
         fontWeight: 900,
@@ -37,7 +39,50 @@ export default function Footer() {
       {mtavruli(t.footer.taglineLine1)}
       <br />
       {mtavruli(t.footer.taglineLine2)}
-    </h3>
+    </p>
+  );
+
+  // Phone and email, as the SEO report asked: name, phone and hours must read
+  // the same on the site, on Google and in every directory.
+  const contact = (
+    <div>
+      <div
+        style={{
+          fontSize: "0.6875rem",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          color: "rgba(26,5,18,0.62)",
+          fontFamily: "var(--font-primary)",
+          marginBottom: "1rem",
+        }}
+      >
+        {t.footer.contact}
+      </div>
+      <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+        {[
+          { href: "tel:+995599495574", text: "+995 599 495 574" },
+          { href: "mailto:info@grapevine.ge", text: "info@grapevine.ge" },
+        ].map(({ href, text }) => (
+          <li key={href}>
+            <a
+              href={href}
+              style={{
+                color: "var(--dark)",
+                textDecoration: "none",
+                fontSize: "0.875rem",
+                fontFamily: "var(--font-primary)",
+                opacity: 0.8,
+                transition: "opacity 0.2s",
+              }}
+              onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.opacity = "1")}
+              onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.opacity = "0.8")}
+            >
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 
   const quickLinks = (
@@ -118,7 +163,7 @@ export default function Footer() {
   const socials = (
     <div style={{ display: "flex", gap: "0.5rem" }}>
       {[
-        { label: "f", href: "https://www.facebook.com/share/1EK3dwXeqv/?mibextid=wwXIfr" },
+        { label: "f", href: "https://www.facebook.com/Grapevinegeo" },
         { label: "ig", href: "https://www.instagram.com/grapevine.agency?igsh=MTJxdnRhdjdrbXhrNA==" },
         { label: "in", href: "https://www.linkedin.com/company/grapevine-georgia/" },
       ].map(({ label, href }) => (
@@ -203,6 +248,7 @@ export default function Footer() {
             {tagline}
           </div>
           {quickLinks}
+          {contact}
           {button}
           {socials}
         </div>
@@ -223,6 +269,7 @@ export default function Footer() {
             {tagline}
           </div>
           {quickLinks}
+          {contact}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "1rem" }}>
             {button}
             {socials}
