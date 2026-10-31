@@ -2,16 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref } from "@/lib/routing";
 import { onConsentChange } from "@/lib/leadAttribution";
 
-// Cookie consent, "basic" mode: Google Analytics / Tag Manager are not loaded
-// AT ALL until the visitor accepts — no script, no cookies, no pings. Rejecting
-// is one click and as prominent as accepting. The footer's "Cookie settings"
-// link reopens the banner via OPEN_EVENT.
+// Cookie consent, "basic" mode: Google Tag Manager is not loaded AT ALL until
+// the visitor accepts — no script, no cookies, no pings. Rejecting is one
+// click and as prominent as accepting. The footer's "Cookie settings" link
+// reopens the banner via OPEN_EVENT.
+//
+// Only GTM is loaded here. GA4 (G-5QR401TL6H) is a tag inside the GTM
+// container; loading it directly as well, as this component did until
+// 31 Oct 2026, sent every page_view twice.
 //
 // Bump STORAGE_KEY's version if what we track changes (e.g. marketing pixels
 // get added to GTM) — everyone is then asked again.
@@ -48,7 +52,7 @@ function clearGoogleCookies() {
   }
 }
 
-export default function CookieConsent({ gaId, gtmId }: { gaId?: string; gtmId?: string }) {
+export default function CookieConsent({ gtmId }: { gtmId?: string }) {
   const { t, lang } = useLang();
   const c = t.cookieConsent;
   const isMobile = useMediaQuery(MOBILE_QUERY);
@@ -84,12 +88,7 @@ export default function CookieConsent({ gaId, gtmId }: { gaId?: string; gtmId?: 
     setChoice(next);
   }
 
-  const tracking = choice === "granted" && (
-    <>
-      {gtmId && <GoogleTagManager gtmId={gtmId} />}
-      {gaId && <GoogleAnalytics gaId={gaId} />}
-    </>
-  );
+  const tracking = choice === "granted" && gtmId && <GoogleTagManager gtmId={gtmId} />;
 
   if (!open) return tracking || null;
 

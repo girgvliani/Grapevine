@@ -84,11 +84,11 @@ export default async function RootLayout({
   // valid locales here, but a hand-typed /fr/... would fall through to this).
   if (lang !== "en" && lang !== "ka") notFound();
 
-  // Google Tag Manager / Analytics — only configured when their env vars are
-  // set, and even then only loaded once the visitor accepts cookies
-  // (CookieConsent), never on first paint.
+  // Google Tag Manager — only configured when its env var is set, and even
+  // then only loaded once the visitor accepts cookies (CookieConsent), never
+  // on first paint. GA4 runs as a tag inside the container, so
+  // NEXT_PUBLIC_GA_ID is no longer read.
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
     <html lang={lang} className={`${spaceGrotesk.variable} ${spaceMono.variable}`}>
@@ -108,7 +108,7 @@ export default async function RootLayout({
           <Nav />
           {children}
           <SupportWidget />
-          <CookieConsent gaId={gaId} gtmId={gtmId} />
+          <CookieConsent gtmId={gtmId} />
           <LeadAttributionCapture />
         </LanguageProvider>
       </body>
