@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLang } from "./LanguageProvider";
 import { useMediaQuery, MOBILE_QUERY } from "@/lib/useMediaQuery";
 import { localizedHref, stripLocale } from "@/lib/routing";
@@ -399,8 +400,18 @@ export default function ServicesShowcase({
   const { t, lang } = useLang();
   const p = t.servicesPage;
   const isMobile = useMediaQuery(MOBILE_QUERY);
+  const router = useRouter();
   const [openId, setOpenId] = useState<string | null>(initialOpen);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // /services/<slug> is that one service's landing page: it renders only its
+  // own card, with the other services as a block of links underneath. The
+  // hub (/services) keeps the full accordion grid. Before this, every
+  // service URL carried all eleven cards and the pages looked alike to
+  // Google (SEO review, 26 Oct 2026).
+  const single = initialOpen !== null;
+  const visible = single ? SERVICE_ASSETS.filter((s) => s.id === initialOpen) : SERVICE_ASSETS;
+  const others = single ? SERVICE_ASSETS.filter((s) => s.id !== initialOpen) : [];
 
   // Reflect the open card in the URL as a path slug (/services/<slug>) without a
   // full navigation, and sync when the user presses back/forward. A direct visit
@@ -508,14 +519,14 @@ export default function ServicesShowcase({
           ref={gridRef}
           style={{
             display: "grid",
-            gridTemplateColumns: isMobile
+            gridTemplateColumns: isMobile || single
               ? "1fr"
               : "repeat(auto-fill, minmax(17rem, 1fr))",
             gap: "1rem",
             alignItems: "start",
           }}
         >
-          {SERVICE_ASSETS.map((s, i) => {
+          {visible.map((s, i) => {
             const card = t.services.cards[s.id];
             return (
               <ServiceCard
@@ -526,11 +537,60 @@ export default function ServicesShowcase({
                 icon={s.icon}
                 delay={i * 0.045}
                 open={openId === s.id}
-                onToggle={() => openService(openId === s.id ? null : s.id)}
+                // On a service page the close arrow goes back to the hub
+                // instead of collapsing the only card on the page.
+                onToggle={() =>
+                  single ? router.push(localizedHref("/services", lang)) : openService(openId === s.id ? null : s.id)
+                }
               />
             );
           })}
         </div>
+
+        {single && (
+          <nav aria-label={p.otherServices} style={{ marginTop: "3rem" }}>
+            <div
+              style={{
+                fontSize: "0.6875rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "rgba(255,250,236,0.62)",
+                fontFamily: "var(--font-primary)",
+                marginBottom: "1rem",
+              }}
+            >
+              {p.otherServices}
+            </div>
+            <ul style={{ listStyle: "none", display: "flex", flexWrap: "wrap", gap: "0.625rem", padding: 0, margin: 0 }}>
+              {others.map((s) => {
+                const card = t.services.cards[s.id];
+                return (
+                  <li key={s.id}>
+                    <Link
+                      href={localizedHref(`/services/${s.id}`, lang)}
+                      style={{
+                        display: "inline-block",
+                        padding: "0.6rem 1rem",
+                        borderRadius: "100px",
+                        border: "1px solid rgba(255,250,236,0.25)",
+                        color: "var(--cream)",
+                        fontSize: "0.8125rem",
+                        fontFamily: "var(--font-primary)",
+                        textDecoration: "none",
+                        transition: "border-color 0.2s, background 0.2s",
+                      }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,250,236,0.08)")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.background = "transparent")}
+                    >
+                      {card.name}
+                      {card.sub ? ` ${card.sub}` : ""}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        )}
       </div>
 
       {/* CTA band. A <p>, not an H2: it is the same call to action on every
