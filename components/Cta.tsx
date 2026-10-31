@@ -8,6 +8,7 @@ import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { useMediaQuery, TABLET_QUERY } from "@/lib/useMediaQuery";
 import { mtavruli } from "@/lib/i18n";
 import { readLeadAttribution } from "@/lib/leadAttribution";
+import { trackEvent } from "@/lib/analytics";
 
 function FloatingField({
   label,
@@ -139,6 +140,13 @@ export default function Cta({
       if (!res.ok) throw new Error("request_failed");
       setStatus("success");
       setForm({ email: "", subject: "", message: "" });
+      // Only after the server accepted the enquiry: this is what GA4 and
+      // Google Ads count as a lead.
+      trackEvent({
+        event: "lead_submitted",
+        form_location: standalone ? "contact_page" : "cta_block",
+        page_path: window.location.pathname,
+      });
     } catch {
       setStatus("error");
     } finally {

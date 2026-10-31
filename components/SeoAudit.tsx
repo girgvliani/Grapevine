@@ -6,6 +6,7 @@ import { useLang } from "./LanguageProvider";
 import Turnstile, { TURNSTILE_SITE_KEY } from "./Turnstile";
 import { mtavruli } from "@/lib/i18n";
 import { localizedHref } from "@/lib/routing";
+import { trackEvent } from "@/lib/analytics";
 import type {
   AuditErrorCode,
   AuditEvent,
@@ -128,6 +129,9 @@ export default function SeoAudit() {
         setState({ ...INITIAL, phase: "error", error: data.error ?? "generic" });
         return;
       }
+      // The server accepted the URL and is streaming checks: that is an
+      // audit "started" for GTM, not the button press or a captcha failure.
+      trackEvent({ event: "seo_audit_started", page_path: window.location.pathname });
 
       // NDJSON: one event per line, applied as each part of the audit finishes.
       const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
