@@ -37,7 +37,7 @@ export async function generateMetadata({
   const { lang } = await params;
   const locale = isLocale(lang) ? lang : "ka";
 
-  return pageMetadata({
+  const base = pageMetadata({
     internalPath: "/",
     locale,
     // Search-facing title/description: the phrases people search for an agency
@@ -54,6 +54,17 @@ export async function generateMetadata({
     // The share card keeps the hero label, as the previous homepage card did.
     ogTitle: translations[locale].hero.label,
   });
+
+  return {
+    ...base,
+    // Meta Business Manager domain verification (code from the advertiser,
+    // 31 Oct 2026). Must be server-rendered in <head> of grapevine.ge; it is
+    // harmless on every other page, so it lives here rather than only on "/".
+    verification: {
+      ...base.verification,
+      other: { "facebook-domain-verification": "qbxjyqclnouqv70s70kr7og3giuugl" },
+    },
+  };
 }
 
 // Pre-render both locales at build time.
