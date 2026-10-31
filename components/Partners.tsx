@@ -55,7 +55,7 @@ const LOGOS: LogoEntry[] = POSITIONS.map((pos, i) => ({
   ...pos,
 }));
 
-function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
+function LogoTile({ logo, scale, alt }: { logo: ClientLogo; scale: number; alt: string }) {
   // Every tile opens Behance: the client's own case study where one is
   // published, the agency profile otherwise — same rule as the portfolio cards.
   const href = logo.behanceUrl ?? BEHANCE_URL;
@@ -85,7 +85,7 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
     >
       <Image
         src={logo.src}
-        alt={logo.alt}
+        alt={alt}
         style={{
           width: "100%",
           height: "100%",
@@ -99,6 +99,10 @@ function LogoTile({ logo, scale }: { logo: ClientLogo; scale: number }) {
 
 export default function Partners() {
   const { t } = useLang();
+  // "[company] logo" in the page language (SEO review, 26 Oct 2026); the
+  // tiles whose brand name is not legible stay generic.
+  const logoAlt = (logo: ClientLogo) =>
+    logo.alt === "Client logo" ? t.partners.clientLogo : `${logo.alt} ${t.partners.logoWord}`;
   // Tablet/mobile: logos flow in a static centered wrap. Desktop: the
   // original scattered-grid composition auto-scrolls as a single repeating
   // block, heading stays put above it.
@@ -155,7 +159,7 @@ export default function Partners() {
           }}
         >
           {CLIENT_LOGOS.map((logo, i) => (
-            <LogoTile key={i} logo={logo} scale={logoScaleStatic} />
+            <LogoTile key={i} logo={logo} scale={logoScaleStatic} alt={logoAlt(logo)} />
           ))}
         </div>
       </section>
@@ -192,7 +196,7 @@ export default function Partners() {
                 transform: `translate(${(logo.dx ?? 0) * gridScale}px, ${(logo.dy ?? 0) * gridScale}px)`,
               }}
             >
-              <LogoTile logo={logo} scale={logoScale} />
+              <LogoTile logo={logo} scale={logoScale} alt={logoAlt(logo)} />
             </div>
           ))}
         </div>

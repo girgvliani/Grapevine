@@ -387,6 +387,21 @@ export default function Cta({
                 </div>
               </div>
 
+              {/* Hours — same values as the Google Business Profile and the
+                  ProfessionalService schema (lib/structuredData BUSINESS). */}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ marginTop: "0.125rem", flexShrink: 0 }}>
+                  <circle cx="9" cy="9" r="7" stroke="#1A0512" strokeWidth="1.3" fill="none" opacity="0.5" />
+                  <path d="M9 5v4l2.5 2" stroke="#1A0512" strokeWidth="1.3" strokeLinecap="round" opacity="0.5" />
+                </svg>
+                <div>
+                  <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.62)", fontFamily: "var(--font-primary)", marginBottom: "0.125rem" }}>{t.cta.contact.hours}</div>
+                  <div style={{ fontSize: "0.75rem", color: "var(--dark)", fontFamily: "var(--font-primary)" }}>
+                    {t.cta.contact.hoursValue}
+                  </div>
+                </div>
+              </div>
+
               {/* Social */}
               <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ marginTop: "0.125rem", flexShrink: 0 }}>
@@ -397,7 +412,7 @@ export default function Cta({
                   <div style={{ fontSize: "0.625rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(26,5,18,0.62)", fontFamily: "var(--font-primary)", marginBottom: "0.375rem" }}>{t.cta.contact.social}</div>
                   <div style={{ display: "flex", gap: "0.375rem" }}>
                     {[
-                      { label: "f", href: "https://www.facebook.com/share/1EK3dwXeqv/?mibextid=wwXIfr" },
+                      { label: "f", href: "https://www.facebook.com/Grapevinegeo" },
                       { label: "in", href: "https://www.linkedin.com/company/grapevine-georgia/" },
                       { label: "ig", href: "https://www.instagram.com/grapevine.agency?igsh=MTJxdnRhdjdrbXhrNA==" },
                     ].map(({ label, href }) => (

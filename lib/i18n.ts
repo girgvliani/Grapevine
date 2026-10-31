@@ -105,6 +105,7 @@ const ka = {
     priceNote: "პროექტზე · სანიმუშო",
     includedLabel: "რას მოიცავს",
     faqLabel: "ხშირად დასმული კითხვები",
+    otherServices: "სხვა სერვისები",
     // Callout on the SEO-related service cards, linking to /seo-audit.
     auditTool: {
       text: "გინდათ, ახლავე ნახოთ, სად დგას თქვენი საიტი? გაუშვით უფასო ავტომატური SEO შემოწმება — დაახლოებით 30 წამში.",
@@ -210,6 +211,9 @@ const ka = {
   },
   partners: {
     heading: "პარტნიორები",
+    // Alt text pattern "[company] logo" for the partner tiles.
+    logoWord: "ლოგო",
+    clientLogo: "კლიენტის ლოგო",
   },
   cta: {
     heading: "მოდი ვისაუბროთ ქაოსზე.",
@@ -226,7 +230,14 @@ const ka = {
     success: "მადლობა! თქვენი შეტყობინება გაიგზავნა.",
     error: "დაფიქსირდა შეცდომა. გთხოვთ სცადოთ თავიდან, ან დაგვიკავშირდით პირდაპირ.",
     or: "ან",
-    contact: { email: "ელ.ფოსტა", phone: "ტელეფონის ნომერი", social: "სოციალური მედია" },
+    contact: {
+      email: "ელ.ფოსტა",
+      phone: "ტელეფონის ნომერი",
+      social: "სოციალური მედია",
+      hours: "სამუშაო საათები",
+      // Same as the Google Business Profile; weekdays assumed until confirmed.
+      hoursValue: "ორშ-პარ, 10:00-18:00",
+    },
     eyebrow: "Grapevine — კონტაქტი",
   },
   footer: {
@@ -531,6 +542,7 @@ const en: typeof ka = {
     priceNote: "Per Project · Sample",
     includedLabel: "What's Included",
     faqLabel: "Frequently asked questions",
+    otherServices: "Other services",
     auditTool: {
       text: "Want to see where your site stands right now? Run our free automatic SEO check — it takes about 30 seconds.",
       button: "Try the free SEO check",
@@ -635,6 +647,8 @@ const en: typeof ka = {
   },
   partners: {
     heading: "Partners",
+    logoWord: "logo",
+    clientLogo: "Client logo",
   },
   cta: {
     heading: "Let's Talk About the Chaos.",
@@ -650,7 +664,13 @@ const en: typeof ka = {
     success: "Thank you! Your message has been sent.",
     error: "An error occurred. Please try again or contact us directly.",
     or: "or",
-    contact: { email: "Email", phone: "Phone Number", social: "Social Media" },
+    contact: {
+      email: "Email",
+      phone: "Phone Number",
+      social: "Social Media",
+      hours: "Working Hours",
+      hoursValue: "Mon-Fri, 10:00-18:00",
+    },
     eyebrow: "Grapevine — Contact",
   },
   footer: {

@@ -215,6 +215,14 @@ body[data-menu-open] .support-widget {
   transition: opacity 0.2s ease, visibility 0s linear 0.2s;
 }
 
+/* Process pagination dots (components/Process.tsx): the visible pill is 28px
+   tall; the halo makes each dot's hit area 44x44px (WCAG 2.5.5). */
+.process-dot::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem;
+}
+
 /* Service card FAQ (components/ServicesShowcase.tsx): hide the default
    disclosure triangle, flip the + to × while open. */
 .svc-faq > summary::-webkit-details-marker { display: none; }

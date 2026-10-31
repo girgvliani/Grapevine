@@ -23,21 +23,44 @@ const SOCIAL_PROFILES = [
   "https://www.behance.net/grapevineagency",
 ];
 
+// Business facts that must read identically on the site, on the Google
+// Business Profile and in every directory (SEO review, 26-31 Oct 2026).
+// Hours per the GBP: 10:00-18:00. Weekdays are an assumption until the
+// advertiser confirms the days on the profile.
+export const BUSINESS = {
+  telephone: "+995599495574",
+  email: "info@grapevine.ge",
+  openingHours: { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "10:00", closes: "18:00" },
+  areaServed: "Tbilisi",
+  // No office address is published (confirmed by the client, 31 Oct 2026);
+  // the GBP lists a service area instead. Add `address` here when one exists.
+} as const;
+
 function organization(locale: Locale) {
   return {
-    "@type": "Organization",
+    // ProfessionalService is a LocalBusiness subtype, which is what Google
+    // Maps and "near me" searches read; Organization keeps the entity link
+    // that every page's publisher/provider points at.
+    "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: SITE_NAME,
     url: absoluteUrl(localizedHref("/", locale)),
     description: translations[locale].hero.description,
     foundingDate: "2014",
     logo: { "@type": "ImageObject", url: absoluteUrl("/icon.png") },
+    image: absoluteUrl("/icon.png"),
     sameAs: SOCIAL_PROFILES,
-    telephone: "+995599495574",
-    // Address still deliberately omitted: a guessed NAP is worse than none,
-    // since inconsistent details actively hurt local ranking. Once the real
-    // one is known, add `address` and change @type to "ProfessionalService"
-    // to become eligible for local results.
+    telephone: BUSINESS.telephone,
+    email: BUSINESS.email,
+    areaServed: { "@type": "City", name: BUSINESS.areaServed },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: BUSINESS.openingHours.days,
+        opens: BUSINESS.openingHours.opens,
+        closes: BUSINESS.openingHours.closes,
+      },
+    ],
   };
 }
 

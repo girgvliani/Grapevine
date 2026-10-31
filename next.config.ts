@@ -9,9 +9,12 @@ import type { NextConfig } from "next";
 // Adjust a destination if a given slug should map to a different service page.
 const OLD_URL_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/social-media-audit", destination: "/services/social-media-audit" },
-  // Social Media (management) service was removed → send old URLs to the hub.
-  { source: "/social-media", destination: "/services" },
-  { source: "/services/social-media", destination: "/services" },
+  // Social Media (management) service was removed. Its closest living page
+  // is digital advertising (Facebook/Instagram/TikTok), not the hub: a
+  // redirect to the specific page keeps the old URL's relevance (SEO
+  // review, 26 Oct 2026).
+  { source: "/social-media", destination: "/services/digital-advertising" },
+  { source: "/services/social-media", destination: "/services/digital-advertising" },
   { source: "/branding", destination: "/services/branding" },
   { source: "/pr-service", destination: "/services/pr-services" },
   { source: "/cifruli-reklama", destination: "/services/digital-advertising" },

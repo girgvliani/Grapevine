@@ -61,6 +61,9 @@ function StepSlider({
         <button
           key={i}
           type="button"
+          // .process-dot adds an invisible 0.5rem halo (globals.css), so the
+          // 28px dot answers to a 44px tap target without growing the pill.
+          className="process-dot"
           onClick={() => onSelect(i)}
           aria-label={label}
           aria-current={active === i}
